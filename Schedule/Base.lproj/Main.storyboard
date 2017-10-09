@@ -38,7 +38,7 @@
                                 <rect key="frame" x="16" y="87" width="343" height="114"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="114" id="ldu-vf-j8d"/>
-                                    <constraint firstAttribute="width" constant="343" id="q0R-tG-Q9w"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="343" id="q0R-tG-Q9w"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
@@ -48,7 +48,7 @@
                                 <rect key="frame" x="16" y="209" width="343" height="72"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="72" id="080-xE-bzM"/>
-                                    <constraint firstAttribute="width" constant="343" id="sW1-kB-MKv"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="343" id="sW1-kB-MKv"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
@@ -58,7 +58,7 @@
                                 <rect key="frame" x="16" y="289" width="343" height="72"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="72" id="NUz-aN-JDP"/>
-                                    <constraint firstAttribute="width" constant="343" id="UF0-PZ-fol"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="343" id="UF0-PZ-fol"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>

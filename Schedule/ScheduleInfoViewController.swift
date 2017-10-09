@@ -203,7 +203,6 @@ class ScheduleInfoViewController: UIViewController {
         else
         {
             print("Did not receive weekScheduleRecord")
-            printCurrentStatus(message: "Error: Did not receive weekScheduleRecord")
         }
     }
     
@@ -226,7 +225,7 @@ class ScheduleInfoViewController: UIViewController {
         else
         {
             print("currentDay out of schedule range")
-            printCurrentStatus(message: "No school today\nError: currentDay out of range")
+            printCurrentStatus(message: "No school today")
             
             OperationQueue.main.addOperation {
                 self.startTimeLabel.text = "No school today"
@@ -249,7 +248,6 @@ class ScheduleInfoViewController: UIViewController {
         else
         {
             print("Did not receive todaySchedule")
-            printCurrentStatus(message: "Error: Did not receive todaySchedule")
         }
     }
     
@@ -294,6 +292,7 @@ class ScheduleInfoViewController: UIViewController {
             let tomorrowScheduleCode = tomorrowSchedule.object(forKey: "scheduleCode") as! String
             if tomorrowScheduleCode != "H"
             {
+                print("Tomorrow schedule found!")
                 printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule)
             }
             else
@@ -391,6 +390,7 @@ class ScheduleInfoViewController: UIViewController {
             if periodRangeContainsDate
             {
                 periodFound = true
+                print("Found current period!")
                 printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn)
                 break
             }
@@ -424,6 +424,7 @@ class ScheduleInfoViewController: UIViewController {
         {
             if passingPeriod
             {
+                print("Currently passing period")
                 let passingPeriodMessage1 = "Passing Period\nPeriod " + String(describing: nextPeriodNumber!) + " starts at "
                 let passingPeriodMessage2 = nextPeriodStart! + "\n" + periodNames![nextPeriodNumber!-1]
                 printCurrentStatus(message: passingPeriodMessage1 + passingPeriodMessage2)
@@ -432,11 +433,13 @@ class ScheduleInfoViewController: UIViewController {
             {
                 if schoolHasNotStarted
                 {
-                    printCurrentStatus(message: "School has not started\nError: Not on a period")
+                    print("School has not started")
+                    printCurrentStatus(message: "School has not started")
                 }
                 else
                 {
-                    printCurrentStatus(message: "School has ended\nError: Not on a period")
+                    print("School has ended")
+                    printCurrentStatus(message: "School has ended")
                 }
             }
         }
@@ -498,8 +501,8 @@ class ScheduleInfoViewController: UIViewController {
         let weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayOn!+1)
         
         OperationQueue.main.addOperation {
-            let schoolStart1 = "School starts " + startOfNextSchoolDayString + " at "
-            let schoolStart2 = tomorrowSchoolStartTime + "\n" + weekDayOfSchoolStart
+            let schoolStart1 = "School starts " + weekDayOfSchoolStart + ", " + startOfNextSchoolDayString
+            let schoolStart2 = "\nat " + tomorrowSchoolStartTime
             self.tomorrowStartTimeLabel.text = schoolStart1 + schoolStart2
         }
     }
