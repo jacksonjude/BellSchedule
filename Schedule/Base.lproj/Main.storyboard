@@ -8,6 +8,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="CooleyCasual.ttf">
+            <string>CooleyCasual</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Schedule Info View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -40,17 +45,17 @@
                                     <constraint firstAttribute="height" constant="114" id="ldu-vf-j8d"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="343" id="q0R-tG-Q9w"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="32"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cxY-Xp-bBx">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cxY-Xp-bBx">
                                 <rect key="frame" x="16" y="209" width="343" height="72"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="72" id="080-xE-bzM"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="343" id="sW1-kB-MKv"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="32"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -60,7 +65,7 @@
                                     <constraint firstAttribute="height" constant="72" id="NUz-aN-JDP"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="343" id="UF0-PZ-fol"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="32"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -82,7 +87,7 @@
                     </view>
                     <connections>
                         <outlet property="currentPeriodLabel" destination="vnh-7m-UjO" id="qd3-kd-yUo"/>
-                        <outlet property="startTimeLabel" destination="cxY-Xp-bBx" id="zjj-gi-vrr"/>
+                        <outlet property="schoolStartEndLabel" destination="cxY-Xp-bBx" id="kzS-Tc-JtS"/>
                         <outlet property="tomorrowStartTimeLabel" destination="4fs-2f-E1I" id="AS4-Dh-GZU"/>
                     </connections>
                 </viewController>

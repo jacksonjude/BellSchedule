@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A0A74641F8C281400249FAB /* CooleyCasual.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A0A74631F8C277700249FAB /* CooleyCasual.ttf */; };
+		7A0A74661F8C3BF600249FAB /* ScheduleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0A74651F8C3BF600249FAB /* ScheduleInfoManager.swift */; };
 		7A796F8C1F871D1400D9658D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F8B1F871D1400D9658D /* AppDelegate.swift */; };
 		7A796F8E1F871D1400D9658D /* ScheduleInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F8D1F871D1400D9658D /* ScheduleInfoViewController.swift */; };
 		7A796F911F871D1400D9658D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A796F8F1F871D1400D9658D /* Main.storyboard */; };
@@ -18,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7A0A74631F8C277700249FAB /* CooleyCasual.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CooleyCasual.ttf; sourceTree = "<group>"; };
+		7A0A74651F8C3BF600249FAB /* ScheduleInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoManager.swift; sourceTree = "<group>"; };
 		7A796F881F871D1400D9658D /* Schedule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedule.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A796F8B1F871D1400D9658D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A796F8D1F871D1400D9658D /* ScheduleInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoViewController.swift; sourceTree = "<group>"; };
@@ -63,11 +67,13 @@
 		7A796F8A1F871D1400D9658D /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				7A0A74651F8C3BF600249FAB /* ScheduleInfoManager.swift */,
 				7A796FA01F871D2F00D9658D /* Schedule.entitlements */,
 				7A796F8B1F871D1400D9658D /* AppDelegate.swift */,
 				7A796F8D1F871D1400D9658D /* ScheduleInfoViewController.swift */,
 				7A796FA41F87250600D9658D /* CloudManager.swift */,
 				7A796F8F1F871D1400D9658D /* Main.storyboard */,
+				7A0A74631F8C277700249FAB /* CooleyCasual.ttf */,
 				7A796F951F871D1400D9658D /* Assets.xcassets */,
 				7A796F971F871D1400D9658D /* LaunchScreen.storyboard */,
 				7A796F9A1F871D1400D9658D /* Info.plist */,
@@ -151,6 +157,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A0A74641F8C281400249FAB /* CooleyCasual.ttf in Resources */,
 				7A796F991F871D1400D9658D /* LaunchScreen.storyboard in Resources */,
 				7A796F961F871D1400D9658D /* Assets.xcassets in Resources */,
 				7A796F911F871D1400D9658D /* Main.storyboard in Resources */,
@@ -165,6 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A796F8E1F871D1400D9658D /* ScheduleInfoViewController.swift in Sources */,
+				7A0A74661F8C3BF600249FAB /* ScheduleInfoManager.swift in Sources */,
 				7A796F941F871D1400D9658D /* Schedule.xcdatamodeld in Sources */,
 				7A796FA51F87250600D9658D /* CloudManager.swift in Sources */,
 				7A796F8C1F871D1400D9658D /* AppDelegate.swift in Sources */,
