@@ -59,11 +59,15 @@ class ScheduleInfoViewController: UIViewController {
     @IBOutlet weak var currentPeriodLabel: UILabel!
     @IBOutlet weak var startTimeLabel: UILabel!
     @IBOutlet weak var tomorrowStartTimeLabel: UILabel!
+    
     var nextWeekSchedules: Array<String>?
+    
     var periodNames: Array<String>?
     var periodPrinted = false
     var periodNumber: Int?
+    
     var todaySchedule: CKRecord?
+    
     var tomorrowDay: Date?
     var nextWeekOn: Int?
     var nextDayOn: Int?
@@ -101,6 +105,7 @@ class ScheduleInfoViewController: UIViewController {
             if userID != nil || userID != ""
             {
                 UserDefaults.standard.set(userID, forKey: "userID")
+                print("USRID: Set userID: " + userID!)
             }
         }))
         
@@ -112,14 +117,15 @@ class ScheduleInfoViewController: UIViewController {
     
     func getUserID()
     {
+        print("USRID: Fetching userID")
         if let userID = UserDefaults.standard.object(forKey: "userID") as? String
         {
-            print("userID: " + userID)
+            print("USRID: userID: " + userID)
             queryUserSchedule(userID: userID)
         }
         else
         {
-            print("No userID")
+            print("USRID: No userID")
         }
     }
     
@@ -127,6 +133,7 @@ class ScheduleInfoViewController: UIViewController {
     
     func queryUserSchedule(userID: String)
     {
+        print("USRSCH: Fetching periodNamesRecord")
         let userScheduleReturnID = UUID().uuidString
         NotificationCenter.default.addObserver(self, selector: #selector(receiveUserSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + userScheduleReturnID), object: nil)
         
@@ -138,7 +145,7 @@ class ScheduleInfoViewController: UIViewController {
     {
         if let periodNamesRecord = notification.object as? CKRecord
         {
-            print("Received periodNamesRecord")
+            print("USRSCH: Received periodNamesRecord")
             periodNames = periodNamesRecord.object(forKey: "periodNames") as? [String]
             
             if periodPrinted
@@ -151,7 +158,7 @@ class ScheduleInfoViewController: UIViewController {
         }
         else
         {
-            print("Did not receive periodNamesRecord")
+            print("USRSCH: Did not receive periodNamesRecord")
         }
     }
     
@@ -172,6 +179,7 @@ class ScheduleInfoViewController: UIViewController {
     
     func queryWeekSchedule()
     {
+        print("FWSCH: Fetching weekScheduleRecord")
         let weekScheduleReturnID = UUID().uuidString
         NotificationCenter.default.addObserver(self, selector: #selector(receiveWeekScheduleRecord(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + weekScheduleReturnID), object: nil)
         
@@ -189,7 +197,7 @@ class ScheduleInfoViewController: UIViewController {
     {
         if let weekScheduleRecord = notification.object as? CKRecord
         {
-            print("Received weekScheduleRecord")
+            print("FWSCH: Received weekScheduleRecord")
             printCurrentStatus(message: "Loading...\nReceived weekScheduleRecord")
             
             let schedules = weekScheduleRecord.object(forKey: "schedules") as! Array<String>
@@ -202,7 +210,7 @@ class ScheduleInfoViewController: UIViewController {
         }
         else
         {
-            print("Did not receive weekScheduleRecord")
+            print("FWSCH: Did not receive weekScheduleRecord")
         }
     }
     
@@ -214,7 +222,9 @@ class ScheduleInfoViewController: UIViewController {
         if currentDay < weekSchedules.count && currentDay >= 0
         {
             let todaySchedule = weekSchedules[currentDay]
-            print("currentDay == " + String(currentDay) + " and todaySchedule == " + todaySchedule)
+            print("FTODYS: currentDay == " + String(currentDay) + " and todaySchedule == " + todaySchedule)
+            
+            print("FTODYS: Fetching todaySchedule")
             
             let todayScheduleReturnID = UUID().uuidString
             NotificationCenter.default.addObserver(self, selector: #selector(receiveTodaySchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + todayScheduleReturnID), object: nil)
@@ -224,7 +234,7 @@ class ScheduleInfoViewController: UIViewController {
         }
         else
         {
-            print("currentDay out of schedule range")
+            print("FTODYS: currentDay out of schedule range")
             printCurrentStatus(message: "No school today")
             
             OperationQueue.main.addOperation {
@@ -237,7 +247,7 @@ class ScheduleInfoViewController: UIViewController {
     {
         if let todaySchedule = notification.object as? CKRecord
         {
-            print("Received todaySchedule")
+            print("FTODYS: Received todaySchedule")
             printCurrentStatus(message: "Received todaySchedule")
             
             self.todaySchedule = todaySchedule
@@ -250,7 +260,7 @@ class ScheduleInfoViewController: UIViewController {
             }
             else
             {
-                print("todayCode == H, No school today")
+                print("FTODYS: todayCode == H, No school today")
                 printCurrentStatus(message: "No school today")
                 OperationQueue.main.addOperation {
                     self.startTimeLabel.text = "No school today"
@@ -259,7 +269,7 @@ class ScheduleInfoViewController: UIViewController {
         }
         else
         {
-            print("Did not receive todaySchedule")
+            print("FTODYS: Did not receive todaySchedule")
         }
     }
     
@@ -274,11 +284,11 @@ class ScheduleInfoViewController: UIViewController {
         if tomorrowDate < weekSchedules.count && tomorrowDate >= 0
         {
             tomorrowSchedule = weekSchedules[tomorrowDate]
-            print("tomorrowDate == " + String(tomorrowDate) + " and tomorrowSchedule == " + tomorrowSchedule)
+            print("FTOMWS: tomorrowDate == " + String(tomorrowDate) + " and tomorrowSchedule == " + tomorrowSchedule)
         }
         else
         {
-            print("tomorrowDate out of schedule range, loading next week")
+            print("FTOMWS: tomorrowDate out of schedule range, loading next week")
             nextWeekOn! += 1
             nextDayOn = 0
             queryNextWeek()
@@ -287,6 +297,8 @@ class ScheduleInfoViewController: UIViewController {
         
         if !loadingNextWeek
         {
+            print("FTOMWS: Fetching tomorrowSchedule")
+            
             let tomorrowScheduleReturnID = UUID().uuidString
             NotificationCenter.default.addObserver(self, selector: #selector(receiveTomorrowSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + tomorrowScheduleReturnID), object: nil)
             
@@ -299,17 +311,17 @@ class ScheduleInfoViewController: UIViewController {
     {
         if let tomorrowSchedule = notification.object as? CKRecord
         {
-            print("Received tomorrowSchedule")
+            print("FTOMWS: Received tomorrowSchedule")
             
             let tomorrowScheduleCode = tomorrowSchedule.object(forKey: "scheduleCode") as! String
             if tomorrowScheduleCode != "H"
             {
-                print("Tomorrow schedule found!")
+                print("FTOMWS: Tomorrow schedule found!")
                 printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule)
             }
             else
             {
-                print("No school tomorrow, loading next day")
+                print("FTOMWS: No school tomorrow, loading next day")
                 nextDayOn!+=1
                 
                 queryTomorrowSchedule(weekSchedules: self.nextWeekSchedules!, isNextWeek: false, addDays: nextDayOn!)
@@ -317,7 +329,7 @@ class ScheduleInfoViewController: UIViewController {
         }
         else
         {
-            print("Did not receive tomorrowSchedule")
+            print("FTOMWS: Did not receive tomorrowSchedule")
         }
     }
     
@@ -325,6 +337,8 @@ class ScheduleInfoViewController: UIViewController {
     
     func queryNextWeek()
     {
+        print("FNXTWK: Fetching nextWeekScheduleRecord")
+        
         let nextWeekScheduleReturnID = UUID().uuidString
         NotificationCenter.default.addObserver(self, selector: #selector(receiveNextWeekSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + nextWeekScheduleReturnID), object: nil)
         
@@ -342,14 +356,14 @@ class ScheduleInfoViewController: UIViewController {
     {
         if let nextWeekScheduleRecord = notification.object as? CKRecord
         {
-            print("Received nextWeekScheduleRecord")
+            print("FNXTWK: Received nextWeekScheduleRecord")
             let schedules = nextWeekScheduleRecord.object(forKey: "schedules") as! Array<String>
             self.nextWeekSchedules = schedules
             queryTomorrowSchedule(weekSchedules: schedules, isNextWeek: true, addDays: 0)
         }
         else
         {
-            print("Did not receive nextWeekScheduleRecord")
+            print("FNXTWK: Did not receive nextWeekScheduleRecord")
         }
     }
     
@@ -370,6 +384,7 @@ class ScheduleInfoViewController: UIViewController {
     
     func findCurrentPeriod(periodTimes: Array<String>)
     {
+        print("FCURPER: Finding current period")
         let currentDate = Date()
         var periodOn = 1
         var periodFound = false
@@ -397,12 +412,12 @@ class ScheduleInfoViewController: UIViewController {
             let periodRange = periodStart ... periodEnd
             
             let periodRangeContainsDate = periodRange.contains(Date())
-            print("periodOn == " + String(periodOn) + " : " + String(periodRange.contains(Date())))
+            print("FCURPER: periodOn == " + String(periodOn) + " : " + String(periodRange.contains(Date())))
             
             if periodRangeContainsDate
             {
                 periodFound = true
-                print("Found current period!")
+                print("FCURPER: Found current period!")
                 printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn)
                 break
             }
@@ -436,7 +451,7 @@ class ScheduleInfoViewController: UIViewController {
         {
             if passingPeriod
             {
-                print("Currently passing period")
+                print("FCURPER: Currently passing period")
                 let passingPeriodMessage1 = "Passing Period\nPeriod " + String(describing: nextPeriodNumber!) + " starts at "
                 let passingPeriodMessage2 = nextPeriodStart! + "\n" + periodNames![nextPeriodNumber!-1]
                 printCurrentStatus(message: passingPeriodMessage1 + passingPeriodMessage2)
@@ -445,12 +460,12 @@ class ScheduleInfoViewController: UIViewController {
             {
                 if schoolHasNotStarted
                 {
-                    print("School has not started")
+                    print("FCURPER: School has not started")
                     printCurrentStatus(message: "School has not started")
                 }
                 else
                 {
-                    print("School has ended")
+                    print("FCURPER: School has ended")
                     printCurrentStatus(message: "School has ended")
                 }
             }
@@ -510,7 +525,7 @@ class ScheduleInfoViewController: UIViewController {
         formatter.dateFormat = "MM/dd"
         let startOfNextSchoolDayString = formatter.string(from: startOfNextSchoolDayFormatted)
         let tomorrowSchoolStartTime = tomorrowPeriodTimes[0].split(separator: "-")[0]
-        let weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayOn!+1)
+        let weekDayOfSchoolStart = Date().getStringDayOfWeek(day: Date().getDayOfWeek() + nextDayOn! + 1)
         
         OperationQueue.main.addOperation {
             let schoolStart1 = "School starts " + weekDayOfSchoolStart + ", " + startOfNextSchoolDayString
