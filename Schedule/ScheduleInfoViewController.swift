@@ -242,8 +242,20 @@ class ScheduleInfoViewController: UIViewController {
             
             self.todaySchedule = todaySchedule
             
-            let periodTimes = todaySchedule.object(forKey: "periodTimes") as! Array<String>
-            findCurrentPeriod(periodTimes: periodTimes)
+            let todayCode = todaySchedule.object(forKey: "scheduleCode") as! String
+            if todayCode != "H"
+            {
+                let periodTimes = todaySchedule.object(forKey: "periodTimes") as! Array<String>
+                findCurrentPeriod(periodTimes: periodTimes)
+            }
+            else
+            {
+                print("todayCode == H, No school today")
+                printCurrentStatus(message: "No school today")
+                OperationQueue.main.addOperation {
+                    self.startTimeLabel.text = "No school today"
+                }
+            }
         }
         else
         {
