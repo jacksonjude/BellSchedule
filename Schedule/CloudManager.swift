@@ -24,6 +24,7 @@ class CloudManager: NSObject
             if error != nil
             {
                 print(error!)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + returnID), object: nil)
             }
             else
             {

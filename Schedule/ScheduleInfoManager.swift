@@ -6,4 +6,16 @@
 //  Copyright © 2017 jackson. All rights reserved.
 //
 
-import Foundation
+import CloudKit
+import UIKit
+
+class ScheduleInfoManager: NSObject {
+    override init() {
+        super.init()
+    }
+    
+    func refreshScheduleInfo()
+    {
+        
+    }
+}

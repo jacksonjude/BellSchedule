@@ -69,6 +69,8 @@ class ScheduleInfoViewController: UIViewController {
     @IBOutlet weak var currentPeriodLabel: UILabel!
     @IBOutlet weak var schoolStartEndLabel: UILabel!
     @IBOutlet weak var tomorrowStartTimeLabel: UILabel!
+    @IBOutlet weak var editScheduleButton: UIButton!
+    @IBOutlet weak var openCalenderButton: UIButton!
     
     var nextWeekSchedules: Array<String>?
     
@@ -94,7 +96,20 @@ class ScheduleInfoViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        addCorners(view: currentPeriodLabel)
+        addCorners(view: schoolStartEndLabel)
+        addCorners(view: tomorrowStartTimeLabel)
+        addCorners(view: editScheduleButton)
+        addCorners(view: openCalenderButton)
+        
         refreshPeriodInfo(self)
+    }
+    
+    func addCorners(view: UIView)
+    {
+        view.layer.cornerRadius = 8
+        view.layer.masksToBounds = true
     }
     
     //MARK: User ID
@@ -222,6 +237,7 @@ class ScheduleInfoViewController: UIViewController {
         else
         {
             print(" FWSCH: Did not receive weekScheduleRecord")
+            printCurrentStatus(message: "Error on query")
         }
     }
     
@@ -281,6 +297,7 @@ class ScheduleInfoViewController: UIViewController {
         else
         {
             print(" FTODYS: Did not receive todaySchedule")
+            printCurrentStatus(message: "Error on query")
         }
     }
     
@@ -404,6 +421,9 @@ class ScheduleInfoViewController: UIViewController {
         var nextPeriodStart: Substring?
         var nextPeriodNumber: Int?
         var schoolHasNotStarted = false
+        
+        setSchoolStartEndLabel(periodTimes: periodTimes)
+        
         for periodRangeString in periodTimes
         {
             printCurrentStatus(message: "Loading...\nperiodOn == " + String(periodOn))
@@ -412,40 +432,6 @@ class ScheduleInfoViewController: UIViewController {
             
             let periodStart = getDate(hourMinute: periodRangeArray[0], day: currentDate)
             let periodEnd = getDate(hourMinute: periodRangeArray[1], day: currentDate)
-            
-            if periodOn == 1
-            {
-                let schoolStartToPastRange = Date.distantPast ... periodStart
-                if schoolStartToPastRange.contains(currentDate)
-                {
-                    OperationQueue.main.addOperation {
-                        self.schoolStartEndLabel.text = "School starts today at " + Date().convertToStandardTime(date: String(periodRangeArray[0]))
-                    }
-                }
-                else
-                {
-                    OperationQueue.main.addOperation {
-                        self.schoolStartEndLabel.text = "School started today at " + Date().convertToStandardTime(date: String(periodRangeArray[0]))
-                    }
-                }
-            }
-            
-            if periodOn == periodTimes.count
-            {
-                let schoolEndToPastRange = Date.distantPast ... periodEnd
-                if schoolEndToPastRange.contains(currentDate)
-                {
-                    OperationQueue.main.addOperation {
-                        self.schoolStartEndLabel.text = self.schoolStartEndLabel.text! + "\nSchool ends today at " + Date().convertToStandardTime(date: String(periodRangeArray[1]))
-                    }
-                }
-                else
-                {
-                    OperationQueue.main.addOperation {
-                        self.schoolStartEndLabel.text = self.schoolStartEndLabel.text! + "\nSchool ended today at " + Date().convertToStandardTime(date: String(periodRangeArray[1]))
-                    }
-                }
-            }
             
             let periodRange = periodStart ... periodEnd
             
@@ -457,6 +443,7 @@ class ScheduleInfoViewController: UIViewController {
                 periodFound = true
                 print(" FCURPER: Found current period!")
                 printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn)
+                
                 break
             }
             else if lastPeriodEnd != nil
@@ -469,6 +456,7 @@ class ScheduleInfoViewController: UIViewController {
                     
                     let periodNumbers = todaySchedule!.object(forKey: "periodNumbers") as! Array<Int>
                     nextPeriodNumber = periodNumbers[periodOn-1]
+                    
                     break
                 }
             }
@@ -491,7 +479,12 @@ class ScheduleInfoViewController: UIViewController {
             {
                 print(" FCURPER: Currently passing period")
                 let passingPeriodMessage1 = "Passing Period\nPeriod " + String(describing: nextPeriodNumber!) + " starts at "
-                let passingPeriodMessage2 = nextPeriodStart! + "\n" + periodNames![nextPeriodNumber!-1]
+                var passingPeriodMessage2 = Date().convertToStandardTime(date: String(nextPeriodStart!)) + "\n"
+                    
+                if periodNames != nil
+                {
+                    passingPeriodMessage2 = passingPeriodMessage2 + periodNames![nextPeriodNumber!-1]
+                }
                 printCurrentStatus(message: passingPeriodMessage1 + passingPeriodMessage2)
             }
             else
@@ -510,6 +503,45 @@ class ScheduleInfoViewController: UIViewController {
         }
     }
     
+    func setSchoolStartEndLabel(periodTimes: Array<String>)
+    {
+        let currentDate = Date()
+        
+        let startTimeArray = periodTimes[0].split(separator: "-")
+        let startTimeStart = getDate(hourMinute: startTimeArray[0], day: currentDate)
+        
+        let endTimeArray = periodTimes[periodTimes.count-1].split(separator: "-")
+        let endTimeEnd = getDate(hourMinute: endTimeArray[1], day: currentDate)
+        
+        let schoolStartToPastRange = Date.distantPast ... startTimeStart
+        if schoolStartToPastRange.contains(currentDate)
+        {
+            OperationQueue.main.addOperation {
+                self.schoolStartEndLabel.text = "School starts today at " + Date().convertToStandardTime(date: String(startTimeArray[0]))
+            }
+        }
+        else
+        {
+            OperationQueue.main.addOperation {
+                self.schoolStartEndLabel.text = "School started today at " + Date().convertToStandardTime(date: String(startTimeArray[0]))
+            }
+        }
+        
+        let schoolEndToPastRange = Date.distantPast ... endTimeEnd
+        if schoolEndToPastRange.contains(currentDate)
+        {
+            OperationQueue.main.addOperation {
+                self.schoolStartEndLabel.text = self.schoolStartEndLabel.text! + "\nSchool ends today at " + Date().convertToStandardTime(date: String(endTimeArray[1]))
+            }
+        }
+        else
+        {
+            OperationQueue.main.addOperation {
+                self.schoolStartEndLabel.text = self.schoolStartEndLabel.text! + "\nSchool ended today at " + Date().convertToStandardTime(date: String(endTimeArray[1]))
+            }
+        }
+    }
+    
     //MARK: Print
     
     func printCurrentStatus(message: String)
@@ -522,9 +554,14 @@ class ScheduleInfoViewController: UIViewController {
     func printCurrentPeriod(periodRangeString: String, periodNumber: Int)
     {
         let periodNumbers = todaySchedule!.object(forKey: "periodNumbers") as! Array<Int>
-        let periodInfo = "The current period is " + String(periodNumbers[periodNumber-1]) + "\n" + periodRangeString
+        let periodRangeSplit = periodRangeString.split(separator: "-")
+        let periodStartString = Date().convertToStandardTime(date: String(periodRangeSplit[0]))
+        let periodEndString = Date().convertToStandardTime(date: String(periodRangeSplit[1]))
+        
+        let periodInfo1 = "The current period is " + String(periodNumbers[periodNumber-1]) + "\n"
+        let periodInfo2 = periodStartString! + "-" + periodEndString!
         OperationQueue.main.addOperation {
-            self.currentPeriodLabel.text = periodInfo
+            self.currentPeriodLabel.text = periodInfo1 + periodInfo2
         }
         
         self.periodNumber = periodNumber
