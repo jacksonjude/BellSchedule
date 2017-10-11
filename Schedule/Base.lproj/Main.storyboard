@@ -84,15 +84,18 @@
                                 <color key="backgroundColor" red="0.91764706373214722" green="0.91764718294143677" blue="0.91764706373214722" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="57" id="MFX-3s-f24"/>
-                                    <constraint firstAttribute="width" constant="130" id="a1N-TJ-nUL"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="a1N-TJ-nUL"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <state key="normal" title="Edit Schedule"/>
                             </button>
-                            <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="83q-QD-tnu">
+                            <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="83q-QD-tnu">
                                 <rect key="frame" x="229" y="590" width="130" height="57"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.91764706373214722" green="0.91764718294143677" blue="0.91764706373214722" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="57" id="3Gf-Hm-m9c"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="iBm-dW-i4Y"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Calender"/>
                             </button>
@@ -104,10 +107,12 @@
                             <constraint firstItem="ptp-53-yZE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="DA4-b6-sXk"/>
                             <constraint firstItem="cxY-Xp-bBx" firstAttribute="top" secondItem="vnh-7m-UjO" secondAttribute="bottom" constant="8" id="NmN-td-KoD"/>
                             <constraint firstItem="4fs-2f-E1I" firstAttribute="top" secondItem="cxY-Xp-bBx" secondAttribute="bottom" constant="8" id="R6W-Zq-rWO"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="83q-QD-tnu" secondAttribute="bottom" constant="20" id="RZe-ml-9fw"/>
                             <constraint firstItem="ptp-53-yZE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="T6K-QR-K8M"/>
                             <constraint firstItem="cxY-Xp-bBx" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Xk7-sv-Ua5"/>
                             <constraint firstItem="EMJ-6p-Aoe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="ZJ3-6N-NWC"/>
                             <constraint firstItem="vnh-7m-UjO" firstAttribute="top" secondItem="ptp-53-yZE" secondAttribute="bottom" constant="23" id="aMq-Kd-Vu6"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="83q-QD-tnu" secondAttribute="trailing" constant="16" id="cWE-gI-bUu"/>
                             <constraint firstItem="ptp-53-yZE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="cdp-kH-XQZ"/>
                             <constraint firstItem="ptp-53-yZE" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="j3Q-d1-bH2"/>
                             <constraint firstItem="vnh-7m-UjO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wCq-Ju-uh5"/>
