@@ -33,22 +33,41 @@ class CloudManager: NSObject
         }
     }
     
-    func setPublicDatabaseObject(type: String, dataDictionary: Dictionary<String,Any>)
+    func setPublicDatabaseObject(type: String, dataDictionary: Dictionary<String,Any>, predicate: NSPredicate)
     {
-        let remoteRecord = CKRecord(recordType: type)
-        for object in dataDictionary
-        {
-            remoteRecord.setValue(object.value, forKey: object.key)
-        }
-        
-        publicDatabase.save(remoteRecord, completionHandler: { (record, error) -> Void in
-            if (error != nil) {
-                print("Error: \(String(describing: error))")
+        let objectQuery = CKQuery(recordType: type, predicate: predicate)
+        publicDatabase.perform(objectQuery, inZoneWith: nil) { (records, error) in
+            if error != nil
+            {
+                print(error!)
             }
             else
             {
-                print("Uploaded " + type + " to public database!")
+                var remoteRecord: CKRecord? = nil
+                if records!.count > 0
+                {
+                    remoteRecord = records!.first!
+                }
+                else
+                {
+                    remoteRecord = CKRecord(recordType: type)
+                }
+                
+                for object in dataDictionary
+                {
+                    remoteRecord!.setValue(object.value, forKey: object.key)
+                }
+                
+                self.publicDatabase.save(remoteRecord!, completionHandler: { (record, error) -> Void in
+                    if (error != nil) {
+                        print("Error: \(String(describing: error))")
+                    }
+                    else
+                    {
+                        print("Uploaded " + type + " to public database!")
+                    }
+                })
             }
-        })
+        }
     }
 }

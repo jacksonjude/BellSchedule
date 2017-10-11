@@ -278,5 +278,18 @@ class ScheduleInfoViewController: UIViewController {
             self.schoolStartEndLabel.text = status
         }
     }
+    
+    @IBAction func exitUserScheduleTableView(_ segue: UIStoryboardSegue)
+    {
+        print("Exiting and uploading...")
+        
+        let source = segue.source as! UserScheduleTableViewController
+        
+        if let userID = UserDefaults.standard.object(forKey: "userID") as? String
+        {
+            let userScheduleDictionary = ["periodNames":source.periodNames, "userID":userID] as [String : Any]
+            appDelegate.cloudManager.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
+        }
+    }
 }
 
