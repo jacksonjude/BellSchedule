@@ -17,7 +17,7 @@ extension Date {
         return Gregorian.calendar.date(from: Gregorian.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self))
     }
     func getStartOfNextWeek(nextWeek: Int) -> Date {
-        var nextWeekComponents = Gregorian.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self)
+        var nextWeekComponents = Gregorian.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear, .weekOfMonth], from: self)
         if nextWeekComponents.weekOfYear != nil
         {
             nextWeekComponents.weekOfYear! += nextWeek
@@ -589,11 +589,12 @@ class ScheduleInfoViewController: UIViewController {
     {
         let tomorrowPeriodTimes = tomorrowSchedule.object(forKey: "periodTimes") as! Array<String>
         
-        let startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekOn!)
+        var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekOn!)
         let gregorian = Calendar(identifier: .gregorian)
-        var components = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second, .weekday], from: startOfNextSchoolDayRaw)
+        let weekDaysToAdd = Double(60*60*24*(Date().getDayOfWeek() + nextDayOn! + 1))
+        startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
+        var components = gregorian.dateComponents([.month, .day], from: startOfNextSchoolDayRaw)
         components.hour = 12
-        components.weekday = nextDayOn
         let startOfNextSchoolDayFormatted = gregorian.date(from: components)!
         
         let formatter = DateFormatter()
