@@ -32,4 +32,23 @@ class CloudManager: NSObject
             }
         }
     }
+    
+    func setPublicDatabaseObject(type: String, dataDictionary: Dictionary<String,Any>)
+    {
+        let remoteRecord = CKRecord(recordType: type)
+        for object in dataDictionary
+        {
+            remoteRecord.setValue(object.value, forKey: object.key)
+        }
+        
+        publicDatabase.save(remoteRecord, completionHandler: { (record, error) -> Void in
+            if (error != nil) {
+                print("Error: \(String(describing: error))")
+            }
+            else
+            {
+                print("Uploaded " + type + " to public database!")
+            }
+        })
+    }
 }

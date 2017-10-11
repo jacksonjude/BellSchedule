@@ -17,6 +17,7 @@
 		7A796FA31F871D3300D9658D /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A796FA21F871D3300D9658D /* CloudKit.framework */; };
 		7A796FA51F87250600D9658D /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796FA41F87250600D9658D /* CloudManager.swift */; };
 		7AC0A3381F8C3EE0005E5FA3 /* ScheduleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */; };
+		7AF3A2501F8DC01B00C509AC /* UserScheduleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3A24F1F8DC01B00C509AC /* UserScheduleTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		7A796FA21F871D3300D9658D /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		7A796FA41F87250600D9658D /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
 		7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoManager.swift; sourceTree = "<group>"; };
+		7AF3A24F1F8DC01B00C509AC /* UserScheduleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScheduleTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,13 +69,13 @@
 		7A796F8A1F871D1400D9658D /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				7AF3A24D1F8DBE0500C509AC /* Assets */,
+				7AF3A24C1F8DBDEF00C509AC /* Cloud */,
+				7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */,
+				7AF3A24E1F8DBF7900C509AC /* UserSchedule */,
 				7A796FA01F871D2F00D9658D /* Schedule.entitlements */,
 				7A796F8B1F871D1400D9658D /* AppDelegate.swift */,
-				7A796F8D1F871D1400D9658D /* ScheduleInfoViewController.swift */,
-				7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */,
-				7A796FA41F87250600D9658D /* CloudManager.swift */,
 				7A796F8F1F871D1400D9658D /* Main.storyboard */,
-				7A0A74631F8C277700249FAB /* CooleyCasual.ttf */,
 				7A796F951F871D1400D9658D /* Assets.xcassets */,
 				7A796F971F871D1400D9658D /* LaunchScreen.storyboard */,
 				7A796F9A1F871D1400D9658D /* Info.plist */,
@@ -88,6 +90,39 @@
 				7A796FA21F871D3300D9658D /* CloudKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */ = {
+			isa = PBXGroup;
+			children = (
+				7A796F8D1F871D1400D9658D /* ScheduleInfoViewController.swift */,
+				7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */,
+			);
+			path = ScheduleInfo;
+			sourceTree = "<group>";
+		};
+		7AF3A24C1F8DBDEF00C509AC /* Cloud */ = {
+			isa = PBXGroup;
+			children = (
+				7A796FA41F87250600D9658D /* CloudManager.swift */,
+			);
+			path = Cloud;
+			sourceTree = "<group>";
+		};
+		7AF3A24D1F8DBE0500C509AC /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				7A0A74631F8C277700249FAB /* CooleyCasual.ttf */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		7AF3A24E1F8DBF7900C509AC /* UserSchedule */ = {
+			isa = PBXGroup;
+			children = (
+				7AF3A24F1F8DC01B00C509AC /* UserScheduleTableViewController.swift */,
+			);
+			path = UserSchedule;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +211,7 @@
 				7A796F941F871D1400D9658D /* Schedule.xcdatamodeld in Sources */,
 				7A796FA51F87250600D9658D /* CloudManager.swift in Sources */,
 				7A796F8C1F871D1400D9658D /* AppDelegate.swift in Sources */,
+				7AF3A2501F8DC01B00C509AC /* UserScheduleTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +352,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = Schedule/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -332,6 +369,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = Schedule/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -74,16 +74,6 @@ class ScheduleInfoViewController: UIViewController {
     @IBOutlet weak var editScheduleButton: UIButton!
     @IBOutlet weak var openCalenderButton: UIButton!
     
-    /*var nextWeekSchedules: Array<String>?
-    
-    var periodNames: Array<String>?
-    
-    var todaySchedule: CKRecord?
-    
-    var tomorrowDay: Date?
-    var nextWeekOn: Int?
-    var nextDayOn: Int?*/
-    
     var periodPrinted = false
     var periodNumber: Int?
     
@@ -108,6 +98,8 @@ class ScheduleInfoViewController: UIViewController {
         addCorners(view: openCalenderButton)
         
         refreshPeriodInfo(self)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshPeriodInfo(_:)), name: Notification.Name(rawValue: "refreshScheduleInfo"), object: nil)
     }
     
     func addCorners(view: UIView)
