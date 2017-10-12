@@ -14,6 +14,17 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     @IBOutlet weak var tableView: UITableView!
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addCorners(view: tableView)
+    }
+    
+    func addCorners(view: UIView)
+    {
+        view.layer.cornerRadius = 8
+        view.layer.masksToBounds = true
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

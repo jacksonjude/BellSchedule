@@ -291,5 +291,10 @@ class ScheduleInfoViewController: UIViewController {
             appDelegate.cloudManager.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
         }
     }
+    
+    @IBAction func exitCalendar(_ segue: UIStoryboardSegue)
+    {
+        print("Exiting")
+    }
 }
 
