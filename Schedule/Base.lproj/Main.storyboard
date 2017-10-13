@@ -176,9 +176,14 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <items>
                                     <navigationItem title="Edit User Schedule" id="JLc-yu-Khe">
-                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="pDP-5B-ECn">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="anc-Nm-RGT">
                                             <connections>
-                                                <segue destination="YDH-wv-Mvx" kind="unwind" unwindAction="exitUserScheduleTableView:" id="Ttb-dI-SRf"/>
+                                                <action selector="performUnwind:" destination="dVf-ul-WaQ" id="LgA-Vy-Nul"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" tag="618" systemItem="done" id="pDP-5B-ECn">
+                                            <connections>
+                                                <action selector="performUnwind:" destination="dVf-ul-WaQ" id="5hv-kc-BNQ"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -204,6 +209,7 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="wc7-lu-YE8" id="blv-Tb-ijJ"/>
+                        <segue destination="YDH-wv-Mvx" kind="unwind" identifier="exitUserSchedule" unwindAction="exitUserScheduleTableView:" id="vne-iv-aRx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eEc-RJ-2NB" userLabel="First Responder" sceneMemberID="firstResponder"/>

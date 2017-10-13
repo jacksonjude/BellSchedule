@@ -15,7 +15,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     fileprivate let reuseIdentifier = "CalendarDayCell"
     fileprivate let loadedWeeks = 5
     fileprivate let itemsPerRow: CGFloat = 7
-    fileprivate let sectionInsets = UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
+    fileprivate let sectionInsets = UIEdgeInsets(top: 10.0, left: 20.0, bottom: 10.0, right: 20.0)
     @IBOutlet weak var collectionView: UICollectionView!
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     var currentDateString: String?
@@ -61,10 +61,11 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         case 0:
             let stringDayOfWeek = String(Date().getStringDayOfWeek(day: indexPath.row))
             (cell.viewWithTag(618) as! UILabel).text = String(stringDayOfWeek[stringDayOfWeek.startIndex])
-            cell.backgroundColor = UIColor(red: CGFloat(0.997), green: CGFloat(0.997), blue: CGFloat(0.997), alpha: 1)
+            (cell.viewWithTag(618) as! UILabel).textColor = UIColor.white
+            cell.backgroundColor = UIColor(red: CGFloat(0.427), green: CGFloat(0.427), blue: CGFloat(0.427), alpha: 1)
         case 1:
             (cell.viewWithTag(618) as! UILabel).text = String(describing: getDate(indexPath: indexPath).day!)
-            cell.backgroundColor = UIColor(red: CGFloat(0.937), green: CGFloat(0.937), blue: CGFloat(0.937), alpha: 1)
+            cell.backgroundColor = UIColor.white
         default:
             break
         }
@@ -217,7 +218,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         if schoolToday
         {
             let message1 = "Code: " + scheduleCode + "\nStart: "
-            let message2 =  startTime! + "\nEnd: " + endTime!
+            let message2 =  Date().convertToStandardTime(date: startTime!) + "\nEnd: " + Date().convertToStandardTime(date: endTime!)
             message = message1 + message2
         }
         else

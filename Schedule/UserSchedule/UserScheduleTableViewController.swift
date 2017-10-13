@@ -12,6 +12,7 @@ import CloudKit
 class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var periodNames: Array<String> = []
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
+    var uploadData = false
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -125,5 +126,13 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
         self.present(userPeriodChangeAlert, animated: true) {
             
         }
+    }
+    @IBAction func performUnwind(_ sender: Any) {
+        let barButtonItem = sender as! UIBarButtonItem
+        if barButtonItem.tag == 618
+        {
+            uploadData = true
+        }
+        performSegue(withIdentifier: "exitUserSchedule", sender: self)
     }
 }

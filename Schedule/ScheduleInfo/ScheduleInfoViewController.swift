@@ -285,14 +285,21 @@ class ScheduleInfoViewController: UIViewController {
     
     @IBAction func exitUserScheduleTableView(_ segue: UIStoryboardSegue)
     {
-        print("Exiting UserSchedule and uploading...")
         
         let source = segue.source as! UserScheduleTableViewController
         
-        if let userID = UserDefaults.standard.object(forKey: "userID") as? String
+        if source.uploadData
         {
-            let userScheduleDictionary = ["periodNames":source.periodNames, "userID":userID] as [String : Any]
-            appDelegate.cloudManager.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
+            print("Exiting UserSchedule and uploading...")
+            if let userID = UserDefaults.standard.object(forKey: "userID") as? String
+            {
+                let userScheduleDictionary = ["periodNames":source.periodNames, "userID":userID] as [String : Any]
+                appDelegate.cloudManager.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
+            }
+        }
+        else
+        {
+            print("Exiting UserSchedule...")
         }
     }
     
