@@ -20,6 +20,10 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     var currentDateString: String?
     
+    override func viewDidLoad() {
+        print("Loaded Calender!")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addCorners(view: collectionView)
@@ -93,17 +97,20 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let dateComponents = getDate(indexPath: indexPath)
-        
-        currentDateString = zeroPadding(int: dateComponents.month!) + "/" + zeroPadding(int: dateComponents.day!) + "/" + zeroPadding(int: dateComponents.year!)
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yyyy"
-        let dateFromComponents = dateFormatter.date(from: currentDateString!)
-        
-        let startOfWeekDate = Date.Gregorian.calendar.date(from: Date.Gregorian.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: dateFromComponents!))
-        
-        fetchWeek(date: startOfWeekDate!)
+        if indexPath.section == 1
+        {
+            let dateComponents = getDate(indexPath: indexPath)
+            
+            currentDateString = zeroPadding(int: dateComponents.month!) + "/" + zeroPadding(int: dateComponents.day!) + "/" + zeroPadding(int: dateComponents.year!)
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM/dd/yyyy"
+            let dateFromComponents = dateFormatter.date(from: currentDateString!)
+            
+            let startOfWeekDate = Date.Gregorian.calendar.date(from: Date.Gregorian.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: dateFromComponents!))
+            
+            fetchWeek(date: startOfWeekDate!)
+        }
     }
     
     func fetchWeek(date: Date)

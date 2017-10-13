@@ -14,6 +14,11 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     @IBOutlet weak var tableView: UITableView!
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print("Loaded UserSchedule!")
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addCorners(view: tableView)
@@ -37,10 +42,6 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserPeriodCell", for: indexPath)
         cell.textLabel?.text = "Period " + String(indexPath.row + 1) + ": " + periodNames[indexPath.row]
         return cell
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {

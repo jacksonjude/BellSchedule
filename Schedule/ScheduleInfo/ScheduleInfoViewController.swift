@@ -97,7 +97,11 @@ class ScheduleInfoViewController: UIViewController {
         addCorners(view: editScheduleButton)
         addCorners(view: openCalenderButton)
         
-        refreshPeriodInfo(self)
+        if appDelegate.justLaunched
+        {
+            appDelegate.justLaunched = false
+            refreshPeriodInfo(self)
+        }
         
         NotificationCenter.default.addObserver(self, selector: #selector(refreshPeriodInfo(_:)), name: Notification.Name(rawValue: "refreshScheduleInfo"), object: nil)
     }
@@ -281,7 +285,7 @@ class ScheduleInfoViewController: UIViewController {
     
     @IBAction func exitUserScheduleTableView(_ segue: UIStoryboardSegue)
     {
-        print("Exiting and uploading...")
+        print("Exiting UserSchedule and uploading...")
         
         let source = segue.source as! UserScheduleTableViewController
         
@@ -294,7 +298,7 @@ class ScheduleInfoViewController: UIViewController {
     
     @IBAction func exitCalendar(_ segue: UIStoryboardSegue)
     {
-        print("Exiting")
+        print("Exiting Calendar...")
     }
 }
 
