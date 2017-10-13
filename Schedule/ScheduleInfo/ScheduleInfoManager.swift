@@ -310,39 +310,46 @@ class ScheduleInfoManager: NSObject {
             let periodStart = getDate(hourMinute: periodRangeArray[0], day: currentDate)
             let periodEnd = getDate(hourMinute: periodRangeArray[1], day: currentDate)
             
-            let periodRange = periodStart ... periodEnd
-            
-            let periodRangeContainsDate = periodRange.contains(Date())
-            print(" FCURPER: periodOn == " + String(periodOn) + " : " + String(periodRange.contains(Date())))
-            
-            if periodRangeContainsDate
+            if periodStart < periodEnd
             {
-                periodFound = true
-                print(" FCURPER: Found current period!")
-                viewController.printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn, todaySchedule: self.todaySchedule!, periodNames: self.periodNames)
+                let periodRange = periodStart ... periodEnd
                 
-                break
-            }
-            else if lastPeriodEnd != nil
-            {
-                let passingPeriodRange = lastPeriodEnd!...periodStart
-                if passingPeriodRange.contains(currentDate)
+                let periodRangeContainsDate = periodRange.contains(Date())
+                print(" FCURPER: periodOn == " + String(periodOn) + " : " + String(periodRange.contains(Date())))
+                
+                if periodRangeContainsDate
                 {
-                    passingPeriod = true
-                    nextPeriodStart = periodRangeArray[0]
-                    
-                    let periodNumbers = todaySchedule!.object(forKey: "periodNumbers") as! Array<Int>
-                    nextPeriodNumber = periodNumbers[periodOn-1]
+                    periodFound = true
+                    print(" FCURPER: Found current period!")
+                    viewController.printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn, todaySchedule: self.todaySchedule!, periodNames: self.periodNames)
                     
                     break
                 }
-            }
-            else if periodOn == 1
-            {
-                if currentDate < periodStart
+                else if lastPeriodEnd != nil
                 {
-                    schoolHasNotStarted = true
+                    let passingPeriodRange = lastPeriodEnd!...periodStart
+                    if passingPeriodRange.contains(currentDate)
+                    {
+                        passingPeriod = true
+                        nextPeriodStart = periodRangeArray[0]
+                        
+                        let periodNumbers = todaySchedule!.object(forKey: "periodNumbers") as! Array<Int>
+                        nextPeriodNumber = periodNumbers[periodOn-1]
+                        
+                        break
+                    }
                 }
+                else if periodOn == 1
+                {
+                    if currentDate < periodStart
+                    {
+                        schoolHasNotStarted = true
+                    }
+                }
+            }
+            else
+            {
+                print("Skipping due to invalid date range")
             }
             
             lastPeriodEnd = periodEnd
