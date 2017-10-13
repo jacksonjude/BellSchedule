@@ -79,8 +79,8 @@
 		7A796F8A1F871D1400D9658D /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				7A43745F1F8F241900E4BDB2 /* Calendar */,
 				7AF3A24D1F8DBE0500C509AC /* Assets */,
+				7A43745F1F8F241900E4BDB2 /* Calendar */,
 				7AF3A24C1F8DBDEF00C509AC /* Cloud */,
 				7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */,
 				7AF3A24E1F8DBF7900C509AC /* UserSchedule */,
@@ -369,7 +369,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -386,7 +386,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
