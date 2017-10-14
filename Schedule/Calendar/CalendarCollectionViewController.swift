@@ -16,6 +16,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     fileprivate let loadedWeeks = 5
     fileprivate let itemsPerRow: CGFloat = 7
     fileprivate let sectionInsets = UIEdgeInsets(top: 10.0, left: 20.0, bottom: 10.0, right: 20.0)
+    @IBOutlet weak var codeToggleButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     var currentDateString: String?
@@ -217,7 +218,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     }
     
     func findTimes(scheduleRecord: CKRecord)
-    {
+    {        
         let scheduleCode = scheduleRecord.object(forKey: "scheduleCode") as! String
         
         var startTime: String? = nil
@@ -308,10 +309,12 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         if self.dateToggle == 0
         {
             self.dateToggle = 1
+            self.codeToggleButton.title = "Dates"
         }
         else
         {
             self.dateToggle = 0
+            self.codeToggleButton.title = "Codes"
         }
         collectionView.reloadData()
     }
