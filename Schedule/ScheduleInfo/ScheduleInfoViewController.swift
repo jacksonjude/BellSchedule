@@ -79,6 +79,10 @@ class ScheduleInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        /*appDelegate.cloudManager!.fetchCloudData(entityType: "WeekSchedules")
+        appDelegate.cloudManager!.fetchCloudData(entityType: "Schedule")
+        appDelegate.cloudManager!.fetchCloudData(entityType: "UserSchedule")*/
+        
         scheduleManager = ScheduleInfoManager(viewController: self)
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -294,7 +298,7 @@ class ScheduleInfoViewController: UIViewController {
             if let userID = UserDefaults.standard.object(forKey: "userID") as? String
             {
                 let userScheduleDictionary = ["periodNames":source.periodNames, "userID":userID] as [String : Any]
-                appDelegate.cloudManager.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
+                appDelegate.cloudManager!.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
             }
         }
         else

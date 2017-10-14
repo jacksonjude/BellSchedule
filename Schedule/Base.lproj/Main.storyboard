@@ -273,16 +273,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <items>
                                     <navigationItem title="Calendar" id="kl2-3k-oyO">
-                                        <barButtonItem key="leftBarButtonItem" title="Codes" style="plain" id="sZb-E6-ahm">
-                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="RKO-5W-ehx">
-                                                <rect key="frame" x="16" y="7" width="45" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Codes"/>
-                                                <connections>
-                                                    <action selector="toggleDate" destination="coS-90-xE6" eventType="touchUpInside" id="rUF-LL-CEu"/>
-                                                </connections>
-                                            </button>
-                                        </barButtonItem>
+                                        <barButtonItem key="leftBarButtonItem" title="Codes" id="sZb-E6-ahm"/>
                                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="6Fn-L9-EAn">
                                             <connections>
                                                 <segue destination="Jeg-vt-2no" kind="unwind" unwindAction="exitCalendar:" id="nb0-o2-G1W"/>

@@ -61,7 +61,7 @@ class ScheduleInfoManager: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(receiveUserSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + userScheduleReturnID), object: nil)
         
         let userScheduleQueryPredicate = NSPredicate(format: "userID == %@", userID)
-        appDelegate.cloudManager.fetchPublicDatabaseObject(type: "UserSchedule", predicate: userScheduleQueryPredicate, returnID: userScheduleReturnID)
+        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "UserSchedule", predicate: userScheduleQueryPredicate, returnID: userScheduleReturnID)
     }
     
     @objc func receiveUserSchedule(notification: NSNotification)
@@ -100,7 +100,7 @@ class ScheduleInfoManager: NSObject {
         let startOfWeekFormatted = gregorian.date(from: components)!
         
         let weekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfWeekFormatted as CVarArg)
-        appDelegate.cloudManager.fetchPublicDatabaseObject(type: "WeekSchedules", predicate: weekScheduleQueryPredicate, returnID: weekScheduleReturnID)
+        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "WeekSchedules", predicate: weekScheduleQueryPredicate, returnID: weekScheduleReturnID)
     }
     
     @objc func receiveWeekScheduleRecord(notification: NSNotification)
@@ -143,7 +143,7 @@ class ScheduleInfoManager: NSObject {
             NotificationCenter.default.addObserver(self, selector: #selector(receiveTodaySchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + todayScheduleReturnID), object: nil)
             
             let todayScheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", todaySchedule)
-            appDelegate.cloudManager.fetchPublicDatabaseObject(type: "Schedule", predicate: todayScheduleQueryPredicate, returnID: todayScheduleReturnID)
+            appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "Schedule", predicate: todayScheduleQueryPredicate, returnID: todayScheduleReturnID)
         }
         else
         {
@@ -218,7 +218,7 @@ class ScheduleInfoManager: NSObject {
             NotificationCenter.default.addObserver(self, selector: #selector(receiveTomorrowSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + tomorrowScheduleReturnID + ":" + notificationID), object: nil)
             
             let tomorrowScheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", tomorrowSchedule)
-            appDelegate.cloudManager.fetchPublicDatabaseObject(type: "Schedule", predicate: tomorrowScheduleQueryPredicate, returnID: tomorrowScheduleReturnID + ":" + notificationID)
+            appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "Schedule", predicate: tomorrowScheduleQueryPredicate, returnID: tomorrowScheduleReturnID + ":" + notificationID)
         }
     }
     
@@ -265,7 +265,7 @@ class ScheduleInfoManager: NSObject {
         let startOfNextWeekFormatted = gregorian.date(from: components)!
         
         let nextWeekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfNextWeekFormatted as CVarArg)
-        appDelegate.cloudManager.fetchPublicDatabaseObject(type: "WeekSchedules", predicate: nextWeekScheduleQueryPredicate, returnID: nextWeekScheduleReturnID + ":" + notificationID)
+        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "WeekSchedules", predicate: nextWeekScheduleQueryPredicate, returnID: nextWeekScheduleReturnID + ":" + notificationID)
     }
     
     @objc func receiveNextWeekSchedule(notification: NSNotification)

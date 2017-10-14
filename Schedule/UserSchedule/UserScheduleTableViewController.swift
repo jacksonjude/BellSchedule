@@ -70,7 +70,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
         NotificationCenter.default.addObserver(self, selector: #selector(receiveUserSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + userScheduleReturnID), object: nil)
         
         let userScheduleQueryPredicate = NSPredicate(format: "userID == %@", userID)
-        appDelegate.cloudManager.fetchPublicDatabaseObject(type: "UserSchedule", predicate: userScheduleQueryPredicate, returnID: userScheduleReturnID)
+        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "UserSchedule", predicate: userScheduleQueryPredicate, returnID: userScheduleReturnID)
     }
     
     @objc func receiveUserSchedule(notification: NSNotification)

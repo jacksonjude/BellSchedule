@@ -146,7 +146,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         let startOfWeekFormatted = gregorian.date(from: components)!
         
         let weekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfWeekFormatted as CVarArg)
-        appDelegate.cloudManager.fetchPublicDatabaseObject(type: "WeekSchedules", predicate: weekScheduleQueryPredicate, returnID: weekScheduleReturnID)
+        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "WeekSchedules", predicate: weekScheduleQueryPredicate, returnID: weekScheduleReturnID)
     }
     
     @objc func receiveWeek(notification: NSNotification)
@@ -199,7 +199,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(receiveSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + scheduleReturnID), object: nil)
         
         let scheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", scheduleCode)
-        appDelegate.cloudManager.fetchPublicDatabaseObject(type: "Schedule", predicate: scheduleQueryPredicate, returnID: scheduleReturnID)
+        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "Schedule", predicate: scheduleQueryPredicate, returnID: scheduleReturnID)
     }
     
     @objc func receiveSchedule(notification: NSNotification)

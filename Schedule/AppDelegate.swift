@@ -13,11 +13,19 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var cloudManager = CloudManager()
+    var cloudManager: CloudManager?
     var justLaunched = true
+    var firstLaunch = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        cloudManager = CloudManager()
         // Override point for customization after application launch.
+        if UserDefaults.standard.object(forKey: "firstLaunch") != nil
+        {
+            firstLaunch = true
+            UserDefaults.standard.set(618, forKey: "firstLaunch")
+        }
+        
         return true
     }
 
