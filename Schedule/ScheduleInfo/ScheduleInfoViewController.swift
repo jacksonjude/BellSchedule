@@ -257,9 +257,9 @@ class ScheduleInfoViewController: UIViewController {
         
         var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
         let gregorian = Calendar(identifier: .gregorian)
-        let weekDaysToAdd = Double(60*60*24*(Date().getDayOfWeek() + nextDayCount + 1))
+        let weekDaysToAdd = Double(60*60*24*(nextDayCount + 1))
         startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
-        var components = gregorian.dateComponents([.month, .day], from: startOfNextSchoolDayRaw)
+        var components = gregorian.dateComponents([.month, .day, .weekday], from: startOfNextSchoolDayRaw)
         components.hour = 12
         let startOfNextSchoolDayFormatted = gregorian.date(from: components)!
         
@@ -267,7 +267,7 @@ class ScheduleInfoViewController: UIViewController {
         formatter.dateFormat = "MM/dd"
         let startOfNextSchoolDayString = formatter.string(from: startOfNextSchoolDayFormatted)
         let tomorrowSchoolStartTime = tomorrowPeriodTimes[0].split(separator: "-")[0]
-        let weekDayOfSchoolStart = Date().getStringDayOfWeek(day: Date().getDayOfWeek() + nextDayCount + 1)
+        let weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1)
         
         OperationQueue.main.addOperation {
             let schoolStart1 = "School starts " + weekDayOfSchoolStart + ",\n" + startOfNextSchoolDayString

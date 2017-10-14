@@ -25,6 +25,8 @@ class ScheduleInfoManager: NSObject {
     var nextWeekOn: Int?
     var nextDayOn: Int?
     
+    var loadedNextWeekDictionary: Dictionary<String,Bool> = [:]
+    
     init(viewController: ScheduleInfoViewController) {
         self.viewController = viewController
         super.init()
@@ -114,7 +116,9 @@ class ScheduleInfoManager: NSObject {
             queryTodaySchedule(weekSchedules: schedules)
             nextWeekOn = 0
             nextDayOn = 0
-            queryTomorrowSchedule(weekSchedules: schedules, isNextWeek: false, addDays: 0)
+            let tomorrowNotificationID = UUID().uuidString
+            self.loadedNextWeekDictionary[tomorrowNotificationID] = false
+            queryTomorrowSchedule(weekSchedules: schedules, addDays: 0, notificationID: tomorrowNotificationID)
         }
         else
         {
@@ -181,12 +185,17 @@ class ScheduleInfoManager: NSObject {
     
     //MARK: Tomorrow Schedule
     
-    func queryTomorrowSchedule(weekSchedules: Array<String>, isNextWeek: Bool, addDays: Int)
+    func queryTomorrowSchedule(weekSchedules: Array<String>, addDays: Int, notificationID: String)
     {
         var tomorrowSchedule = ""
-        var loadingNextWeek = false
+        var currentlyLoadingNextWeek = false
+        var tomorrowDate = addDays
         
-        let tomorrowDate = Date().getDayOfWeek()+addDays
+        if !loadedNextWeekDictionary[notificationID]!
+        {
+            tomorrowDate = Date().getDayOfWeek()+addDays
+        }
+        
         if tomorrowDate < weekSchedules.count && tomorrowDate >= 0
         {
             tomorrowSchedule = weekSchedules[tomorrowDate]
@@ -197,19 +206,19 @@ class ScheduleInfoManager: NSObject {
             print(" FTOMWS: tomorrowDate out of schedule range, loading next week")
             nextWeekOn! += 1
             nextDayOn = 0
-            queryNextWeek()
-            loadingNextWeek = true
+            queryNextWeek(notificationID: notificationID)
+            currentlyLoadingNextWeek = true
         }
         
-        if !loadingNextWeek
+        if !currentlyLoadingNextWeek
         {
             print(" FTOMWS: Fetching tomorrowSchedule")
             
             let tomorrowScheduleReturnID = UUID().uuidString
-            NotificationCenter.default.addObserver(self, selector: #selector(receiveTomorrowSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + tomorrowScheduleReturnID), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(receiveTomorrowSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + tomorrowScheduleReturnID + ":" + notificationID), object: nil)
             
             let tomorrowScheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", tomorrowSchedule)
-            appDelegate.cloudManager.fetchPublicDatabaseObject(type: "Schedule", predicate: tomorrowScheduleQueryPredicate, returnID: tomorrowScheduleReturnID)
+            appDelegate.cloudManager.fetchPublicDatabaseObject(type: "Schedule", predicate: tomorrowScheduleQueryPredicate, returnID: tomorrowScheduleReturnID + ":" + notificationID)
         }
     }
     
@@ -223,6 +232,7 @@ class ScheduleInfoManager: NSObject {
             if tomorrowScheduleCode != "H"
             {
                 print(" FTOMWS: Tomorrow schedule found!")
+                self.loadedNextWeekDictionary.remove(at: self.loadedNextWeekDictionary.index(forKey: String(notification.name.rawValue.split(separator: ":")[2]))!)
                 viewController.printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule, nextWeekCount: nextWeekOn!, nextDayCount: nextDayOn!)
             }
             else
@@ -230,7 +240,7 @@ class ScheduleInfoManager: NSObject {
                 print(" FTOMWS: No school tomorrow, loading next day")
                 nextDayOn!+=1
                 
-                queryTomorrowSchedule(weekSchedules: self.nextWeekSchedules!, isNextWeek: false, addDays: nextDayOn!)
+                queryTomorrowSchedule(weekSchedules: self.nextWeekSchedules!, addDays: nextDayOn!, notificationID: String(notification.name.rawValue.split(separator: ":")[2]))
             }
         }
         else
@@ -241,12 +251,12 @@ class ScheduleInfoManager: NSObject {
     
     //MARK: Next Week Schedule
     
-    func queryNextWeek()
+    func queryNextWeek(notificationID: String)
     {
         print(" FNXTWK: Fetching nextWeekScheduleRecord")
         
         let nextWeekScheduleReturnID = UUID().uuidString
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveNextWeekSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + nextWeekScheduleReturnID), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveNextWeekSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + nextWeekScheduleReturnID + ":" + notificationID), object: nil)
         
         let startOfNextWeekRaw = Date().getStartOfNextWeek(nextWeek: nextWeekOn!)
         let gregorian = Calendar(identifier: .gregorian)
@@ -255,7 +265,7 @@ class ScheduleInfoManager: NSObject {
         let startOfNextWeekFormatted = gregorian.date(from: components)!
         
         let nextWeekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfNextWeekFormatted as CVarArg)
-        appDelegate.cloudManager.fetchPublicDatabaseObject(type: "WeekSchedules", predicate: nextWeekScheduleQueryPredicate, returnID: nextWeekScheduleReturnID)
+        appDelegate.cloudManager.fetchPublicDatabaseObject(type: "WeekSchedules", predicate: nextWeekScheduleQueryPredicate, returnID: nextWeekScheduleReturnID + ":" + notificationID)
     }
     
     @objc func receiveNextWeekSchedule(notification: NSNotification)
@@ -265,7 +275,8 @@ class ScheduleInfoManager: NSObject {
             print(" FNXTWK: Received nextWeekScheduleRecord")
             let schedules = nextWeekScheduleRecord.object(forKey: "schedules") as! Array<String>
             self.nextWeekSchedules = schedules
-            queryTomorrowSchedule(weekSchedules: schedules, isNextWeek: true, addDays: 0)
+            loadedNextWeekDictionary[String(notification.name.rawValue.split(separator: ":")[2])] = true
+            queryTomorrowSchedule(weekSchedules: schedules, addDays: 0, notificationID: String(notification.name.rawValue.split(separator: ":")[2]))
         }
         else
         {

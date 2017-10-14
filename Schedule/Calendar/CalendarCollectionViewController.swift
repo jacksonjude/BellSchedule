@@ -19,9 +19,12 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     @IBOutlet weak var collectionView: UICollectionView!
     let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     var currentDateString: String?
+    var weekScheduleCodes: Array<String> = []
+    var weekOn = 0
     
     override func viewDidLoad() {
         print("Loaded Calender!")
+        fetchAllWeeks(weeksToAdd: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,15 +113,15 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
             
             let startOfWeekDate = Date.Gregorian.calendar.date(from: Date.Gregorian.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: dateFromComponents!))
             
-            fetchWeek(date: startOfWeekDate!)
+            fetchWeek(date: startOfWeekDate!, selector: #selector(receiveWeek(notification:)))
         }
     }
     
-    func fetchWeek(date: Date)
+    func fetchWeek(date: Date, selector: Selector)
     {
         print(" FWSCH: Fetching weekScheduleRecord")
         let weekScheduleReturnID = UUID().uuidString
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveWeek(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + weekScheduleReturnID), object: nil)
+        NotificationCenter.default.addObserver(self, selector: selector, name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + weekScheduleReturnID), object: nil)
         
         let gregorian = Calendar(identifier: .gregorian)
         var components = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
@@ -239,6 +242,41 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         
         self.present(schoolTimeAlert, animated: true) {
             
+        }
+    }
+    
+    func fetchAllWeeks(weeksToAdd: Int)
+    {
+        if weeksToAdd < loadedWeeks
+        {
+            var startOfWeekToFetch = Date().startOfWeek!
+            startOfWeekToFetch.addTimeInterval(TimeInterval(60*60*24*7*weeksToAdd))
+            fetchWeek(date: startOfWeekToFetch, selector: #selector(receiveWeekInFetchAllWeeks(notification:)))
+            weekOn+=1
+        }
+        else
+        {
+            print(weekScheduleCodes)
+        }
+    }
+    
+    @objc func receiveWeekInFetchAllWeeks(notification: NSNotification)
+    {
+        if let weekScheduleRecord = notification.object as? CKRecord
+        {
+            print(" FWSCH: Received weekScheduleRecord")
+            
+            let schedules = weekScheduleRecord.object(forKey: "schedules") as! Array<String>
+            for schedule in schedules
+            {
+                weekScheduleCodes.append(schedule)
+            }
+            
+            fetchAllWeeks(weeksToAdd: weekOn)
+        }
+        else
+        {
+            print(" FWSCH: Did not receive weekScheduleRecord")
         }
     }
 }
