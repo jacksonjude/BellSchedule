@@ -21,6 +21,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     var currentDateString: String?
     var weekScheduleCodes: Array<String> = []
     var weekOn = 0
+    var dateToggle = 0
     
     override func viewDidLoad() {
         print("Loaded Calender!")
@@ -67,8 +68,24 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
             (cell.viewWithTag(618) as! UILabel).textColor = UIColor.white
             cell.backgroundColor = UIColor(red: CGFloat(0.427), green: CGFloat(0.427), blue: CGFloat(0.427), alpha: 1)
         case 1:
-            (cell.viewWithTag(618) as! UILabel).text = String(describing: getDate(indexPath: indexPath).day!)
+            if dateToggle == 1 && self.weekScheduleCodes.count == loadedWeeks*5
+            {
+                if indexPath.row%7 != 6 && indexPath.row%7 != 0
+                {
+                    let weekendAdding = (((indexPath.row)/7)*2)+1
+                    (cell.viewWithTag(618) as! UILabel).text = self.weekScheduleCodes[indexPath.row-weekendAdding]
+                }
+                else
+                {
+                    (cell.viewWithTag(618) as! UILabel).text = "W"
+                }
+            }
+            else
+            {
+                (cell.viewWithTag(618) as! UILabel).text = String(describing: getDate(indexPath: indexPath).day!)
+            }
             cell.backgroundColor = UIColor.white
+            (cell.viewWithTag(618) as! UILabel).textColor = UIColor.black
         default:
             break
         }
@@ -256,7 +273,13 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         }
         else
         {
-            print(weekScheduleCodes)
+            print(" CAL: Loaded all codes for toggle: " + String(describing: weekScheduleCodes))
+            if self.dateToggle == 1
+            {
+                OperationQueue.main.addOperation {
+                    self.collectionView.reloadData()
+                }
+            }
         }
     }
     
@@ -278,5 +301,18 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         {
             print(" FWSCH: Did not receive weekScheduleRecord")
         }
+    }
+    
+    @IBAction func toggleDate()
+    {
+        if self.dateToggle == 0
+        {
+            self.dateToggle = 1
+        }
+        else
+        {
+            self.dateToggle = 0
+        }
+        collectionView.reloadData()
     }
 }
