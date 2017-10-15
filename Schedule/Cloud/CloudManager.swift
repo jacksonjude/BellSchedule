@@ -156,20 +156,24 @@ class CloudManager: NSObject
                 {
                     for record in results!
                     {
-                        if let localObject = self.fetchLocalObjects(type: entityType, predicate: NSPredicate(format: "uuid == %@", record.recordID.recordName))?.first as? NSManagedObject
-                        {
-                            self.updateFromRemote(record: record, object: localObject, fields: self.getFieldsFromEntity(entityType: entityType))
-                        }
-                        else
-                        {
-                            let newObject = NSEntityDescription.insertNewObject(forEntityName: entityType, into: self.appDelegate.persistentContainer.viewContext)
-                            self.updateFromRemote(record: record, object: newObject, fields: self.getFieldsFromEntity(entityType: entityType))
+                        OperationQueue.main.addOperation {
+                            if let localObject = self.fetchLocalObjects(type: entityType, predicate: NSPredicate(format: "uuid == %@", record.recordID.recordName))?.first as? NSManagedObject
+                            {
+                                self.updateFromRemote(record: record, object: localObject, fields: self.getFieldsFromEntity(entityType: entityType))
+                            }
+                            else
+                            {
+                                let newObject = NSEntityDescription.insertNewObject(forEntityName: entityType, into: self.appDelegate.persistentContainer.viewContext)
+                                self.updateFromRemote(record: record, object: newObject, fields: self.getFieldsFromEntity(entityType: entityType))
+                            }
                         }
                     }
                     
-                    self.savingCloudChanges = true
-                    
-                    self.appDelegate.saveContext()
+                    OperationQueue.main.addOperation {
+                        self.savingCloudChanges = true
+                        
+                        self.appDelegate.saveContext()
+                    }
                 }
             }
         }

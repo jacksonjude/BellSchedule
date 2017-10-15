@@ -26,7 +26,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     var dateToggle = 0
     
     override func viewDidLoad() {
-        print("Loaded Calender!")
+        print("Loading Calender...")
         fetchAllWeeks(weeksToAdd: 0)
     }
     
