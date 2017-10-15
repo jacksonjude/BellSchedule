@@ -101,7 +101,7 @@ class ScheduleInfoViewController: UIViewController {
         if appDelegate.justLaunched
         {
             appDelegate.justLaunched = false
-            refreshPeriodInfo(self)
+            //refreshPeriodInfo(self)
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(refreshPeriodInfo(_:)), name: Notification.Name(rawValue: "refreshScheduleInfo"), object: nil)

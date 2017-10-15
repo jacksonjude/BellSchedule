@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13532" systemVersion="" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Schedule" representedClassName="Schedule" syncable="YES" codeGenerationType="class">
-        <attribute name="periodNumbers" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="periodTimes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="periodNumbers" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="periodTimes" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="scheduleCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="UserSchedule" representedClassName="UserSchedule" syncable="YES" codeGenerationType="class">
-        <attribute name="periodNames" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="periodNames" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="WeekSchedules" representedClassName="WeekSchedules" syncable="YES" codeGenerationType="class">
-        <attribute name="schedules" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="schedules" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="weekStartDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <elements>
-        <element name="WeekSchedules" positionX="-63" positionY="-18" width="128" height="90"/>
         <element name="Schedule" positionX="-54" positionY="-9" width="128" height="105"/>
         <element name="UserSchedule" positionX="-36" positionY="9" width="128" height="90"/>
+        <element name="WeekSchedules" positionX="-63" positionY="-18" width="128" height="90"/>
     </elements>
 </model>

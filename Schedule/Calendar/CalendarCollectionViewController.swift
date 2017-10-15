@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CloudKit
+import CoreData
 
 class CalendarCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
@@ -131,15 +132,13 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
             
             let startOfWeekDate = Date.Gregorian.calendar.date(from: Date.Gregorian.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: dateFromComponents!))
             
-            fetchWeek(date: startOfWeekDate!, selector: #selector(receiveWeek(notification:)))
+            fetchWeek(date: startOfWeekDate!, fetchingAllWeeks: false)
         }
     }
     
-    func fetchWeek(date: Date, selector: Selector)
+    func fetchWeek(date: Date, fetchingAllWeeks: Bool)
     {
         print(" FWSCH: Fetching weekScheduleRecord")
-        let weekScheduleReturnID = UUID().uuidString
-        NotificationCenter.default.addObserver(self, selector: selector, name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + weekScheduleReturnID), object: nil)
         
         let gregorian = Calendar(identifier: .gregorian)
         var components = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
@@ -147,31 +146,42 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         let startOfWeekFormatted = gregorian.date(from: components)!
         
         let weekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfWeekFormatted as CVarArg)
-        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "WeekSchedules", predicate: weekScheduleQueryPredicate, returnID: weekScheduleReturnID)
-    }
-    
-    @objc func receiveWeek(notification: NSNotification)
-    {
-        if let weekScheduleRecord = notification.object as? CKRecord
+        if let weekScheduleRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "WeekSchedules", predicate: weekScheduleQueryPredicate)?.first as? NSManagedObject
         {
             print(" FWSCH: Received weekScheduleRecord")
             
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MM/dd/yyyy"
-            let currentDate = dateFormatter.date(from: currentDateString!)
-            
-            let gregorian = Calendar(identifier: .gregorian)
-            let weekdayComponents = gregorian.dateComponents([.weekday], from: currentDate!)
-            
-            let schedules = weekScheduleRecord.object(forKey: "schedules") as! Array<String>
-            let dayOfWeek = weekdayComponents.weekday!-2
-            if 0 <= dayOfWeek && dayOfWeek < schedules.count
+            if fetchingAllWeeks
             {
-                fetchSchedule(scheduleCode: schedules[dayOfWeek])
+                if let schedules = appDelegate.decodeArrayFromJSON(object: weekScheduleRecord, field: "schedules") as? Array<String>
+                {
+                    for schedule in schedules
+                    {
+                        weekScheduleCodes.append(schedule)
+                    }
+                }
+                
+                fetchAllWeeks(weeksToAdd: weekOn)
             }
             else
             {
-                alertUser(message: "Code: N/A\nNo school!")
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MM/dd/yyyy"
+                let currentDate = dateFormatter.date(from: currentDateString!)
+                
+                let gregorian = Calendar(identifier: .gregorian)
+                let weekdayComponents = gregorian.dateComponents([.weekday], from: currentDate!)
+                if let schedules = appDelegate.decodeArrayFromJSON(object: weekScheduleRecord, field: "schedules") as? Array<String>
+                {
+                    let dayOfWeek = weekdayComponents.weekday!-2
+                    if 0 <= dayOfWeek && dayOfWeek < schedules.count
+                    {
+                        fetchSchedule(scheduleCode: schedules[dayOfWeek])
+                    }
+                    else
+                    {
+                        alertUser(message: "Code: N/A\nNo school!")
+                    }
+                }
             }
         }
         else
@@ -196,16 +206,8 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     {
         print(" FDSCH: Fetching schedule")
         
-        let scheduleReturnID = UUID().uuidString
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + scheduleReturnID), object: nil)
-        
         let scheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", scheduleCode)
-        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "Schedule", predicate: scheduleQueryPredicate, returnID: scheduleReturnID)
-    }
-    
-    @objc func receiveSchedule(notification: NSNotification)
-    {
-        if let scheduleRecord = notification.object as? CKRecord
+        if let scheduleRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "Schedule", predicate: scheduleQueryPredicate)?.first as? NSManagedObject
         {
             print(" FDSCH: Received scheduleRecord")
             
@@ -217,18 +219,20 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         }
     }
     
-    func findTimes(scheduleRecord: CKRecord)
+    func findTimes(scheduleRecord: NSManagedObject)
     {        
-        let scheduleCode = scheduleRecord.object(forKey: "scheduleCode") as! String
+        let scheduleCode = scheduleRecord.value(forKey: "scheduleCode") as! String
         
         var startTime: String? = nil
         var endTime: String? = nil
         var schoolToday = true
         if scheduleCode != "H"
         {
-            let schedules = scheduleRecord.object(forKey: "periodTimes") as! Array<String>
-            startTime = String(schedules[0].split(separator: "-")[0])
-            endTime = String(schedules[schedules.count-1].split(separator: "-")[1])
+            if let schedules = appDelegate.decodeArrayFromJSON(object: scheduleRecord, field: "periodTimes") as? Array<String>
+            {
+                startTime = String(schedules[0].split(separator: "-")[0])
+                endTime = String(schedules[schedules.count-1].split(separator: "-")[1])
+            }
         }
         else
         {
@@ -239,7 +243,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         if schoolToday
         {
             let message1 = "Code: " + scheduleCode + "\nStart: "
-            let message2 =  Date().convertToStandardTime(date: startTime!) + "\nEnd: " + Date().convertToStandardTime(date: endTime!)
+            let message2 =  Date().convertToStandardTime(date: (startTime ?? "")) + "\nEnd: " + Date().convertToStandardTime(date: (endTime ?? ""))
             message = message1 + message2
         }
         else
@@ -269,8 +273,8 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         {
             var startOfWeekToFetch = Date().startOfWeek!
             startOfWeekToFetch.addTimeInterval(TimeInterval(60*60*24*7*weeksToAdd))
-            fetchWeek(date: startOfWeekToFetch, selector: #selector(receiveWeekInFetchAllWeeks(notification:)))
             weekOn+=1
+            fetchWeek(date: startOfWeekToFetch, fetchingAllWeeks: true)
         }
         else
         {
@@ -281,26 +285,6 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
                     self.collectionView.reloadData()
                 }
             }
-        }
-    }
-    
-    @objc func receiveWeekInFetchAllWeeks(notification: NSNotification)
-    {
-        if let weekScheduleRecord = notification.object as? CKRecord
-        {
-            print(" FWSCH: Received weekScheduleRecord")
-            
-            let schedules = weekScheduleRecord.object(forKey: "schedules") as! Array<String>
-            for schedule in schedules
-            {
-                weekScheduleCodes.append(schedule)
-            }
-            
-            fetchAllWeeks(weeksToAdd: weekOn)
-        }
-        else
-        {
-            print(" FWSCH: Did not receive weekScheduleRecord")
         }
     }
     

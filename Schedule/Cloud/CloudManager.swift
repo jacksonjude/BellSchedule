@@ -83,7 +83,7 @@ class CloudManager: NSObject
         
         fetchRecordChangesOperation.recordChangedBlock = {(record) in
             let updateLocalObjectPredicate = NSPredicate(format: "uuid == %@", record.recordID.recordName)
-            if let recordToUpdate = self.fetchLocalObjects(predicate: updateLocalObjectPredicate, entityType: entityType)?.first
+            if let recordToUpdate = self.fetchLocalObjects(type: entityType, predicate: updateLocalObjectPredicate)?.first
             {
                 self.updateFromRemote(record: record, object: recordToUpdate as! NSManagedObject, fields: self.getFieldsFromEntity(entityType: entityType))
                 
@@ -104,7 +104,7 @@ class CloudManager: NSObject
         
         fetchRecordChangesOperation.recordWithIDWasDeletedBlock = {(recordID, string) in
             let deleteLocalObjectPredicate = NSPredicate(format: "uuid == %@", recordID.recordName)
-            let recordToDelete = self.fetchLocalObjects(predicate: deleteLocalObjectPredicate, entityType: entityType)?.first
+            let recordToDelete = self.fetchLocalObjects(type: entityType, predicate: deleteLocalObjectPredicate)?.first
             if recordToDelete != nil
             {
                 print(" ↓ - Deleting)")
@@ -155,7 +155,7 @@ class CloudManager: NSObject
                 {
                     for record in results!
                     {
-                        if let localObject = self.fetchLocalObjects(predicate: NSPredicate(format: "uuid == %@", record.recordID.recordName), entityType: entityType)?.first as? NSManagedObject
+                        if let localObject = self.fetchLocalObjects(type: entityType, predicate: NSPredicate(format: "uuid == %@", record.recordID.recordName))?.first as? NSManagedObject
                         {
                             self.updateFromRemote(record: record, object: localObject, fields: self.getFieldsFromEntity(entityType: entityType))
                         }
@@ -174,9 +174,9 @@ class CloudManager: NSObject
         NotificationCenter.default.post(name: Notification.Name(rawValue: "finishedFetchingAllData"), object: nil)
     }
     
-    func fetchLocalObjects(predicate: NSPredicate, entityType: String) -> [AnyObject]?
+    func fetchLocalObjects(type: String, predicate: NSPredicate) -> [AnyObject]?
     {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityType)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: type)
         fetchRequest.predicate = predicate
         
         let fetchResults: [AnyObject]?
@@ -221,8 +221,7 @@ class CloudManager: NSObject
                     {
                         do
                         {
-                            let jsonData = try JSONSerialization.data(withJSONObject: recordArray, options: .prettyPrinted) as CKRecordValue
-                            coreDataObject = String(data: jsonData as! Data, encoding: String.Encoding.utf8)! as CKRecordValue
+                            coreDataObject = try JSONSerialization.data(withJSONObject: recordArray, options: .prettyPrinted) as CKRecordValue
                         }
                         catch
                         {

@@ -98,6 +98,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
+    
+    
+    func decodeArrayFromJSON(object: NSManagedObject, field: String) -> Array<Any>?
+    {
+        let JSONdata = object.value(forKey: field) as! Data
+        do
+        {
+            let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as! Array<Any>
+            return array
+        }
+        catch
+        {
+            print(error)
+            return nil
+        }
+    }
 }
 
