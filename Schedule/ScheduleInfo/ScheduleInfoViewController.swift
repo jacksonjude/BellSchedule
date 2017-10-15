@@ -79,9 +79,6 @@ class ScheduleInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*appDelegate.cloudManager!.fetchCloudData(entityType: "WeekSchedules")
-        appDelegate.cloudManager!.fetchCloudData(entityType: "Schedule")
-        appDelegate.cloudManager!.fetchCloudData(entityType: "UserSchedule")*/
         
         scheduleManager = ScheduleInfoManager(viewController: self)
         // Do any additional setup after loading the view, typically from a nib.

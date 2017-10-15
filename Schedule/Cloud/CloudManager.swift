@@ -82,7 +82,7 @@ class CloudManager: NSObject
         fetchRecordChangesOperation.fetchAllChanges = true
         
         fetchRecordChangesOperation.recordChangedBlock = {(record) in
-            let updateLocalObjectPredicate = NSPredicate(format: "uuid == %@", record.object(forKey: "uuid")! as! CVarArg)
+            let updateLocalObjectPredicate = NSPredicate(format: "uuid == %@", record.recordID.recordName)
             if let recordToUpdate = self.fetchLocalObjects(predicate: updateLocalObjectPredicate, entityType: entityType)?.first
             {
                 self.updateFromRemote(record: record, object: recordToUpdate as! NSManagedObject, fields: self.getFieldsFromEntity(entityType: entityType))
@@ -102,8 +102,8 @@ class CloudManager: NSObject
             }
         }
         
-        /*fetchRecordChangesOperation.recordWithIDWasDeletedBlock = {(recordID, string) in
-            let deleteLocalObjectPredicate = NSPredicate(format: "uuid == %@", )
+        fetchRecordChangesOperation.recordWithIDWasDeletedBlock = {(recordID, string) in
+            let deleteLocalObjectPredicate = NSPredicate(format: "uuid == %@", recordID.recordName)
             let recordToDelete = self.fetchLocalObjects(predicate: deleteLocalObjectPredicate, entityType: entityType)?.first
             if recordToDelete != nil
             {
@@ -114,7 +114,7 @@ class CloudManager: NSObject
                     (UIApplication.shared.delegate as! AppDelegate).saveContext()
                 }
             }
-        }*/
+        }
         
         fetchRecordChangesOperation.recordZoneFetchCompletionBlock = {(recordZoneID, serverChangeToken, data, bool, error) in
             if error != nil
@@ -139,9 +139,44 @@ class CloudManager: NSObject
         publicDatabase.add(fetchRecordChangesOperation)
     }
     
+    func fetchAllCloudData(entityType: String)
+    {
+        print("↓ - Fetching Changes from Cloud")
+        
+        let cloudEntityQuery = CKQuery(recordType: entityType, predicate: NSPredicate(format: "TRUEPREDICATE"))
+        publicDatabase.perform(cloudEntityQuery, inZoneWith: CKRecordZone.default().zoneID) { (results, error) in
+            if error != nil
+            {
+                print(error!)
+            }
+            else
+            {
+                if results != nil && results!.count > 0
+                {
+                    for record in results!
+                    {
+                        if let localObject = self.fetchLocalObjects(predicate: NSPredicate(format: "uuid == %@", record.recordID.recordName), entityType: entityType)?.first as? NSManagedObject
+                        {
+                            self.updateFromRemote(record: record, object: localObject, fields: self.getFieldsFromEntity(entityType: entityType))
+                        }
+                        else
+                        {
+                            let newObject = NSEntityDescription.insertNewObject(forEntityName: entityType, into: self.appDelegate.persistentContainer.viewContext)
+                            self.updateFromRemote(record: record, object: newObject, fields: self.getFieldsFromEntity(entityType: entityType))
+                        }
+                    }
+                }
+            }
+        }
+        
+        appDelegate.saveContext()
+        
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "finishedFetchingAllData"), object: nil)
+    }
+    
     func fetchLocalObjects(predicate: NSPredicate, entityType: String) -> [AnyObject]?
     {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "WeekSchedules")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityType)
         fetchRequest.predicate = predicate
         
         let fetchResults: [AnyObject]?
@@ -177,20 +212,30 @@ class CloudManager: NSObject
     {
         for field in fields
         {
-            let recordObject = record.object(forKey: field)!
-            var coreDataObject = recordObject
-            if let recordArray = recordObject as? Array<String>
+            if field != "uuid"
             {
-                do
+                if let recordObject = record.object(forKey: field)
                 {
-                    try coreDataObject = JSONEncoder().encode(recordArray) as CKRecordValue
-                }
-                catch
-                {
-                    print(error)
+                    var coreDataObject = recordObject
+                    if let recordArray = recordObject as? NSArray
+                    {
+                        do
+                        {
+                            let jsonData = try JSONSerialization.data(withJSONObject: recordArray, options: .prettyPrinted) as CKRecordValue
+                            coreDataObject = String(data: jsonData as! Data, encoding: String.Encoding.utf8)! as CKRecordValue
+                        }
+                        catch
+                        {
+                            print(error)
+                        }
+                    }
+                    object.setValue(coreDataObject, forKey: field)
                 }
             }
-            object.setValue(coreDataObject, forKey: field)
+            else
+            {
+                object.setValue(record.recordID.recordName, forKey: "uuid")
+            }
         }
     }
     

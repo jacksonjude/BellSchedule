@@ -27,9 +27,42 @@ class ScheduleInfoManager: NSObject {
     
     var loadedNextWeekDictionary: Dictionary<String,Bool> = [:]
     
+    var loadedData = 0
+    {
+        didSet
+        {
+            if loadedData == 3
+            {
+                loadedAllData = true
+            }
+            else
+            {
+                loadedAllData = false 
+            }
+        }
+    }
+    
+    var loadedAllData = false
+    
     init(viewController: ScheduleInfoViewController) {
         self.viewController = viewController
+        
         super.init()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(finishedFetchingData), name: Notification.Name(rawValue: "finishedFetchingAllData"), object: nil)
+        
+        appDelegate.cloudManager!.fetchAllCloudData(entityType: "WeekSchedules")
+        appDelegate.cloudManager!.fetchAllCloudData(entityType: "Schedule")
+        appDelegate.cloudManager!.fetchAllCloudData(entityType: "UserSchedule")
+    }
+    
+    @objc func finishedFetchingData()
+    {
+        loadedData += 1
+        if loadedAllData
+        {
+            refreshScheduleInfo()
+        }
     }
     
     func refreshScheduleInfo()
