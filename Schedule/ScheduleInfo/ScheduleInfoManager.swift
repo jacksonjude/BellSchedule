@@ -52,7 +52,7 @@ class ScheduleInfoManager: NSObject {
         
         appDelegate.cloudManager!.fetchAllCloudData(entityType: "WeekSchedules")
         appDelegate.cloudManager!.fetchAllCloudData(entityType: "Schedule")
-        appDelegate.cloudManager!.fetchAllCloudData(entityType: "UserSchedule")
+        //appDelegate.cloudManager!.fetchAllCloudData(entityType: "UserSchedule")
     }
     
     @objc func finishedFetchingData()
@@ -88,12 +88,39 @@ class ScheduleInfoManager: NSObject {
     
     func queryUserSchedule(userID: String)
     {
+        let queryUserScheduleID = UUID().uuidString
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveUserSchedule(notification:)), name: Notification.Name("fetchedPublicDatabaseObject:" + queryUserScheduleID), object: nil)
+        
         print(" USRSCH: Fetching periodNamesRecord")
         let userScheduleQueryPredicate = NSPredicate(format: "userID == %@", userID)
-        if let periodNamesRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "UserSchedule", predicate: userScheduleQueryPredicate)?.first as? NSManagedObject
+        
+        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "UserSchedule", predicate: userScheduleQueryPredicate, returnID: queryUserScheduleID)
+        
+        /*if let periodNamesRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "UserSchedule", predicate: userScheduleQueryPredicate)?.first as? NSManagedObject
         {
             print(" USRSCH: Received periodNamesRecord")
             periodNames = periodNamesRecord.value(forKey: "periodNames") as? [String]
+            
+            if periodPrinted
+            {
+                if periodNames!.count > periodNumber!-1
+                {
+                    viewController.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
+                }
+            }
+        }
+        else
+        {
+            print(" USRSCH: Did not receive periodNamesRecord")
+        }*/
+    }
+    
+    @objc func receiveUserSchedule(notification: NSNotification)
+    {
+        if let periodNamesRecord = notification.object as? CKRecord
+        {
+            print(" USRSCH: Received periodNamesRecord")
+            periodNames = periodNamesRecord.object(forKey: "periodNames") as? [String]
             
             if periodPrinted
             {

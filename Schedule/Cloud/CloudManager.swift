@@ -171,7 +171,6 @@ class CloudManager: NSObject
         }
         
         savingCloudChanges = true
-        NotificationCenter.default.addObserver(self, selector: #selector(contextSaved), name: NSNotification.Name(rawValue: "NSManagedObjectContextDidSave"), object: nil)
         
         appDelegate.saveContext()
     }
@@ -209,6 +208,8 @@ class CloudManager: NSObject
     override init()
     {
         super.init()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(contextSaved), name: NSNotification.Name(rawValue: "NSManagedObjectContextDidSave"), object: nil)
         
         if !((UIApplication.shared.delegate as! AppDelegate).firstLaunch)
         {
