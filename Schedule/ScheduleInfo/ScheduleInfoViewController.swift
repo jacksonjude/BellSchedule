@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import CoreData
 
 extension Date {
     struct Gregorian {
@@ -104,7 +105,7 @@ class ScheduleInfoViewController: UIViewController {
             //refreshPeriodInfo(self)
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshPeriodInfo(_:)), name: Notification.Name(rawValue: "refreshScheduleInfo"), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(refreshPeriodInfo(_:)), name: Notification.Name(rawValue: "refreshScheduleInfo"), object: nil)
     }
     
     func addCorners(view: UIView)
@@ -218,62 +219,67 @@ class ScheduleInfoViewController: UIViewController {
         }
     }
     
-    func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: CKRecord, periodNames: Array<String>?)
+    func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject, periodNames: Array<String>?)
     {
-        let periodNumbers = todaySchedule.object(forKey: "periodNumbers") as! Array<Int>
-        let periodRangeSplit = periodRangeString.split(separator: "-")
-        let periodStartString = Date().convertToStandardTime(date: String(periodRangeSplit[0]))
-        let periodEndString = Date().convertToStandardTime(date: String(periodRangeSplit[1]))
-        
-        let periodInfo1 = "The current period is " + String(periodNumbers[periodNumber-1]) + "\n"
-        let periodInfo2 = periodStartString! + "-" + periodEndString!
-        OperationQueue.main.addOperation {
-            self.currentPeriodLabel.text = periodInfo1 + periodInfo2
-        }
-        
-        self.periodNumber = periodNumber
-        
-        periodPrinted = true
-        
-        if periodNames != nil
+        if let periodNumbers = appDelegate.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
         {
-            printPeriodName(todaySchedule: todaySchedule, periodNames: periodNames!)
-        }
-    }
-    
-    func printPeriodName(todaySchedule: CKRecord, periodNames: Array<String>)
-    {
-        let periodNumbers = todaySchedule.object(forKey: "periodNumbers") as! Array<Int>
-        OperationQueue.main.addOperation {
-            if periodNames.count > periodNumbers[self.periodNumber!-1]-1
+            let periodRangeSplit = periodRangeString.split(separator: "-")
+            let periodStartString = Date().convertToStandardTime(date: String(periodRangeSplit[0]))
+            let periodEndString = Date().convertToStandardTime(date: String(periodRangeSplit[1]))
+            
+            let periodInfo1 = "The current period is " + String(periodNumbers[periodNumber-1]) + "\n"
+            let periodInfo2 = periodStartString! + "-" + periodEndString!
+            OperationQueue.main.addOperation {
+                self.currentPeriodLabel.text = periodInfo1 + periodInfo2
+            }
+            
+            self.periodNumber = periodNumber
+            
+            periodPrinted = true
+            
+            if periodNames != nil
             {
-                self.currentPeriodLabel.text = self.currentPeriodLabel.text! + "\n" + periodNames[periodNumbers[self.periodNumber!-1]-1]
+                printPeriodName(todaySchedule: todaySchedule, periodNames: periodNames!)
             }
         }
     }
     
-    func printTomorrowStartTime(tomorrowSchedule: CKRecord, nextWeekCount: Int, nextDayCount: Int)
+    func printPeriodName(todaySchedule: NSManagedObject, periodNames: Array<String>)
     {
-        let tomorrowPeriodTimes = tomorrowSchedule.object(forKey: "periodTimes") as! Array<String>
-        
-        var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
-        let gregorian = Calendar(identifier: .gregorian)
-        let weekDaysToAdd = Double(60*60*24*(nextDayCount + 1))
-        startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
-        var components = gregorian.dateComponents([.month, .day, .weekday], from: startOfNextSchoolDayRaw)
-        components.hour = 12
-        let startOfNextSchoolDayFormatted = gregorian.date(from: components)!
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd"
-        let startOfNextSchoolDayString = formatter.string(from: startOfNextSchoolDayFormatted)
-        let tomorrowSchoolStartTime = tomorrowPeriodTimes[0].split(separator: "-")[0]
-        let weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1)
-        
-        OperationQueue.main.addOperation {
-            let schoolStart1 = "School starts " + weekDayOfSchoolStart + ",\n" + startOfNextSchoolDayString
-            let schoolStart2 = " at " + Date().convertToStandardTime(date: String(tomorrowSchoolStartTime))
-            self.tomorrowStartTimeLabel.text = schoolStart1 + schoolStart2
+        if let periodNumbers = appDelegate.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
+        {
+            OperationQueue.main.addOperation {
+                if periodNames.count > periodNumbers[self.periodNumber!-1]-1
+                {
+                    self.currentPeriodLabel.text = self.currentPeriodLabel.text! + "\n" + periodNames[periodNumbers[self.periodNumber!-1]-1]
+                }
+            }
+        }
+    }
+    
+    func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int)
+    {
+        if let tomorrowPeriodTimes = appDelegate.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
+        {
+            var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
+            let gregorian = Calendar(identifier: .gregorian)
+            let weekDaysToAdd = Double(60*60*24*(nextDayCount + 1))
+            startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
+            var components = gregorian.dateComponents([.month, .day, .weekday], from: startOfNextSchoolDayRaw)
+            components.hour = 12
+            let startOfNextSchoolDayFormatted = gregorian.date(from: components)!
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MM/dd"
+            let startOfNextSchoolDayString = formatter.string(from: startOfNextSchoolDayFormatted)
+            let tomorrowSchoolStartTime = tomorrowPeriodTimes[0].split(separator: "-")[0]
+            let weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1)
+            
+            OperationQueue.main.addOperation {
+                let schoolStart1 = "School starts " + weekDayOfSchoolStart + ",\n" + startOfNextSchoolDayString
+                let schoolStart2 = " at " + Date().convertToStandardTime(date: String(tomorrowSchoolStartTime))
+                self.tomorrowStartTimeLabel.text = schoolStart1 + schoolStart2
+            }
         }
     }
     

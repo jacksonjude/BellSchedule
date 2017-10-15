@@ -8,6 +8,7 @@
 
 import CloudKit
 import UIKit
+import CoreData
 
 class ScheduleInfoManager: NSObject {
     var viewController: ScheduleInfoViewController
@@ -19,13 +20,11 @@ class ScheduleInfoManager: NSObject {
     var periodPrinted = false
     var periodNumber: Int?
     
-    var todaySchedule: CKRecord?
+    var todaySchedule: NSManagedObject?
     
     var tomorrowDay: Date?
     var nextWeekOn: Int?
     var nextDayOn: Int?
-    
-    var loadedNextWeekDictionary: Dictionary<String,Bool> = [:]
     
     var loadedData = 0
     {
@@ -90,19 +89,11 @@ class ScheduleInfoManager: NSObject {
     func queryUserSchedule(userID: String)
     {
         print(" USRSCH: Fetching periodNamesRecord")
-        let userScheduleReturnID = UUID().uuidString
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveUserSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + userScheduleReturnID), object: nil)
-        
         let userScheduleQueryPredicate = NSPredicate(format: "userID == %@", userID)
-        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "UserSchedule", predicate: userScheduleQueryPredicate, returnID: userScheduleReturnID)
-    }
-    
-    @objc func receiveUserSchedule(notification: NSNotification)
-    {
-        if let periodNamesRecord = notification.object as? CKRecord
+        if let periodNamesRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "UserSchedule", predicate: userScheduleQueryPredicate)?.first as? NSManagedObject
         {
             print(" USRSCH: Received periodNamesRecord")
-            periodNames = periodNamesRecord.object(forKey: "periodNames") as? [String]
+            periodNames = periodNamesRecord.value(forKey: "periodNames") as? [String]
             
             if periodPrinted
             {
@@ -123,8 +114,6 @@ class ScheduleInfoManager: NSObject {
     func queryWeekSchedule()
     {
         print(" FWSCH: Fetching weekScheduleRecord")
-        let weekScheduleReturnID = UUID().uuidString
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveWeekScheduleRecord(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + weekScheduleReturnID), object: nil)
         
         let startOfWeekRaw = Date().startOfWeek ?? Date()
         let gregorian = Calendar(identifier: .gregorian)
@@ -133,25 +122,19 @@ class ScheduleInfoManager: NSObject {
         let startOfWeekFormatted = gregorian.date(from: components)!
         
         let weekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfWeekFormatted as CVarArg)
-        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "WeekSchedules", predicate: weekScheduleQueryPredicate, returnID: weekScheduleReturnID)
-    }
-    
-    @objc func receiveWeekScheduleRecord(notification: NSNotification)
-    {
-        if let weekScheduleRecord = notification.object as? CKRecord
+        if let weekScheduleRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "WeekSchedules", predicate: weekScheduleQueryPredicate)?.first as? NSManagedObject
         {
             print(" FWSCH: Received weekScheduleRecord")
             viewController.printCurrentStatus(message: "Loading...\nReceived weekScheduleRecord")
             
-            let schedules = weekScheduleRecord.object(forKey: "schedules") as! Array<String>
-            
-            self.nextWeekSchedules = schedules
-            queryTodaySchedule(weekSchedules: schedules)
-            nextWeekOn = 0
-            nextDayOn = 0
-            let tomorrowNotificationID = UUID().uuidString
-            self.loadedNextWeekDictionary[tomorrowNotificationID] = false
-            queryTomorrowSchedule(weekSchedules: schedules, addDays: 0, notificationID: tomorrowNotificationID)
+            if let schedules = appDelegate.decodeArrayFromJSON(object: weekScheduleRecord, field: "schedules") as? Array<String>
+            {
+                self.nextWeekSchedules = schedules
+                queryTodaySchedule(weekSchedules: schedules)
+                nextWeekOn = 0
+                nextDayOn = 0
+                queryTomorrowSchedule(weekSchedules: schedules, addDays: 0, loadedNextWeek: false)
+            }
         }
         else
         {
@@ -172,11 +155,32 @@ class ScheduleInfoManager: NSObject {
             
             print(" FTODYS: Fetching todaySchedule")
             
-            let todayScheduleReturnID = UUID().uuidString
-            NotificationCenter.default.addObserver(self, selector: #selector(receiveTodaySchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + todayScheduleReturnID), object: nil)
-            
             let todayScheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", todaySchedule)
-            appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "Schedule", predicate: todayScheduleQueryPredicate, returnID: todayScheduleReturnID)
+            if let todaySchedule = appDelegate.cloudManager!.fetchLocalObjects(type: "Schedule", predicate: todayScheduleQueryPredicate)?.first as? NSManagedObject
+            {
+                print(" FTODYS: Received todaySchedule")
+                viewController.printCurrentStatus(message: "Received todaySchedule")
+                
+                self.todaySchedule = todaySchedule
+                
+                let todayCode = todaySchedule.value(forKey: "scheduleCode") as! String
+                if todayCode != "H"
+                {
+                    let periodTimes = todaySchedule.value(forKey: "periodTimes") as! Array<String>
+                    findCurrentPeriod(periodTimes: periodTimes)
+                }
+                else
+                {
+                    print(" FTODYS: todayCode == H, No school today")
+                    viewController.printCurrentStatus(message: "No school today")
+                    viewController.printSchoolStartTimeStatus(status: "No school today")
+                }
+            }
+            else
+            {
+                print(" FTODYS: Did not receive todaySchedule")
+                viewController.printCurrentStatus(message: "Error on query")
+            }
         }
         else
         {
@@ -187,44 +191,15 @@ class ScheduleInfoManager: NSObject {
         }
     }
     
-    @objc func receiveTodaySchedule(notification: NSNotification)
-    {
-        if let todaySchedule = notification.object as? CKRecord
-        {
-            print(" FTODYS: Received todaySchedule")
-            viewController.printCurrentStatus(message: "Received todaySchedule")
-            
-            self.todaySchedule = todaySchedule
-            
-            let todayCode = todaySchedule.object(forKey: "scheduleCode") as! String
-            if todayCode != "H"
-            {
-                let periodTimes = todaySchedule.object(forKey: "periodTimes") as! Array<String>
-                findCurrentPeriod(periodTimes: periodTimes)
-            }
-            else
-            {
-                print(" FTODYS: todayCode == H, No school today")
-                viewController.printCurrentStatus(message: "No school today")
-                viewController.printSchoolStartTimeStatus(status: "No school today")
-            }
-        }
-        else
-        {
-            print(" FTODYS: Did not receive todaySchedule")
-            viewController.printCurrentStatus(message: "Error on query")
-        }
-    }
-    
     //MARK: Tomorrow Schedule
     
-    func queryTomorrowSchedule(weekSchedules: Array<String>, addDays: Int, notificationID: String)
+    func queryTomorrowSchedule(weekSchedules: Array<String>, addDays: Int, loadedNextWeek: Bool)
     {
         var tomorrowSchedule = ""
         var currentlyLoadingNextWeek = false
         var tomorrowDate = addDays
         
-        if !loadedNextWeekDictionary[notificationID]!
+        if !loadedNextWeek
         {
             tomorrowDate = Date().getDayOfWeek()+addDays
         }
@@ -239,7 +214,7 @@ class ScheduleInfoManager: NSObject {
             print(" FTOMWS: tomorrowDate out of schedule range, loading next week")
             nextWeekOn! += 1
             nextDayOn = 0
-            queryNextWeek(notificationID: notificationID)
+            queryNextWeek()
             currentlyLoadingNextWeek = true
         }
         
@@ -247,49 +222,37 @@ class ScheduleInfoManager: NSObject {
         {
             print(" FTOMWS: Fetching tomorrowSchedule")
             
-            let tomorrowScheduleReturnID = UUID().uuidString
-            NotificationCenter.default.addObserver(self, selector: #selector(receiveTomorrowSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + tomorrowScheduleReturnID + ":" + notificationID), object: nil)
-            
             let tomorrowScheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", tomorrowSchedule)
-            appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "Schedule", predicate: tomorrowScheduleQueryPredicate, returnID: tomorrowScheduleReturnID + ":" + notificationID)
-        }
-    }
-    
-    @objc func receiveTomorrowSchedule(notification: NSNotification)
-    {
-        if let tomorrowSchedule = notification.object as? CKRecord
-        {
-            print(" FTOMWS: Received tomorrowSchedule")
-            
-            let tomorrowScheduleCode = tomorrowSchedule.object(forKey: "scheduleCode") as! String
-            if tomorrowScheduleCode != "H"
+            if let tomorrowSchedule = appDelegate.cloudManager!.fetchLocalObjects(type: "Schedule", predicate: tomorrowScheduleQueryPredicate)?.first as? NSManagedObject
             {
-                print(" FTOMWS: Tomorrow schedule found!")
-                self.loadedNextWeekDictionary.remove(at: self.loadedNextWeekDictionary.index(forKey: String(notification.name.rawValue.split(separator: ":")[2]))!)
-                viewController.printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule, nextWeekCount: nextWeekOn!, nextDayCount: nextDayOn!)
+                print(" FTOMWS: Received tomorrowSchedule")
+                
+                let tomorrowScheduleCode = tomorrowSchedule.value(forKey: "scheduleCode") as! String
+                if tomorrowScheduleCode != "H"
+                {
+                    print(" FTOMWS: Tomorrow schedule found!")
+                    viewController.printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule, nextWeekCount: nextWeekOn!, nextDayCount: nextDayOn!)
+                }
+                else
+                {
+                    print(" FTOMWS: No school tomorrow, loading next day")
+                    nextDayOn!+=1
+                    
+                    queryTomorrowSchedule(weekSchedules: self.nextWeekSchedules!, addDays: nextDayOn!, loadedNextWeek: loadedNextWeek)
+                }
             }
             else
             {
-                print(" FTOMWS: No school tomorrow, loading next day")
-                nextDayOn!+=1
-                
-                queryTomorrowSchedule(weekSchedules: self.nextWeekSchedules!, addDays: nextDayOn!, notificationID: String(notification.name.rawValue.split(separator: ":")[2]))
+                print(" FTOMWS: Did not receive tomorrowSchedule")
             }
-        }
-        else
-        {
-            print(" FTOMWS: Did not receive tomorrowSchedule")
         }
     }
     
     //MARK: Next Week Schedule
     
-    func queryNextWeek(notificationID: String)
+    func queryNextWeek()
     {
         print(" FNXTWK: Fetching nextWeekScheduleRecord")
-        
-        let nextWeekScheduleReturnID = UUID().uuidString
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveNextWeekSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + nextWeekScheduleReturnID + ":" + notificationID), object: nil)
         
         let startOfNextWeekRaw = Date().getStartOfNextWeek(nextWeek: nextWeekOn!)
         let gregorian = Calendar(identifier: .gregorian)
@@ -298,18 +261,14 @@ class ScheduleInfoManager: NSObject {
         let startOfNextWeekFormatted = gregorian.date(from: components)!
         
         let nextWeekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfNextWeekFormatted as CVarArg)
-        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "WeekSchedules", predicate: nextWeekScheduleQueryPredicate, returnID: nextWeekScheduleReturnID + ":" + notificationID)
-    }
-    
-    @objc func receiveNextWeekSchedule(notification: NSNotification)
-    {
-        if let nextWeekScheduleRecord = notification.object as? CKRecord
+        if let nextWeekScheduleRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "WeekSchedules", predicate: nextWeekScheduleQueryPredicate)?.first as? NSManagedObject
         {
             print(" FNXTWK: Received nextWeekScheduleRecord")
-            let schedules = nextWeekScheduleRecord.object(forKey: "schedules") as! Array<String>
-            self.nextWeekSchedules = schedules
-            loadedNextWeekDictionary[String(notification.name.rawValue.split(separator: ":")[2])] = true
-            queryTomorrowSchedule(weekSchedules: schedules, addDays: 0, notificationID: String(notification.name.rawValue.split(separator: ":")[2]))
+            if let schedules = appDelegate.decodeArrayFromJSON(object: nextWeekScheduleRecord, field: "schedules") as? Array<String>
+            {
+                self.nextWeekSchedules = schedules
+                queryTomorrowSchedule(weekSchedules: schedules, addDays: 0, loadedNextWeek: true)
+            }
         }
         else
         {
@@ -377,7 +336,7 @@ class ScheduleInfoManager: NSObject {
                         passingPeriod = true
                         nextPeriodStart = periodRangeArray[0]
                         
-                        let periodNumbers = todaySchedule!.object(forKey: "periodNumbers") as! Array<Int>
+                        let periodNumbers = todaySchedule!.value(forKey: "periodNumbers") as! Array<Int>
                         nextPeriodNumber = periodNumbers[periodOn-1]
                         
                         break

@@ -16,6 +16,7 @@ class CloudManager: NSObject
     let publicDatabase = CKContainer.default().publicCloudDatabase
     var currentChangeToken: CKServerChangeToken?
     var appDelegate = UIApplication.shared.delegate! as! AppDelegate
+    var savingCloudChanges = false
     
     func fetchPublicDatabaseObject(type: String, predicate: NSPredicate, returnID: String)
     {
@@ -169,9 +170,19 @@ class CloudManager: NSObject
             }
         }
         
-        appDelegate.saveContext()
+        savingCloudChanges = true
+        NotificationCenter.default.addObserver(self, selector: #selector(contextSaved), name: NSNotification.Name(rawValue: "NSManagedObjectContextDidSave"), object: nil)
         
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "finishedFetchingAllData"), object: nil)
+        appDelegate.saveContext()
+    }
+    
+    @objc func contextSaved()
+    {
+        if savingCloudChanges
+        {
+            savingCloudChanges = false
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "finishedFetchingAllData"), object: nil)
+        }
     }
     
     func fetchLocalObjects(type: String, predicate: NSPredicate) -> [AnyObject]?
