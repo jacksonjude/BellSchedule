@@ -166,13 +166,13 @@ class CloudManager: NSObject
                             self.updateFromRemote(record: record, object: newObject, fields: self.getFieldsFromEntity(entityType: entityType))
                         }
                     }
+                    
+                    self.savingCloudChanges = true
+                    
+                    self.appDelegate.saveContext()
                 }
             }
         }
-        
-        savingCloudChanges = true
-        
-        appDelegate.saveContext()
     }
     
     @objc func contextSaved()
@@ -209,7 +209,7 @@ class CloudManager: NSObject
     {
         super.init()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(contextSaved), name: NSNotification.Name(rawValue: "NSManagedObjectContextDidSave"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(contextSaved), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
         
         if !((UIApplication.shared.delegate as! AppDelegate).firstLaunch)
         {

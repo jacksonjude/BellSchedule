@@ -152,10 +152,8 @@ class ScheduleInfoViewController: UIViewController {
             self.tomorrowStartTimeLabel.text = "Loading..."
         }
         
-        scheduleManager!.refreshScheduleInfo()
-        
-        //getUserID()
-        //queryWeekSchedule()
+        scheduleManager!.downloadCloudData()
+        //scheduleManager!.refreshScheduleInfo()
     }
         
     func getDate(hourMinute: Substring, day: Date) -> Date

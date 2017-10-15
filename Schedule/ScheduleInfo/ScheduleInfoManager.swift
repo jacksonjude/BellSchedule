@@ -30,7 +30,7 @@ class ScheduleInfoManager: NSObject {
     {
         didSet
         {
-            if loadedData == 3
+            if loadedData == 2
             {
                 loadedAllData = true
             }
@@ -49,6 +49,13 @@ class ScheduleInfoManager: NSObject {
         super.init()
         
         NotificationCenter.default.addObserver(self, selector: #selector(finishedFetchingData), name: Notification.Name(rawValue: "finishedFetchingAllData"), object: nil)
+        
+        downloadCloudData()
+    }
+    
+    func downloadCloudData()
+    {
+        self.loadedData = 0
         
         appDelegate.cloudManager!.fetchAllCloudData(entityType: "WeekSchedules")
         appDelegate.cloudManager!.fetchAllCloudData(entityType: "Schedule")
