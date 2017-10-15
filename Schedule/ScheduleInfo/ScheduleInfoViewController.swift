@@ -261,7 +261,7 @@ class ScheduleInfoViewController: UIViewController {
         {
             var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
             let gregorian = Calendar(identifier: .gregorian)
-            let weekDaysToAdd = Double(60*60*24*(nextDayCount + 1))
+            let weekDaysToAdd = Double(60*60*24*(nextDayCount + 1)+3600)
             startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
             var components = gregorian.dateComponents([.month, .day, .weekday], from: startOfNextSchoolDayRaw)
             components.hour = 12

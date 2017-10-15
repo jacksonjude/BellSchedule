@@ -145,6 +145,8 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         components.hour = 12
         let startOfWeekFormatted = gregorian.date(from: components)!
         
+        print(startOfWeekFormatted)
+        
         let weekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfWeekFormatted as CVarArg)
         if let weekScheduleRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "WeekSchedules", predicate: weekScheduleQueryPredicate)?.first as? NSManagedObject
         {
@@ -272,7 +274,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         if weeksToAdd < loadedWeeks
         {
             var startOfWeekToFetch = Date().startOfWeek!
-            startOfWeekToFetch.addTimeInterval(TimeInterval(60*60*24*7*weeksToAdd))
+            startOfWeekToFetch.addTimeInterval(TimeInterval(60*60*24*7*weeksToAdd+3600))
             weekOn+=1
             fetchWeek(date: startOfWeekToFetch, fetchingAllWeeks: true)
         }

@@ -57,6 +57,8 @@ class ScheduleInfoManager: NSObject {
     {
         self.loadedData = 0
         
+        UserDefaults.standard.set(Date(), forKey: "fetchingCloudData")
+        
         appDelegate.cloudManager!.fetchAllCloudData(entityType: "WeekSchedules")
         appDelegate.cloudManager!.fetchAllCloudData(entityType: "Schedule")
         //appDelegate.cloudManager!.fetchAllCloudData(entityType: "UserSchedule")
@@ -67,6 +69,8 @@ class ScheduleInfoManager: NSObject {
         loadedData += 1
         if loadedAllData
         {
+            UserDefaults.standard.set(UserDefaults.standard.object(forKey: "fetchingCloudData"), forKey: "lastUpdatedData")
+            print("↓ Finished fetching changes from cloud")
             refreshScheduleInfo()
         }
     }

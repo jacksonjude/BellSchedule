@@ -144,7 +144,7 @@ class CloudManager: NSObject
     {
         print("↓ - Fetching Changes from Cloud")
         
-        let cloudEntityQuery = CKQuery(recordType: entityType, predicate: NSPredicate(format: "TRUEPREDICATE"))
+        let cloudEntityQuery = CKQuery(recordType: entityType, predicate: NSPredicate(format: "modificationDate >= %@", (UserDefaults.standard.object(forKey: "lastUpdatedData") ?? Date.distantPast) as! NSDate))
         publicDatabase.perform(cloudEntityQuery, inZoneWith: CKRecordZone.default().zoneID) { (results, error) in
             if error != nil
             {
@@ -168,12 +168,14 @@ class CloudManager: NSObject
                             }
                         }
                     }
+                }
+                
+                print(" Updated " + String(results?.count ?? 0) + " records from " + entityType)
+                
+                OperationQueue.main.addOperation {
+                    self.savingCloudChanges = true
                     
-                    OperationQueue.main.addOperation {
-                        self.savingCloudChanges = true
-                        
-                        self.appDelegate.saveContext()
-                    }
+                    self.appDelegate.saveContext()
                 }
             }
         }
