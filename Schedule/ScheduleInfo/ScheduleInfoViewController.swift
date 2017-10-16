@@ -79,6 +79,7 @@ class ScheduleInfoViewController: UIViewController {
     var periodNumber: Int?
     
     var syncButtonValue = true
+    var refreshTimer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,10 +105,34 @@ class ScheduleInfoViewController: UIViewController {
         if appDelegate.justLaunched
         {
             appDelegate.justLaunched = false
-            //refreshPeriodInfo(self)
         }
         
-        //NotificationCenter.default.addObserver(self, selector: #selector(refreshPeriodInfo(_:)), name: Notification.Name(rawValue: "refreshScheduleInfo"), object: nil)
+        calculateTimerRefresh()
+    }
+    
+    func calculateTimerRefresh()
+    {
+        if refreshTimer != nil
+        {
+            refreshTimer?.invalidate()
+        }
+        
+        let secondMinuteComponents = Date.Gregorian.calendar.dateComponents([.minute, .second], from: Date())
+        let secondsToMinute = 60 - (secondMinuteComponents.second! % 60)
+        let minuteTo5minutes = 5 - (secondMinuteComponents.minute! % 5)
+        
+        let timeUntilNext5minutes = TimeInterval(secondsToMinute + (minuteTo5minutes*60) - 60)
+        
+        print("Timer will start in: " + String(timeUntilNext5minutes))
+        
+        self.refreshTimer = Timer.scheduledTimer(timeInterval: timeUntilNext5minutes, target: self, selector: #selector(startRefreshTimer), userInfo: nil, repeats: false)
+    }
+    
+    @objc func startRefreshTimer()
+    {
+        refreshPeriodInfo(self)
+        let _ = Timer.scheduledTimer(timeInterval: 300.0, target: self, selector: #selector(refreshPeriodInfo(_:)), userInfo: nil, repeats: true)
+        print("Starting timer!")
     }
     
     func addCorners(view: UIView)
