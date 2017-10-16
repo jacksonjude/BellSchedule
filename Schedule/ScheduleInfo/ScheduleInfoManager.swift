@@ -188,12 +188,12 @@ class ScheduleInfoManager: NSObject {
         let currentDay = Date().getDayOfWeek()-1
         if currentDay < weekSchedules.count && currentDay >= 0
         {
-            let todaySchedule = weekSchedules[currentDay]
-            print(" FTODYS: currentDay == " + String(currentDay) + " and todaySchedule == " + todaySchedule)
+            let todayScheduleCode = weekSchedules[currentDay]
+            print(" FTODYS: currentDay == " + String(currentDay) + " and todaySchedule == " + todayScheduleCode)
             
             print(" FTODYS: Fetching todaySchedule")
             
-            let todayScheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", todaySchedule)
+            let todayScheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", todayScheduleCode)
             if let todaySchedule = appDelegate.cloudManager!.fetchLocalObjects(type: "Schedule", predicate: todayScheduleQueryPredicate)?.first as? NSManagedObject
             {
                 print(" FTODYS: Received todaySchedule")
@@ -204,8 +204,10 @@ class ScheduleInfoManager: NSObject {
                 let todayCode = todaySchedule.value(forKey: "scheduleCode") as! String
                 if todayCode != "H"
                 {
-                    let periodTimes = todaySchedule.value(forKey: "periodTimes") as! Array<String>
-                    findCurrentPeriod(periodTimes: periodTimes)
+                    if let periodTimes = appDelegate.decodeArrayFromJSON(object: todaySchedule, field: "periodTimes") as? Array<String>
+                    {
+                        findCurrentPeriod(periodTimes: periodTimes)
+                    }
                 }
                 else
                 {
@@ -374,9 +376,10 @@ class ScheduleInfoManager: NSObject {
                         passingPeriod = true
                         nextPeriodStart = periodRangeArray[0]
                         
-                        let periodNumbers = todaySchedule!.value(forKey: "periodNumbers") as! Array<Int>
-                        nextPeriodNumber = periodNumbers[periodOn-1]
-                        
+                        if let periodNumbers = appDelegate.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? Array<Int>
+                        {
+                            nextPeriodNumber = periodNumbers[periodOn-1]
+                        }
                         break
                     }
                 }
