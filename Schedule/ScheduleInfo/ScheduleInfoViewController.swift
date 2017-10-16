@@ -78,6 +78,8 @@ class ScheduleInfoViewController: UIViewController {
     var periodPrinted = false
     var periodNumber: Int?
     
+    var syncButtonValue = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -114,31 +116,54 @@ class ScheduleInfoViewController: UIViewController {
         view.layer.masksToBounds = true
     }
     
-    //MARK: User ID
+    //MARK: Settings
     
-    @IBAction func setUserID(_ sender: Any) {
-        let userIDAlert = UIAlertController(title: "UserID", message: "Set your userID to be fetched", preferredStyle: .alert)
+    @IBAction func openSettings(_ sender: Any) {
+        let settingsAlert = UIAlertController(title: "Settings", message: "\n\n", preferredStyle: .alert)
         
-        userIDAlert.addTextField { (textFeild) in
-            textFeild.placeholder = "UserID"
+        settingsAlert.addTextField { (textFeild) in
+            textFeild.placeholder = (UserDefaults.standard.object(forKey: "userID") as? String) ?? "UserID"
         }
         
-        userIDAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (alert) in
+        settingsAlert.view.addSubview(createSwitch())
+        
+        let syncLabel = UILabel(frame: CGRect(x: 15, y: 40, width: 200, height: 70))
+        syncLabel.text = "Sync:"
+        syncLabel.font = UIFont(name: "System", size: 15)
+        settingsAlert.view.addSubview(syncLabel)
+        
+        settingsAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (alert) in
             
         }))
         
-        userIDAlert.addAction(UIAlertAction(title: "Set", style: .default, handler: { (alert) in
-            let userID = userIDAlert.textFields![0].text
-            if userID != nil || userID != ""
+        settingsAlert.addAction(UIAlertAction(title: "Set", style: .default, handler: { (alert) in
+            let userID = settingsAlert.textFields![0].text
+            if userID != nil && userID != ""
             {
                 UserDefaults.standard.set(userID, forKey: "userID")
                 print(" USRID: Set userID: " + userID!)
             }
+            
+            UserDefaults.standard.set(self.syncButtonValue, forKey: "syncData")
         }))
         
-        self.present(userIDAlert, animated: true) {
+        self.present(settingsAlert, animated: true) {
             
         }
+    }
+    
+    func createSwitch() -> UISwitch
+    {
+        let switchControl = UISwitch(frame: CGRect(x: 65, y: 60, width: 0, height: 0))
+        switchControl.isOn = UserDefaults.standard.object(forKey: "syncData") as? Bool ?? true
+        switchControl.setOn(UserDefaults.standard.object(forKey: "syncData") as? Bool ?? true, animated: false)
+        switchControl.addTarget(self, action: #selector(switchValueDidChange(sender:)), for: .valueChanged)
+        return switchControl
+    }
+    
+    @objc func switchValueDidChange(sender: UISwitch!)
+    {
+        syncButtonValue = sender.isOn
     }
     
     //MARK: Refresh Info
@@ -152,8 +177,14 @@ class ScheduleInfoViewController: UIViewController {
             self.tomorrowStartTimeLabel.text = "Loading..."
         }
         
-        scheduleManager!.downloadCloudData()
-        //scheduleManager!.refreshScheduleInfo()
+        if UserDefaults.standard.object(forKey: "syncData") as? Bool ?? true
+        {
+            scheduleManager!.downloadCloudData()
+        }
+        else
+        {
+            scheduleManager!.refreshScheduleInfo()
+        }
     }
         
     func getDate(hourMinute: Substring, day: Date) -> Date
