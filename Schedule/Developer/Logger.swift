@@ -11,9 +11,11 @@ import Foundation
 class Logger: NSObject
 {
     var printedData = ""
+    
     func println(_ message: Any)
     {
         print(message)
         printedData = printedData + String(describing: message) + "\n"
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "loggerChangedData"), object: nil)
     }
 }

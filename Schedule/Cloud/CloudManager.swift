@@ -15,7 +15,6 @@ class CloudManager: NSObject
 {
     let publicDatabase = CKContainer.default().publicCloudDatabase
     var currentChangeToken: CKServerChangeToken?
-    var appDelegate = UIApplication.shared.delegate! as! AppDelegate
     var savingCloudChanges = false
     
     func fetchPublicDatabaseObject(type: String, predicate: NSPredicate, returnID: String)
@@ -92,7 +91,7 @@ class CloudManager: NSObject
             }
             else
             {
-                let newObject = NSEntityDescription.insertNewObject(forEntityName: entityType, into: self.appDelegate.persistentContainer.viewContext)
+                let newObject = NSEntityDescription.insertNewObject(forEntityName: entityType, into: appDelegate.persistentContainer.viewContext)
                 self.updateFromRemote(record: record, object: newObject, fields: self.getFieldsFromEntity(entityType: entityType))
                 
                 logger.println(" ↓ - Inserting)")
@@ -111,7 +110,7 @@ class CloudManager: NSObject
                 logger.println(" ↓ - Deleting)")
                 
                 OperationQueue.main.addOperation {
-                    self.appDelegate.persistentContainer.viewContext.delete(recordToDelete as! NSManagedObject)
+                    appDelegate.persistentContainer.viewContext.delete(recordToDelete as! NSManagedObject)
                     (UIApplication.shared.delegate as! AppDelegate).saveContext()
                 }
             }
@@ -163,7 +162,7 @@ class CloudManager: NSObject
                             }
                             else
                             {
-                                let newObject = NSEntityDescription.insertNewObject(forEntityName: entityType, into: self.appDelegate.persistentContainer.viewContext)
+                                let newObject = NSEntityDescription.insertNewObject(forEntityName: entityType, into: appDelegate.persistentContainer.viewContext)
                                 self.updateFromRemote(record: record, object: newObject, fields: self.getFieldsFromEntity(entityType: entityType))
                             }
                         }
@@ -175,7 +174,7 @@ class CloudManager: NSObject
                 OperationQueue.main.addOperation {
                     self.savingCloudChanges = true
                     
-                    self.appDelegate.saveContext()
+                    appDelegate.saveContext()
                 }
             }
         }

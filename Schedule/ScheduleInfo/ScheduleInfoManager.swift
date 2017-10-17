@@ -12,7 +12,6 @@ import CoreData
 
 class ScheduleInfoManager: NSObject {
     var viewController: ScheduleInfoViewController
-    let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     
     var nextWeekSchedules: Array<String>?
     

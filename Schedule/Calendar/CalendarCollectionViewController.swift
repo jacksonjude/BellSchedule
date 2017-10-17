@@ -19,7 +19,6 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     fileprivate let sectionInsets = UIEdgeInsets(top: 10.0, left: 20.0, bottom: 10.0, right: 20.0)
     @IBOutlet weak var codeToggleButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
-    let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     var currentDateString: String?
     var weekScheduleCodes: Array<String> = []
     var weekOn = 0
@@ -32,13 +31,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addCorners(view: collectionView)
-    }
-    
-    func addCorners(view: UIView)
-    {
-        view.layer.cornerRadius = 5
-        view.layer.masksToBounds = true
+        collectionView.addCorners()
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -60,7 +53,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         
-        addCorners(view: cell)
+        cell.addCorners()
         
         switch indexPath.section
         {

@@ -11,7 +11,6 @@ import CloudKit
 
 class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var periodNames: Array<String> = []
-    let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     var uploadData = false
     @IBOutlet weak var tableView: UITableView!
     
@@ -22,13 +21,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addCorners(view: tableView)
-    }
-    
-    func addCorners(view: UIView)
-    {
-        view.layer.cornerRadius = 8
-        view.layer.masksToBounds = true
+        tableView.addCorners()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

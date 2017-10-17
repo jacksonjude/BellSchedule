@@ -10,6 +10,8 @@ import UIKit
 import CloudKit
 import CoreData
 
+let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
 extension Date {
     struct Gregorian {
         static let calendar = Calendar(identifier: .gregorian)
@@ -65,8 +67,16 @@ extension Date {
     }
 }
 
+extension UIView
+{
+    func addCorners()
+    {
+        self.layer.cornerRadius = 8
+        self.layer.masksToBounds = true
+    }
+}
+
 class ScheduleInfoViewController: UIViewController {
-    let appDelegate = UIApplication.shared.delegate! as! AppDelegate
     var scheduleManager: ScheduleInfoManager?
     
     @IBOutlet weak var currentPeriodLabel: UILabel!
@@ -96,11 +106,11 @@ class ScheduleInfoViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        addCorners(view: currentPeriodLabel)
-        addCorners(view: schoolStartEndLabel)
-        addCorners(view: tomorrowStartTimeLabel)
-        addCorners(view: editScheduleButton)
-        addCorners(view: openCalenderButton)
+        currentPeriodLabel.addCorners()
+        schoolStartEndLabel.addCorners()
+        tomorrowStartTimeLabel.addCorners()
+        editScheduleButton.addCorners()
+        openCalenderButton.addCorners()
         
         if appDelegate.justLaunched
         {
@@ -135,12 +145,6 @@ class ScheduleInfoViewController: UIViewController {
         logger.println("Starting timer!")
     }
     
-    func addCorners(view: UIView)
-    {
-        view.layer.cornerRadius = 8
-        view.layer.masksToBounds = true
-    }
-    
     //MARK: Settings
     
     @IBAction func openSettings(_ sender: Any) {
@@ -157,8 +161,8 @@ class ScheduleInfoViewController: UIViewController {
         syncLabel.font = UIFont(name: "System", size: 15)
         settingsAlert.view.addSubview(syncLabel)
         
-        settingsAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (alert) in
-            
+        settingsAlert.addAction(UIAlertAction(title: "Dev", style: .default, handler: { (alert) in
+            self.performSegue(withIdentifier: "openDeveloperView", sender: self)
         }))
         
         settingsAlert.addAction(UIAlertAction(title: "Set", style: .default, handler: { (alert) in
@@ -382,6 +386,11 @@ class ScheduleInfoViewController: UIViewController {
     @IBAction func exitCalendar(_ segue: UIStoryboardSegue)
     {
         logger.println("Exiting Calendar...")
+    }
+    
+    @IBAction func exitDeveloperView(_ segue: UIStoryboardSegue)
+    {
+        logger.println("Exiting Developer View...")
     }
 }
 
