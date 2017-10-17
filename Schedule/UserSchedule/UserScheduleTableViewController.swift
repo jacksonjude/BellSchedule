@@ -16,12 +16,49 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        logger.println("Loaded UserSchedule!")
+        logger.println("Loading UserSchedule...")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if UserDefaults.standard.object(forKey: "userID") == nil
+        {
+            showUserIDAlert()
+        }
+        
         tableView.addCorners()
+    }
+    
+    func showUserIDAlert()
+    {
+        let userIDAlert = UIAlertController(title: "Set UserID", message: "Enter a UserID to load or create a new user schedule", preferredStyle: .alert)
+        
+        userIDAlert.addTextField { (textFeild) in
+            textFeild.placeholder = (UserDefaults.standard.object(forKey: "userID") as? String) ?? "UserID"
+        }
+        
+        userIDAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (alert) in
+            self.performSegue(withIdentifier: "exitUserSchedule", sender: self)
+        }))
+        
+        userIDAlert.addAction(UIAlertAction(title: "Set", style: .default, handler: { (alert) in
+            let userID = userIDAlert.textFields![0].text
+            if userID != nil && userID != ""
+            {
+                UserDefaults.standard.set(userID, forKey: "userID")
+                logger.println(" USRID: Set userID: " + userID!)
+                self.getUserID()
+            }
+            else
+            {
+                self.performSegue(withIdentifier: "exitUserSchedule", sender: self)
+            }
+        }))
+        
+        self.present(userIDAlert, animated: true) {
+            
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -120,6 +157,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
             
         }
     }
+    
     @IBAction func performUnwind(_ sender: Any) {
         let barButtonItem = sender as! UIBarButtonItem
         if barButtonItem.tag == 618
