@@ -261,9 +261,22 @@
                                     <constraint firstAttribute="width" constant="130" id="yRI-if-WIZ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <state key="normal" title="Clear Log"/>
+                                <connections>
+                                    <action selector="clearConsole:" destination="Sf9-3T-Ivb" eventType="touchUpInside" id="jwD-J3-roJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xlB-1d-YpT">
+                                <rect key="frame" x="122" y="415" width="130" height="57"/>
+                                <color key="backgroundColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="57" id="0TT-ng-i84"/>
+                                    <constraint firstAttribute="width" constant="130" id="YO3-SM-q3T"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <state key="normal" title="Clear CoreData"/>
                                 <connections>
-                                    <action selector="clearCoreData:" destination="Sf9-3T-Ivb" eventType="touchUpInside" id="zGm-aP-oDR"/>
+                                    <action selector="clearCoreData:" destination="Sf9-3T-Ivb" eventType="touchUpInside" id="BaX-xM-6pC"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -274,8 +287,10 @@
                             <constraint firstItem="8MH-EH-lqJ" firstAttribute="trailing" secondItem="bkH-Nc-guQ" secondAttribute="trailing" id="8zh-wS-NnN"/>
                             <constraint firstItem="jfz-gB-adq" firstAttribute="trailing" secondItem="bkH-Nc-guQ" secondAttribute="trailing" id="Fsc-xV-R3O"/>
                             <constraint firstItem="8MH-EH-lqJ" firstAttribute="bottom" secondItem="bkH-Nc-guQ" secondAttribute="bottom" id="LvK-cW-YJI"/>
+                            <constraint firstItem="xlB-1d-YpT" firstAttribute="top" secondItem="51q-RI-lmd" secondAttribute="bottom" constant="35" id="MqP-Y1-Wka"/>
                             <constraint firstItem="bkH-Nc-guQ" firstAttribute="trailing" secondItem="QJX-hD-RMY" secondAttribute="trailing" constant="16" id="Qha-Nx-gDq"/>
                             <constraint firstItem="8MH-EH-lqJ" firstAttribute="top" secondItem="jfz-gB-adq" secondAttribute="bottom" id="Utq-6a-zEY"/>
+                            <constraint firstItem="xlB-1d-YpT" firstAttribute="centerX" secondItem="IKv-S7-Vaw" secondAttribute="centerX" id="bk6-h2-FRO"/>
                             <constraint firstItem="QJX-hD-RMY" firstAttribute="leading" secondItem="bkH-Nc-guQ" secondAttribute="leading" constant="16" id="inj-xQ-qvB"/>
                             <constraint firstItem="jfz-gB-adq" firstAttribute="top" secondItem="bkH-Nc-guQ" secondAttribute="top" id="jhO-jF-r99"/>
                             <constraint firstItem="8MH-EH-lqJ" firstAttribute="leading" secondItem="bkH-Nc-guQ" secondAttribute="leading" id="jxi-XH-vIt"/>
@@ -286,7 +301,8 @@
                         <viewLayoutGuide key="safeArea" id="bkH-Nc-guQ"/>
                     </view>
                     <connections>
-                        <outlet property="clearCoreDataButton" destination="51q-RI-lmd" id="1PE-Kc-BRU"/>
+                        <outlet property="clearCoreDataButton" destination="xlB-1d-YpT" id="Pgi-VS-PqH"/>
+                        <outlet property="clearLogButton" destination="51q-RI-lmd" id="GmP-p4-1xZ"/>
                         <outlet property="logTextView" destination="QJX-hD-RMY" id="ZxR-zz-V6Q"/>
                     </connections>
                 </viewController>

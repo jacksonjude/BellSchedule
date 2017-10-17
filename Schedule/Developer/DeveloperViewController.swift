@@ -14,6 +14,7 @@ import CloudKit
 class DeveloperViewController: UIViewController
 {
     @IBOutlet weak var logTextView: UITextView!
+    @IBOutlet weak var clearLogButton: UIButton!
     @IBOutlet weak var clearCoreDataButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,7 @@ class DeveloperViewController: UIViewController
         
         logTextView.addCorners()
         clearCoreDataButton.addCorners()
+        clearLogButton.addCorners()
         
         setLogText()
         
@@ -46,20 +48,6 @@ class DeveloperViewController: UIViewController
         
         for entityType in entityTypes
         {
-            /*let entityFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityType)
-            let entityBatchDeleteRequest = NSBatchDeleteRequest(fetchRequest: entityFetchRequest)
-            
-            OperationQueue.main.addOperation {
-             do
-             {
-             try appDelegate.persistentContainer.persistentStoreCoordinator.execute(entityBatchDeleteRequest, with: appDelegate.persistentContainer.viewContext)
-             }
-             catch
-             {
-             print(error)
-             }
-             }*/
-            
             if let objects = appDelegate.cloudManager?.fetchLocalObjects(type: entityType, predicate: NSPredicate(format: "TRUEPREDICATE")) as? [NSManagedObject]
             {
                 for object in objects
@@ -78,5 +66,10 @@ class DeveloperViewController: UIViewController
         appDelegate.saveContext()
         
         UserDefaults.standard.set(nil, forKey: "lastUpdatedData")
+    }
+    
+    @IBAction func clearConsole(_ sender: Any) {
+        logger.printedData = ""
+        setLogText()
     }
 }
