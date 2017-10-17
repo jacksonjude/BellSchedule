@@ -120,6 +120,13 @@ class ScheduleInfoViewController: UIViewController {
         calculateTimerRefresh()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        if refreshTimer != nil
+        {
+            refreshTimer?.invalidate()
+        }
+    }
+    
     func calculateTimerRefresh()
     {
         if refreshTimer != nil
