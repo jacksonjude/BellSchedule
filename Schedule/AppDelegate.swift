@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+let logger = Logger()
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -110,7 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         catch
         {
-            print(error)
+            logger.println(error)
             return nil
         }
     }

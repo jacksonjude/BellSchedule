@@ -70,7 +70,7 @@ class ScheduleInfoManager: NSObject {
         if loadedAllData
         {
             UserDefaults.standard.set(UserDefaults.standard.object(forKey: "fetchingCloudData"), forKey: "lastUpdatedData")
-            print("↓ Finished fetching changes from cloud")
+            logger.println("↓ - Finished fetching changes from cloud")
             refreshScheduleInfo()
         }
     }
@@ -78,22 +78,22 @@ class ScheduleInfoManager: NSObject {
     func refreshScheduleInfo()
     {
         getUserID()
-        queryWeekSchedule()
+        queryWeekSchedule()        
     }
     
     //MARK: UserSchedule
     
     func getUserID()
     {
-        print(" USRID: Fetching userID")
+        logger.println(" USRID: Fetching userID")
         if let userID = UserDefaults.standard.object(forKey: "userID") as? String
         {
-            print(" USRID: userID: " + userID)
+            logger.println(" USRID: userID: " + userID)
             queryUserSchedule(userID: userID)
         }
         else
         {
-            print(" USRID: No userID")
+            logger.println(" USRID: No userID")
         }
     }
     
@@ -102,7 +102,7 @@ class ScheduleInfoManager: NSObject {
         let queryUserScheduleID = UUID().uuidString
         NotificationCenter.default.addObserver(self, selector: #selector(receiveUserSchedule(notification:)), name: Notification.Name("fetchedPublicDatabaseObject:" + queryUserScheduleID), object: nil)
         
-        print(" USRSCH: Fetching periodNamesRecord")
+        logger.println(" USRSCH: Fetching periodNamesRecord")
         let userScheduleQueryPredicate = NSPredicate(format: "userID == %@", userID)
         
         appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "UserSchedule", predicate: userScheduleQueryPredicate, returnID: queryUserScheduleID)
@@ -130,7 +130,7 @@ class ScheduleInfoManager: NSObject {
     {
         if let periodNamesRecord = notification.object as? CKRecord
         {
-            print(" USRSCH: Received periodNamesRecord")
+            logger.println(" USRSCH: Received periodNamesRecord")
             periodNames = periodNamesRecord.object(forKey: "periodNames") as? [String]
             
             if periodPrinted
@@ -143,7 +143,7 @@ class ScheduleInfoManager: NSObject {
         }
         else
         {
-            print(" USRSCH: Did not receive periodNamesRecord")
+            logger.println(" USRSCH: Did not receive periodNamesRecord")
         }
     }
     
@@ -151,18 +151,18 @@ class ScheduleInfoManager: NSObject {
     
     func queryWeekSchedule()
     {
-        print(" FWSCH: Fetching weekScheduleRecord")
+        logger.println(" FWSCH: Fetching weekScheduleRecord")
         
         let startOfWeekRaw = Date().startOfWeek ?? Date()
         let gregorian = Calendar(identifier: .gregorian)
-        var components = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: startOfWeekRaw)
-        components.hour = 12
-        let startOfWeekFormatted = gregorian.date(from: components)!
+        var startOfWeekComponents = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: startOfWeekRaw)
+        startOfWeekComponents.hour = 12
+        let startOfWeekFormatted = gregorian.date(from: startOfWeekComponents)!
         
         let weekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfWeekFormatted as CVarArg)
         if let weekScheduleRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "WeekSchedules", predicate: weekScheduleQueryPredicate)?.first as? NSManagedObject
         {
-            print(" FWSCH: Received weekScheduleRecord")
+            logger.println(" FWSCH: Received weekScheduleRecord")
             viewController.printCurrentStatus(message: "Loading...\nReceived weekScheduleRecord")
             
             if let schedules = appDelegate.decodeArrayFromJSON(object: weekScheduleRecord, field: "schedules") as? Array<String>
@@ -176,7 +176,7 @@ class ScheduleInfoManager: NSObject {
         }
         else
         {
-            print(" FWSCH: Did not receive weekScheduleRecord")
+            logger.println(" FWSCH: Did not receive weekScheduleRecord")
             viewController.printCurrentStatus(message: "Error on query")
         }
     }
@@ -189,14 +189,14 @@ class ScheduleInfoManager: NSObject {
         if currentDay < weekSchedules.count && currentDay >= 0
         {
             let todayScheduleCode = weekSchedules[currentDay]
-            print(" FTODYS: currentDay == " + String(currentDay) + " and todaySchedule == " + todayScheduleCode)
+            logger.println(" FTODYS: currentDay == " + String(currentDay) + " and todaySchedule == " + todayScheduleCode)
             
-            print(" FTODYS: Fetching todaySchedule")
+            logger.println(" FTODYS: Fetching todaySchedule")
             
             let todayScheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", todayScheduleCode)
             if let todaySchedule = appDelegate.cloudManager!.fetchLocalObjects(type: "Schedule", predicate: todayScheduleQueryPredicate)?.first as? NSManagedObject
             {
-                print(" FTODYS: Received todaySchedule")
+                logger.println(" FTODYS: Received todaySchedule")
                 viewController.printCurrentStatus(message: "Received todaySchedule")
                 
                 self.todaySchedule = todaySchedule
@@ -211,20 +211,20 @@ class ScheduleInfoManager: NSObject {
                 }
                 else
                 {
-                    print(" FTODYS: todayCode == H, No school today")
+                    logger.println(" FTODYS: todayCode == H, No school today")
                     viewController.printCurrentStatus(message: "No school today")
                     viewController.printSchoolStartTimeStatus(status: "No school today")
                 }
             }
             else
             {
-                print(" FTODYS: Did not receive todaySchedule")
+                logger.println(" FTODYS: Did not receive todaySchedule")
                 viewController.printCurrentStatus(message: "Error on query")
             }
         }
         else
         {
-            print(" FTODYS: currentDay out of schedule range")
+            logger.println(" FTODYS: currentDay out of schedule range")
             viewController.printCurrentStatus(message: "No school today")
             
             viewController.printSchoolStartTimeStatus(status: "No school today")
@@ -247,11 +247,11 @@ class ScheduleInfoManager: NSObject {
         if tomorrowDate < weekSchedules.count && tomorrowDate >= 0
         {
             tomorrowSchedule = weekSchedules[tomorrowDate]
-            print(" FTOMWS: tomorrowDate == " + String(tomorrowDate) + " and tomorrowSchedule == " + tomorrowSchedule)
+            logger.println(" FTOMWS: tomorrowDate == " + String(tomorrowDate) + " and tomorrowSchedule == " + tomorrowSchedule)
         }
         else
         {
-            print(" FTOMWS: tomorrowDate out of schedule range, loading next week")
+            logger.println(" FTOMWS: tomorrowDate out of schedule range, loading next week")
             nextWeekOn! += 1
             nextDayOn = 0
             queryNextWeek()
@@ -260,22 +260,22 @@ class ScheduleInfoManager: NSObject {
         
         if !currentlyLoadingNextWeek
         {
-            print(" FTOMWS: Fetching tomorrowSchedule")
+            logger.println(" FTOMWS: Fetching tomorrowSchedule")
             
             let tomorrowScheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", tomorrowSchedule)
             if let tomorrowSchedule = appDelegate.cloudManager!.fetchLocalObjects(type: "Schedule", predicate: tomorrowScheduleQueryPredicate)?.first as? NSManagedObject
             {
-                print(" FTOMWS: Received tomorrowSchedule")
+                logger.println(" FTOMWS: Received tomorrowSchedule")
                 
                 let tomorrowScheduleCode = tomorrowSchedule.value(forKey: "scheduleCode") as! String
                 if tomorrowScheduleCode != "H"
                 {
-                    print(" FTOMWS: Tomorrow schedule found!")
+                    logger.println(" FTOMWS: Tomorrow schedule found!")
                     viewController.printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule, nextWeekCount: nextWeekOn!, nextDayCount: nextDayOn!)
                 }
                 else
                 {
-                    print(" FTOMWS: No school tomorrow, loading next day")
+                    logger.println(" FTOMWS: No school tomorrow, loading next day")
                     nextDayOn!+=1
                     
                     queryTomorrowSchedule(weekSchedules: self.nextWeekSchedules!, addDays: nextDayOn!, loadedNextWeek: loadedNextWeek)
@@ -283,7 +283,7 @@ class ScheduleInfoManager: NSObject {
             }
             else
             {
-                print(" FTOMWS: Did not receive tomorrowSchedule")
+                logger.println(" FTOMWS: Did not receive tomorrowSchedule")
             }
         }
     }
@@ -292,18 +292,18 @@ class ScheduleInfoManager: NSObject {
     
     func queryNextWeek()
     {
-        print(" FNXTWK: Fetching nextWeekScheduleRecord")
+        logger.println(" FNXTWK: Fetching nextWeekScheduleRecord")
         
         let startOfNextWeekRaw = Date().getStartOfNextWeek(nextWeek: nextWeekOn!)
         let gregorian = Calendar(identifier: .gregorian)
-        var components = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: startOfNextWeekRaw)
-        components.hour = 12
-        let startOfNextWeekFormatted = gregorian.date(from: components)!
+        var startOfNextWeekComponents = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: startOfNextWeekRaw)
+        startOfNextWeekComponents.hour = 12
+        let startOfNextWeekFormatted = gregorian.date(from: startOfNextWeekComponents)!
         
         let nextWeekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfNextWeekFormatted as CVarArg)
         if let nextWeekScheduleRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "WeekSchedules", predicate: nextWeekScheduleQueryPredicate)?.first as? NSManagedObject
         {
-            print(" FNXTWK: Received nextWeekScheduleRecord")
+            logger.println(" FNXTWK: Received nextWeekScheduleRecord")
             if let schedules = appDelegate.decodeArrayFromJSON(object: nextWeekScheduleRecord, field: "schedules") as? Array<String>
             {
                 self.nextWeekSchedules = schedules
@@ -312,7 +312,7 @@ class ScheduleInfoManager: NSObject {
         }
         else
         {
-            print(" FNXTWK: Did not receive nextWeekScheduleRecord")
+            logger.println(" FNXTWK: Did not receive nextWeekScheduleRecord")
         }
     }
     
@@ -333,7 +333,7 @@ class ScheduleInfoManager: NSObject {
     
     func findCurrentPeriod(periodTimes: Array<String>)
     {
-        print(" FCURPER: Finding current period")
+        logger.println(" FCURPER: Finding current period")
         let currentDate = Date()
         var periodOn = 1
         var periodFound = false
@@ -358,12 +358,12 @@ class ScheduleInfoManager: NSObject {
                 let periodRange = periodStart ... periodEnd
                 
                 let periodRangeContainsDate = periodRange.contains(Date())
-                print(" FCURPER: periodOn == " + String(periodOn) + " : " + String(periodRange.contains(Date())))
+                logger.println(" FCURPER: periodOn == " + String(periodOn) + " : " + String(periodRange.contains(Date())))
                 
                 if periodRangeContainsDate
                 {
                     periodFound = true
-                    print(" FCURPER: Found current period!")
+                    logger.println(" FCURPER: Found current period!")
                     viewController.printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn, todaySchedule: self.todaySchedule!, periodNames: self.periodNames)
                     
                     break
@@ -393,7 +393,7 @@ class ScheduleInfoManager: NSObject {
             }
             else
             {
-                print("Skipping due to invalid date range")
+                logger.println("Skipping due to invalid date range")
             }
             
             lastPeriodEnd = periodEnd
@@ -405,7 +405,7 @@ class ScheduleInfoManager: NSObject {
         {
             if passingPeriod
             {
-                print(" FCURPER: Currently passing period")
+                logger.println(" FCURPER: Currently passing period")
                 let passingPeriodMessage1 = "Passing Period\nPeriod " + String(describing: nextPeriodNumber!) + " starts at "
                 var passingPeriodMessage2 = Date().convertToStandardTime(date: String(nextPeriodStart!)) + "\n"
                 
@@ -419,12 +419,12 @@ class ScheduleInfoManager: NSObject {
             {
                 if schoolHasNotStarted
                 {
-                    print(" FCURPER: School has not started")
+                    logger.println(" FCURPER: School has not started")
                     viewController.printCurrentStatus(message: "School has not started")
                 }
                 else
                 {
-                    print(" FCURPER: School has ended")
+                    logger.println(" FCURPER: School has ended")
                     viewController.printCurrentStatus(message: "School has ended")
                 }
             }

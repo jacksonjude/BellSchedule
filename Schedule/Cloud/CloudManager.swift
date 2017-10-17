@@ -24,7 +24,7 @@ class CloudManager: NSObject
         publicDatabase.perform(objectQuery, inZoneWith: nil) { (records, error) in
             if error != nil
             {
-                print(error!)
+                logger.println(error!)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + returnID), object: nil)
             }
             else
@@ -40,7 +40,7 @@ class CloudManager: NSObject
         publicDatabase.perform(objectQuery, inZoneWith: nil) { (records, error) in
             if error != nil
             {
-                print(error!)
+                logger.println(error!)
             }
             else
             {
@@ -61,11 +61,11 @@ class CloudManager: NSObject
                 
                 self.publicDatabase.save(remoteRecord!, completionHandler: { (record, error) -> Void in
                     if (error != nil) {
-                        print("Error: \(String(describing: error))")
+                        logger.println("Error: \(String(describing: error))")
                     }
                     else
                     {
-                        print("Uploaded " + type + " to public database!")
+                        logger.println("Uploaded " + type + " to public database!")
                     }
                 })
             }
@@ -74,7 +74,7 @@ class CloudManager: NSObject
     
     func fetchCloudData(entityType: String)
     {
-        print("↓ - Fetching Changes from Cloud")
+        logger.println("↓ - Fetching Changes from Cloud: " + entityType)
         
         let zoneChangeoptions = CKFetchRecordZoneChangesOptions()
         zoneChangeoptions.previousServerChangeToken = currentChangeToken
@@ -88,14 +88,14 @@ class CloudManager: NSObject
             {
                 self.updateFromRemote(record: record, object: recordToUpdate as! NSManagedObject, fields: self.getFieldsFromEntity(entityType: entityType))
                 
-                print(" ↓ - Updating)")
+                logger.println(" ↓ - Updating)")
             }
             else
             {
                 let newObject = NSEntityDescription.insertNewObject(forEntityName: entityType, into: self.appDelegate.persistentContainer.viewContext)
                 self.updateFromRemote(record: record, object: newObject, fields: self.getFieldsFromEntity(entityType: entityType))
                 
-                print(" ↓ - Inserting)")
+                logger.println(" ↓ - Inserting)")
             }
             
             OperationQueue.main.addOperation {
@@ -108,7 +108,7 @@ class CloudManager: NSObject
             let recordToDelete = self.fetchLocalObjects(type: entityType, predicate: deleteLocalObjectPredicate)?.first
             if recordToDelete != nil
             {
-                print(" ↓ - Deleting)")
+                logger.println(" ↓ - Deleting)")
                 
                 OperationQueue.main.addOperation {
                     self.appDelegate.persistentContainer.viewContext.delete(recordToDelete as! NSManagedObject)
@@ -120,7 +120,7 @@ class CloudManager: NSObject
         fetchRecordChangesOperation.recordZoneFetchCompletionBlock = {(recordZoneID, serverChangeToken, data, bool, error) in
             if error != nil
             {
-                print("Error: \(String(describing: error))")
+                logger.println("Error: \(String(describing: error))")
             }
             else
             {
@@ -131,7 +131,7 @@ class CloudManager: NSObject
         
         fetchRecordChangesOperation.completionBlock = { () in
             OperationQueue.main.addOperation {                
-                print("↓ - Finished Fetching Changes from Cloud")
+                logger.println("↓ - Finished Fetching Changes from Cloud")
                 
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "finishedFetchingFromCloud"), object: nil)
             }
@@ -142,13 +142,13 @@ class CloudManager: NSObject
     
     func fetchAllCloudData(entityType: String)
     {
-        print("↓ - Fetching Changes from Cloud")
+        logger.println("↓ - Fetching Changes from Cloud")
         
         let cloudEntityQuery = CKQuery(recordType: entityType, predicate: NSPredicate(format: "modificationDate >= %@", (UserDefaults.standard.object(forKey: "lastUpdatedData") ?? Date.distantPast) as! NSDate))
         publicDatabase.perform(cloudEntityQuery, inZoneWith: CKRecordZone.default().zoneID) { (results, error) in
             if error != nil
             {
-                print(error!)
+                logger.println(error!)
             }
             else
             {
@@ -170,7 +170,7 @@ class CloudManager: NSObject
                     }
                 }
                 
-                print(" Updated " + String(results?.count ?? 0) + " records from " + entityType)
+                logger.println(" Updated " + String(results?.count ?? 0) + " records from " + entityType)
                 
                 OperationQueue.main.addOperation {
                     self.savingCloudChanges = true
@@ -243,7 +243,7 @@ class CloudManager: NSObject
                         }
                         catch
                         {
-                            print(error)
+                            logger.println(error)
                         }
                     }
                     object.setValue(coreDataObject, forKey: field)

@@ -17,7 +17,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Loaded UserSchedule!")
+        logger.println("Loaded UserSchedule!")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -51,21 +51,21 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     
     func getUserID()
     {
-        print(" USRID: Fetching userID")
+        logger.println(" USRID: Fetching userID")
         if let userID = UserDefaults.standard.object(forKey: "userID") as? String
         {
-            print(" USRID: userID: " + userID)
+            logger.println(" USRID: userID: " + userID)
             queryUserSchedule(userID: userID)
         }
         else
         {
-            print(" USRID: No userID")
+            logger.println(" USRID: No userID")
         }
     }
     
     func queryUserSchedule(userID: String)
     {
-        print(" USRSCH: Fetching periodNamesRecord")
+        logger.println(" USRSCH: Fetching periodNamesRecord")
         let userScheduleReturnID = UUID().uuidString
         NotificationCenter.default.addObserver(self, selector: #selector(receiveUserSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + userScheduleReturnID), object: nil)
         
@@ -77,7 +77,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     {
         if let periodNamesRecord = notification.object as? CKRecord
         {
-            print(" USRSCH: Received periodNamesRecord")
+            logger.println(" USRSCH: Received periodNamesRecord")
             if periodNamesRecord.object(forKey: "periodNames") as? [String] != nil
             {
                 periodNames = periodNamesRecord.object(forKey: "periodNames") as! [String]
@@ -89,7 +89,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
         }
         else
         {
-            print(" USRSCH: Did not receive periodNamesRecord")
+            logger.println(" USRSCH: Did not receive periodNamesRecord")
             
             periodNames = ["", "", "", "", "", "", "", "", "Registry"]
         }

@@ -26,7 +26,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     var dateToggle = 0
     
     override func viewDidLoad() {
-        print("Loading Calender...")
+        logger.println("Loading Calender...")
         fetchAllWeeks(weeksToAdd: 0)
     }
     
@@ -70,12 +70,19 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
             (cell.viewWithTag(618) as! UILabel).textColor = UIColor.white
             cell.backgroundColor = UIColor(red: CGFloat(0.427), green: CGFloat(0.427), blue: CGFloat(0.427), alpha: 1)
         case 1:
-            if dateToggle == 1 && self.weekScheduleCodes.count == loadedWeeks*5
+            if dateToggle == 1 //&& self.weekScheduleCodes.count == loadedWeeks*5
             {
                 if indexPath.row%7 != 6 && indexPath.row%7 != 0
                 {
                     let weekendAdding = (((indexPath.row)/7)*2)+1
-                    (cell.viewWithTag(618) as! UILabel).text = self.weekScheduleCodes[indexPath.row-weekendAdding]
+                    if self.weekScheduleCodes.count > indexPath.row-weekendAdding
+                    {
+                        (cell.viewWithTag(618) as! UILabel).text = self.weekScheduleCodes[indexPath.row-weekendAdding]
+                    }
+                    else
+                    {
+                        (cell.viewWithTag(618) as! UILabel).text = "L"
+                    }
                 }
                 else
                 {
@@ -138,19 +145,19 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     
     func fetchWeek(date: Date, fetchingAllWeeks: Bool)
     {
-        print(" FWSCH: Fetching weekScheduleRecord")
+        logger.println(" FWSCH: Fetching weekScheduleRecord")
         
         let gregorian = Calendar(identifier: .gregorian)
-        var components = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
-        components.hour = 12
-        let startOfWeekFormatted = gregorian.date(from: components)!
+        var startOfWeekComponents = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+        startOfWeekComponents.hour = 12
+        let startOfWeekFormatted = gregorian.date(from: startOfWeekComponents)!
         
-        print(startOfWeekFormatted)
+        logger.println(startOfWeekFormatted)
         
         let weekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfWeekFormatted as CVarArg)
         if let weekScheduleRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "WeekSchedules", predicate: weekScheduleQueryPredicate)?.first as? NSManagedObject
         {
-            print(" FWSCH: Received weekScheduleRecord")
+            logger.println(" FWSCH: Received weekScheduleRecord")
             
             if fetchingAllWeeks
             {
@@ -188,7 +195,9 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         }
         else
         {
-            print(" FWSCH: Did not receive weekScheduleRecord")
+            logger.println(" FWSCH: Did not receive weekScheduleRecord")
+            
+            self.collectionView.reloadData()
         }
     }
     
@@ -206,18 +215,18 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     
     func fetchSchedule(scheduleCode: String)
     {
-        print(" FDSCH: Fetching schedule")
+        logger.println(" FDSCH: Fetching schedule")
         
         let scheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", scheduleCode)
         if let scheduleRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "Schedule", predicate: scheduleQueryPredicate)?.first as? NSManagedObject
         {
-            print(" FDSCH: Received scheduleRecord")
+            logger.println(" FDSCH: Received scheduleRecord")
             
             findTimes(scheduleRecord: scheduleRecord)
         }
         else
         {
-            print(" FDSCH: Did not receive scheduleRecord")
+            logger.println(" FDSCH: Did not receive scheduleRecord")
         }
     }
     
@@ -280,7 +289,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         }
         else
         {
-            print(" CAL: Loaded all codes for toggle: " + String(describing: weekScheduleCodes))
+            logger.println(" CAL: Loaded all codes for toggle: " + String(describing: weekScheduleCodes))
             if self.dateToggle == 1
             {
                 OperationQueue.main.addOperation {

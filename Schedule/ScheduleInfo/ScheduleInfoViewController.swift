@@ -123,7 +123,7 @@ class ScheduleInfoViewController: UIViewController {
         
         let timeUntilNext5minutes = TimeInterval(secondsToMinute + (minuteTo5minutes*60) - 60)
         
-        print("Timer will start in: " + String(timeUntilNext5minutes))
+        logger.println("Timer will start in: " + String(timeUntilNext5minutes))
         
         self.refreshTimer = Timer.scheduledTimer(timeInterval: timeUntilNext5minutes, target: self, selector: #selector(startRefreshTimer), userInfo: nil, repeats: false)
     }
@@ -132,7 +132,7 @@ class ScheduleInfoViewController: UIViewController {
     {
         refreshPeriodInfo(self)
         let _ = Timer.scheduledTimer(timeInterval: 300.0, target: self, selector: #selector(refreshPeriodInfo(_:)), userInfo: nil, repeats: true)
-        print("Starting timer!")
+        logger.println("Starting timer!")
     }
     
     func addCorners(view: UIView)
@@ -166,7 +166,7 @@ class ScheduleInfoViewController: UIViewController {
             if userID != nil && userID != ""
             {
                 UserDefaults.standard.set(userID, forKey: "userID")
-                print(" USRID: Set userID: " + userID!)
+                logger.println(" USRID: Set userID: " + userID!)
             }
             
             UserDefaults.standard.set(self.syncButtonValue, forKey: "syncData")
@@ -195,7 +195,7 @@ class ScheduleInfoViewController: UIViewController {
     
     @IBAction func refreshPeriodInfo(_ sender: Any)
     {
-        print("Refreshing:")
+        logger.println("Refreshing:")
         OperationQueue.main.addOperation {
             self.currentPeriodLabel.text = "Loading..."
             self.schoolStartEndLabel.text = "Loading..."
@@ -315,19 +315,34 @@ class ScheduleInfoViewController: UIViewController {
     {
         if let tomorrowPeriodTimes = appDelegate.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
         {
+            //Determine the date when school starts next
             var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
             let gregorian = Calendar(identifier: .gregorian)
-            let weekDaysToAdd = Double(60*60*24*(nextDayCount + 1)+3600)
-            startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
-            var components = gregorian.dateComponents([.month, .day, .weekday], from: startOfNextSchoolDayRaw)
-            components.hour = 12
-            let startOfNextSchoolDayFormatted = gregorian.date(from: components)!
             
+            //Find the current day of the week from 0-6
+            let todayComponents = gregorian.dateComponents([.weekday], from: Date())
+            let currentDayOfWeek = todayComponents.weekday! - 1
+            
+            let dayInSeconds = (60*60*24+3600)
+            
+            //Add currentDayOfWeek to the nextDayCount in seconds
+            let weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1 + currentDayOfWeek))
+            startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
+            
+            //Set the hour correctly
+            var startOfNextSchoolDayComponents = gregorian.dateComponents([.month, .day, .weekday], from: startOfNextSchoolDayRaw)
+            startOfNextSchoolDayComponents.hour = 12
+            let startOfNextSchoolDayFormatted = gregorian.date(from: startOfNextSchoolDayComponents)!
+            
+            //Format as MM/dd
             let formatter = DateFormatter()
             formatter.dateFormat = "MM/dd"
             let startOfNextSchoolDayString = formatter.string(from: startOfNextSchoolDayFormatted)
+            
+            //Get the start time and the weekday name
             let tomorrowSchoolStartTime = tomorrowPeriodTimes[0].split(separator: "-")[0]
-            let weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1)
+            
+            let weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1 + currentDayOfWeek)
             
             OperationQueue.main.addOperation {
                 let schoolStart1 = "School starts " + weekDayOfSchoolStart + ",\n" + startOfNextSchoolDayString
@@ -351,7 +366,7 @@ class ScheduleInfoViewController: UIViewController {
         
         if source.uploadData
         {
-            print("Exiting UserSchedule and uploading...")
+            logger.println("Exiting UserSchedule and uploading...")
             if let userID = UserDefaults.standard.object(forKey: "userID") as? String
             {
                 let userScheduleDictionary = ["periodNames":source.periodNames, "userID":userID] as [String : Any]
@@ -360,13 +375,13 @@ class ScheduleInfoViewController: UIViewController {
         }
         else
         {
-            print("Exiting UserSchedule...")
+            logger.println("Exiting UserSchedule...")
         }
     }
     
     @IBAction func exitCalendar(_ segue: UIStoryboardSegue)
     {
-        print("Exiting Calendar...")
+        logger.println("Exiting Calendar...")
     }
 }
 
