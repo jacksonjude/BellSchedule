@@ -143,7 +143,8 @@ class CloudManager: NSObject
     {
         logger.println("↓ - Fetching Changes from Cloud")
         
-        let cloudEntityQuery = CKQuery(recordType: entityType, predicate: NSPredicate(format: "modificationDate >= %@", (UserDefaults.standard.object(forKey: "lastUpdatedData") ?? Date.distantPast) as! NSDate))
+        let lastUpdatedDate = UserDefaults.standard.object(forKey: "lastUpdatedData") as? NSDate ?? Date.distantPast as NSDate
+        let cloudEntityQuery = CKQuery(recordType: entityType, predicate: NSPredicate(format: "modificationDate >= %@", lastUpdatedDate))
         publicDatabase.perform(cloudEntityQuery, inZoneWith: CKRecordZone.default().zoneID) { (results, error) in
             if error != nil
             {
