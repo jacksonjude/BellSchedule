@@ -337,7 +337,15 @@ class ScheduleInfoViewController: UIViewController {
             let dayInSeconds = (60*60*24+3600)
             
             //Add currentDayOfWeek to the nextDayCount in seconds
-            let weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1 + currentDayOfWeek))
+            var weekDaysToAdd = 0.0
+            if nextWeekCount > 0
+            {
+                weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1))
+            }
+            else
+            {
+                weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1 + currentDayOfWeek))
+            }
             startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
             
             //Set the hour correctly
@@ -353,7 +361,15 @@ class ScheduleInfoViewController: UIViewController {
             //Get the start time and the weekday name
             let tomorrowSchoolStartTime = tomorrowPeriodTimes[0].split(separator: "-")[0]
             
-            let weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1 + currentDayOfWeek)
+            var weekDayOfSchoolStart = ""
+            if nextWeekCount > 0
+            {
+                weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1)
+            }
+            else
+            {
+                weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1 + currentDayOfWeek)
+            }
             
             OperationQueue.main.addOperation {
                 let schoolStart1 = "School starts " + weekDayOfSchoolStart + ",\n" + startOfNextSchoolDayString
