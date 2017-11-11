@@ -10,7 +10,6 @@
 		7A0A74641F8C281400249FAB /* CooleyCasual.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A0A74631F8C277700249FAB /* CooleyCasual.ttf */; };
 		7A2D98921F95837900288665 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D98911F95837900288665 /* Logger.swift */; };
 		7A2D98941F95879B00288665 /* DeveloperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D98931F95879B00288665 /* DeveloperViewController.swift */; };
-		7A2D98971F958B8300288665 /* Consola.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A2D98961F958B8200288665 /* Consola.ttf */; };
 		7A4374631F8F252400E4BDB2 /* CalendarCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4374621F8F252400E4BDB2 /* CalendarCollectionViewController.swift */; };
 		7A796F8C1F871D1400D9658D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F8B1F871D1400D9658D /* AppDelegate.swift */; };
 		7A796F8E1F871D1400D9658D /* ScheduleInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F8D1F871D1400D9658D /* ScheduleInfoViewController.swift */; };
@@ -20,6 +19,7 @@
 		7A796F991F871D1400D9658D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A796F971F871D1400D9658D /* LaunchScreen.storyboard */; };
 		7A796FA31F871D3300D9658D /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A796FA21F871D3300D9658D /* CloudKit.framework */; };
 		7A796FA51F87250600D9658D /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796FA41F87250600D9658D /* CloudManager.swift */; };
+		7AA09CDF1F9C4B4D006B5F08 /* Consola.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */; };
 		7AC0A3381F8C3EE0005E5FA3 /* ScheduleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */; };
 		7AF3A2501F8DC01B00C509AC /* UserScheduleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3A24F1F8DC01B00C509AC /* UserScheduleTableViewController.swift */; };
 /* End PBXBuildFile section */
@@ -28,7 +28,6 @@
 		7A0A74631F8C277700249FAB /* CooleyCasual.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CooleyCasual.ttf; sourceTree = "<group>"; };
 		7A2D98911F95837900288665 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		7A2D98931F95879B00288665 /* DeveloperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperViewController.swift; sourceTree = "<group>"; };
-		7A2D98961F958B8200288665 /* Consola.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consola.ttf; sourceTree = "<group>"; };
 		7A4374621F8F252400E4BDB2 /* CalendarCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewController.swift; sourceTree = "<group>"; };
 		7A796F881F871D1400D9658D /* Schedule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedule.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A796F8B1F871D1400D9658D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,6 +40,7 @@
 		7A796FA01F871D2F00D9658D /* Schedule.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Schedule.entitlements; sourceTree = "<group>"; };
 		7A796FA21F871D3300D9658D /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		7A796FA41F87250600D9658D /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
+		7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consola.ttf; sourceTree = "<group>"; };
 		7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoManager.swift; sourceTree = "<group>"; };
 		7AF3A24F1F8DC01B00C509AC /* UserScheduleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScheduleTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,7 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				7A0A74631F8C277700249FAB /* CooleyCasual.ttf */,
-				7A2D98961F958B8200288665 /* Consola.ttf */,
+				7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -220,7 +220,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A2D98971F958B8300288665 /* Consola.ttf in Resources */,
+				7AA09CDF1F9C4B4D006B5F08 /* Consola.ttf in Resources */,
 				7A0A74641F8C281400249FAB /* CooleyCasual.ttf in Resources */,
 				7A796F991F871D1400D9658D /* LaunchScreen.storyboard in Resources */,
 				7A796F961F871D1400D9658D /* Assets.xcassets in Resources */,

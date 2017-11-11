@@ -120,7 +120,12 @@ class ScheduleInfoViewController: UIViewController {
         calculateTimerRefresh()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    deinit
+    {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if refreshTimer != nil
         {
             refreshTimer?.invalidate()
