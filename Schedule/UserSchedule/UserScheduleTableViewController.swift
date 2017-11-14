@@ -130,7 +130,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let userPeriodChangeAlert = UIAlertController(title: "UserID", message: "Set your userID to be fetched", preferredStyle: .alert)
+        let userPeriodChangeAlert = UIAlertController(title: "Period Name Change", message: "Edit the name of the period", preferredStyle: .alert)
         
         userPeriodChangeAlert.addTextField { (textFeild) in
             textFeild.text = self.periodNames[indexPath.row]
