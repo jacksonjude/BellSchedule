@@ -149,6 +149,8 @@ class CloudManager: NSObject
             if error != nil
             {
                 logger.println(error!)
+                
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "cloudKitError"), object: error!)
             }
             else
             {

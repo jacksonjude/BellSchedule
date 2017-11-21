@@ -91,11 +91,18 @@ class ScheduleInfoViewController: UIViewController {
     var syncButtonValue = true
     var refreshTimer: Timer?
     
+    let kCurrentPeriodLabel = 0
+    let kSchoolStartTime = 1
+    let kTomorrowStartTimeLabel = 2
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        scheduleManager = ScheduleInfoManager(viewController: self)
         // Do any additional setup after loading the view, typically from a nib.
+        
+        scheduleManager = ScheduleInfoManager(viewController: self)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(printCloudKitError(notification:)), name: Notification.Name(rawValue: "cloudKitError"), object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -391,9 +398,55 @@ class ScheduleInfoViewController: UIViewController {
         }
     }
     
+    @objc func printCloudKitError(notification: NSNotification)
+    {
+        OperationQueue.main.addOperation {
+            if (self.currentPeriodLabel.text?.contains("Loading...") ?? true)
+            {
+                let cloudKitError = notification.object as! CKError
+                let errorDesc = cloudKitError.localizedDescription
+                switch cloudKitError.code
+                {
+                    case .internalError:
+                        self.currentPeriodLabel.text = "Internal CloudKit Error\nSign in to iCloud"
+                    case .serviceUnavailable:
+                        self.currentPeriodLabel.text = "CloudKit Service Unavailable\nSign in to iCloud"
+                    case .notAuthenticated:
+                        self.currentPeriodLabel.text = "Not Authenticated\nSign in to iCloud"
+                    case .networkFailure:
+                        self.currentPeriodLabel.text = "Network Failure\nCheck your connection"
+                    case .networkUnavailable:
+                        self.currentPeriodLabel.text = "Network Unavailable\nCheck your connection"
+                    default:
+                        self.currentPeriodLabel.text = "CloudKit Error:\n" + errorDesc
+                }
+            }
+        }
+    }
+    
+    func printInternalError(message: String, labelNumber: Int)
+    {
+        var labelToSwitch: UILabel?
+        
+        switch labelNumber
+        {
+            case kCurrentPeriodLabel:
+                labelToSwitch = self.currentPeriodLabel
+            case kSchoolStartTime:
+                labelToSwitch = self.schoolStartEndLabel
+            case kTomorrowStartTimeLabel:
+                labelToSwitch = self.tomorrowStartTimeLabel
+            default:
+                labelToSwitch = self.currentPeriodLabel
+        }
+        
+        OperationQueue.main.addOperation {
+            labelToSwitch!.text = "Internal Error:\n" + message
+        }
+    }
+    
     @IBAction func exitUserScheduleTableView(_ segue: UIStoryboardSegue)
     {
-        
         let source = segue.source as! UserScheduleTableViewController
         
         if source.uploadData
@@ -401,8 +454,11 @@ class ScheduleInfoViewController: UIViewController {
             logger.println("Exiting UserSchedule and uploading...")
             if let userID = UserDefaults.standard.object(forKey: "userID") as? String
             {
-                let userScheduleDictionary = ["periodNames":source.periodNames, "userID":userID] as [String : Any]
-                appDelegate.cloudManager!.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
+                if (source.periodNames.count > 0)
+                {
+                    let userScheduleDictionary = ["periodNames":source.periodNames, "userID":userID] as [String : Any]
+                    appDelegate.cloudManager!.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
+                }
             }
         }
         else

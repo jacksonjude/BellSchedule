@@ -11,6 +11,10 @@ import UIKit
 import CoreData
 
 class ScheduleInfoManager: NSObject {
+    let kCurrentPeriodLabel = 0
+    let kSchoolStartTime = 1
+    let kTomorrowStartTimeLabel = 2
+    
     var viewController: ScheduleInfoViewController
     
     var nextWeekSchedules: Array<String>?
@@ -108,7 +112,7 @@ class ScheduleInfoManager: NSObject {
         
         /*if let periodNamesRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "UserSchedule", predicate: userScheduleQueryPredicate)?.first as? NSManagedObject
         {
-            print(" USRSCH: Received periodNamesRecord")
+            logger.println(" USRSCH: Received periodNamesRecord")
             periodNames = periodNamesRecord.value(forKey: "periodNames") as? [String]
             
             if periodPrinted
@@ -121,7 +125,7 @@ class ScheduleInfoManager: NSObject {
         }
         else
         {
-            print(" USRSCH: Did not receive periodNamesRecord")
+            logger.println(" USRSCH: Did not receive periodNamesRecord")
         }*/
     }
     
@@ -176,7 +180,8 @@ class ScheduleInfoManager: NSObject {
         else
         {
             logger.println(" FWSCH: Did not receive weekScheduleRecord")
-            viewController.printCurrentStatus(message: "Error on query")
+            
+            viewController.printInternalError(message: "Week schedule codes not found", labelNumber: kCurrentPeriodLabel)
         }
     }
     
@@ -283,6 +288,8 @@ class ScheduleInfoManager: NSObject {
             else
             {
                 logger.println(" FTOMWS: Did not receive tomorrowSchedule")
+                
+                viewController.printInternalError(message: "Tomorrow schedule code not found", labelNumber: kTomorrowStartTimeLabel)
             }
         }
     }
@@ -312,6 +319,8 @@ class ScheduleInfoManager: NSObject {
         else
         {
             logger.println(" FNXTWK: Did not receive nextWeekScheduleRecord")
+            
+            viewController.printInternalError(message: "Next week schedule codes not found", labelNumber: kTomorrowStartTimeLabel)
         }
     }
     
