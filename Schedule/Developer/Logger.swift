@@ -10,12 +10,12 @@ import Foundation
 
 class Logger: NSObject
 {
-    var printedData = ""
+    static var printedData = ""
     
-    func println(_ message: Any)
+    static func println(_ message: Any)
     {
         print(message)
-        printedData = printedData + String(describing: message) + "\n"
+        Logger.printedData = printedData + String(describing: message) + "\n"
         NotificationCenter.default.post(name: Notification.Name(rawValue: "loggerChangedData"), object: nil)
     }
 }

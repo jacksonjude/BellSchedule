@@ -16,7 +16,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        logger.println("Loading UserSchedule...")
+        Logger.println("Loading UserSchedule...")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,7 +47,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
             if userID != nil && userID != ""
             {
                 UserDefaults.standard.set(userID, forKey: "userID")
-                logger.println(" USRID: Set userID: " + userID!)
+                Logger.println(" USRID: Set userID: " + userID!)
                 self.getUserID()
             }
             else
@@ -81,33 +81,33 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     
     func getUserID()
     {
-        logger.println(" USRID: Fetching userID")
+        Logger.println(" USRID: Fetching userID")
         if let userID = UserDefaults.standard.object(forKey: "userID") as? String
         {
-            logger.println(" USRID: userID: " + userID)
+            Logger.println(" USRID: userID: " + userID)
             queryUserSchedule(userID: userID)
         }
         else
         {
-            logger.println(" USRID: No userID")
+            Logger.println(" USRID: No userID")
         }
     }
     
     func queryUserSchedule(userID: String)
     {
-        logger.println(" USRSCH: Fetching periodNamesRecord")
+        Logger.println(" USRSCH: Fetching periodNamesRecord")
         let userScheduleReturnID = UUID().uuidString
         NotificationCenter.default.addObserver(self, selector: #selector(receiveUserSchedule(notification:)), name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + userScheduleReturnID), object: nil)
         
         let userScheduleQueryPredicate = NSPredicate(format: "userID == %@", userID)
-        appDelegate.cloudManager!.fetchPublicDatabaseObject(type: "UserSchedule", predicate: userScheduleQueryPredicate, returnID: userScheduleReturnID)
+        CloudManager.fetchPublicDatabaseObject(type: "UserSchedule", predicate: userScheduleQueryPredicate, returnID: userScheduleReturnID)
     }
     
     @objc func receiveUserSchedule(notification: NSNotification)
     {
         if let periodNamesRecord = notification.object as? CKRecord
         {
-            logger.println(" USRSCH: Received periodNamesRecord")
+            Logger.println(" USRSCH: Received periodNamesRecord")
             if periodNamesRecord.object(forKey: "periodNames") as? [String] != nil
             {
                 periodNames = periodNamesRecord.object(forKey: "periodNames") as! [String]
@@ -119,7 +119,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
         }
         else
         {
-            logger.println(" USRSCH: Did not receive periodNamesRecord")
+            Logger.println(" USRSCH: Did not receive periodNamesRecord")
             
             periodNames = ["", "", "", "", "", "", "", "", "Registry"]
         }

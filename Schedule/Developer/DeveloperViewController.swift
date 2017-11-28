@@ -40,7 +40,7 @@ class DeveloperViewController: UIViewController
     
     @objc func setLogText()
     {
-        logTextView.text = logger.printedData
+        logTextView.text = Logger.printedData
     }
     
     @IBAction func clearCoreData(_ sender: Any) {
@@ -48,28 +48,28 @@ class DeveloperViewController: UIViewController
         
         for entityType in entityTypes
         {
-            if let objects = appDelegate.cloudManager?.fetchLocalObjects(type: entityType, predicate: NSPredicate(format: "TRUEPREDICATE")) as? [NSManagedObject]
+            if let objects = CloudManager.fetchLocalObjects(type: entityType, predicate: NSPredicate(format: "TRUEPREDICATE")) as? [NSManagedObject]
             {
                 for object in objects
                 {
-                    appDelegate.persistentContainer.viewContext.delete(object)
+                    CoreDataStack.persistentContainer.viewContext.delete(object)
                 }
                 
-                logger.println("Deleted " + String(objects.count) + " " + entityType)
+                Logger.println("Deleted " + String(objects.count) + " " + entityType)
             }
             else
             {
-                logger.println("Deleted 0 " + entityType)
+                Logger.println("Deleted 0 " + entityType)
             }
         }
         
-        appDelegate.saveContext()
+        CoreDataStack.saveContext()
         
         UserDefaults.standard.set(nil, forKey: "lastUpdatedData")
     }
     
     @IBAction func clearConsole(_ sender: Any) {
-        logger.printedData = ""
+        Logger.printedData = ""
         setLogText()
     }
 }
