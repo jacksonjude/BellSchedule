@@ -221,7 +221,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         {
             logger.println(" FDSCH: Did not receive scheduleRecord")
             
-            alertUser(message: "Code: " + scheduleCode + "\nTDB")
+            alertUser(message: "Code: " + scheduleCode + "\nTBD")
         }
     }
     
