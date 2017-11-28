@@ -12,61 +12,6 @@ import CoreData
 
 let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
-extension Date {
-    struct Gregorian {
-        static let calendar = Calendar(identifier: .gregorian)
-    }
-    var startOfWeek: Date? {
-        return Gregorian.calendar.date(from: Gregorian.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self))
-    }
-    func getStartOfNextWeek(nextWeek: Int) -> Date {
-        var nextWeekComponents = Gregorian.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear, .weekOfMonth], from: self)
-        if nextWeekComponents.weekOfYear != nil
-        {
-            nextWeekComponents.weekOfYear! += nextWeek
-        }
-        return Gregorian.calendar.date(from: nextWeekComponents)!
-    }
-    func getDayOfWeek() -> Int {
-        let todayDate = Date()
-        let calendar = NSCalendar(calendarIdentifier: .gregorian)!
-        let components = calendar.components(.weekday, from: todayDate)
-        let weekDay = components.weekday
-        return weekDay!-1
-    }
-    func getStringDayOfWeek(day: Int) -> String
-    {
-        switch day {
-        case 0:
-            return "Sunday"
-        case 1:
-            return "Monday"
-        case 2:
-            return "Tuesday"
-        case 3:
-            return "Wednesday"
-        case 4:
-            return "Thursday"
-        case 5:
-            return "Friday"
-        case 6:
-            return "Saturday"
-        default:
-            return ""
-        }
-    }
-    func convertToStandardTime(date: String) -> String!
-    {
-        var hourMin = date.split(separator: ":")
-        var newDate = date
-        if Int(hourMin[0])! > 12
-        {
-            newDate = String(Int(hourMin[0])!-12) + ":" + hourMin[1]
-        }
-        return newDate
-    }
-}
-
 extension UIView
 {
     func addCorners()
@@ -76,7 +21,7 @@ extension UIView
     }
 }
 
-class ScheduleInfoViewController: UIViewController {
+class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     var scheduleManager: ScheduleInfoManager?
     
     @IBOutlet weak var currentPeriodLabel: UILabel!
@@ -100,7 +45,7 @@ class ScheduleInfoViewController: UIViewController {
         
         // Do any additional setup after loading the view, typically from a nib.
         
-        scheduleManager = ScheduleInfoManager(viewController: self)
+        scheduleManager = ScheduleInfoManager(delegate: self, downloadData: true)
         
         NotificationCenter.default.addObserver(self, selector: #selector(printCloudKitError(notification:)), name: Notification.Name(rawValue: "cloudKitError"), object: nil)
     }
@@ -152,7 +97,7 @@ class ScheduleInfoViewController: UIViewController {
         
         let timeUntilNext5minutes = TimeInterval(secondsToMinute + (minuteTo5minutes*60) - 60)
         
-        logger.println("Timer will start in: " + String(timeUntilNext5minutes))
+        Logger.println("Timer will start in: " + String(timeUntilNext5minutes))
         
         self.refreshTimer = Timer.scheduledTimer(timeInterval: timeUntilNext5minutes, target: self, selector: #selector(startRefreshTimer), userInfo: nil, repeats: false)
     }
@@ -161,7 +106,7 @@ class ScheduleInfoViewController: UIViewController {
     {
         refreshPeriodInfo(self)
         let _ = Timer.scheduledTimer(timeInterval: 300.0, target: self, selector: #selector(refreshPeriodInfo(_:)), userInfo: nil, repeats: true)
-        logger.println("Starting timer!")
+        Logger.println("Starting timer!")
     }
     
     //MARK: Settings
@@ -189,7 +134,7 @@ class ScheduleInfoViewController: UIViewController {
             if userID != nil && userID != ""
             {
                 UserDefaults.standard.set(userID, forKey: "userID")
-                logger.println(" USRID: Set userID: " + userID!)
+                Logger.println(" USRID: Set userID: " + userID!)
             }
             
             UserDefaults.standard.set(self.syncButtonValue, forKey: "syncData")
@@ -218,7 +163,7 @@ class ScheduleInfoViewController: UIViewController {
     
     @IBAction func refreshPeriodInfo(_ sender: Any)
     {
-        logger.println("Refreshing:")
+        Logger.println("Refreshing:")
         OperationQueue.main.addOperation {
             self.currentPeriodLabel.text = "Loading..."
             self.schoolStartEndLabel.text = "Loading..."
@@ -248,7 +193,7 @@ class ScheduleInfoViewController: UIViewController {
         return periodStartDate
     }
     
-    func setSchoolStartEndLabel(periodTimes: Array<String>)
+    func printSchoolStartEndTime(periodTimes: Array<String>)
     {
         let currentDate = Date()
         
@@ -289,7 +234,7 @@ class ScheduleInfoViewController: UIViewController {
     
     //MARK: Print
     
-    func printCurrentStatus(message: String)
+    func printCurrentMessage(message: String)
     {
         OperationQueue.main.addOperation {
             self.currentPeriodLabel.text = message
@@ -391,10 +336,10 @@ class ScheduleInfoViewController: UIViewController {
         }
     }
     
-    func printSchoolStartTimeStatus(status: String)
+    func printSchoolStartEndMessage(message: String)
     {
         OperationQueue.main.addOperation {
-            self.schoolStartEndLabel.text = status
+            self.schoolStartEndLabel.text = message
         }
     }
     
@@ -451,30 +396,30 @@ class ScheduleInfoViewController: UIViewController {
         
         if source.uploadData
         {
-            logger.println("Exiting UserSchedule and uploading...")
+            Logger.println("Exiting UserSchedule and uploading...")
             if let userID = UserDefaults.standard.object(forKey: "userID") as? String
             {
                 if (source.periodNames.count > 0)
                 {
                     let userScheduleDictionary = ["periodNames":source.periodNames, "userID":userID] as [String : Any]
-                    appDelegate.cloudManager!.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
+                    CloudManager.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
                 }
             }
         }
         else
         {
-            logger.println("Exiting UserSchedule...")
+            Logger.println("Exiting UserSchedule...")
         }
     }
     
     @IBAction func exitCalendar(_ segue: UIStoryboardSegue)
     {
-        logger.println("Exiting Calendar...")
+        Logger.println("Exiting Calendar...")
     }
     
     @IBAction func exitDeveloperView(_ segue: UIStoryboardSegue)
     {
-        logger.println("Exiting Developer View...")
+        Logger.println("Exiting Developer View...")
     }
 }
 
