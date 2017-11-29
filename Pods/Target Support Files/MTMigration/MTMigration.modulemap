@@ -1,0 +1,6 @@
+framework module MTMigration {
+  umbrella header "MTMigration-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -22,13 +22,13 @@ class CoreDataStack: NSObject
         
         var persistentStoreDescriptions: NSPersistentStoreDescription
         
-        let storeUrl =  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.jacksonjude.BellSchedule")!.appendingPathComponent("Schedule.sqlite")
-        
-        
-        let description = NSPersistentStoreDescription()
-        description.shouldInferMappingModelAutomatically = true
-        description.shouldMigrateStoreAutomatically = true
-        description.url = storeUrl
+//        let storeUrl =  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.jacksonjude.BellSchedule")!.appendingPathComponent("Schedule.sqlite")
+//
+//
+//        let description = NSPersistentStoreDescription()
+//        description.shouldInferMappingModelAutomatically = true
+//        description.shouldMigrateStoreAutomatically = true
+//        description.url = storeUrl
         
         container.persistentStoreDescriptions = [NSPersistentStoreDescription(url:  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.jacksonjude.BellSchedule")!.appendingPathComponent("Schedule.sqlite"))]
         
