@@ -167,7 +167,28 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
         super.viewDidLoad()
         // Do any additional setup after loading the view from its nib.
         
+        self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         scheduleInfoManager = ScheduleInfoManager(delegate: self, downloadData: false)
+        
+        scheduleInfoManager?.queryWeekSchedule()
+        
+        schoolStartEndLabel.text = "Loading..."
+        tomorrowStartTimeLabel.text = "Loading..."
+    }
+    
+    func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
+        print(maxSize)
+        if activeDisplayMode == .expanded
+        {
+            self.preferredContentSize = CGSize(width: maxSize.width, height: 180)
+        }
+        else
+        {
+            self.preferredContentSize = maxSize
+        }
     }
     
     override func didReceiveMemoryWarning() {

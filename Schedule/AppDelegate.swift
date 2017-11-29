@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MTMigration
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,6 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         {
             firstLaunch = true
             UserDefaults.standard.set(618, forKey: "firstLaunch")
+        }
+        
+        MTMigration.migrate(toVersion: "1.1") {
+            UserDefaults.standard.set(nil, forKey: "lastUpdatedData")
         }
         
         return true
