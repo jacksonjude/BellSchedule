@@ -160,18 +160,28 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
     }
     
     var scheduleInfoManager: ScheduleInfoManager?
+    var viewDidJustLoad = true
         
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view from its nib.
         
         self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
+        
+        scheduleInfoManager = ScheduleInfoManager(delegate: self, downloadData: true)
+        
+        viewDidJustLoad = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        scheduleInfoManager = ScheduleInfoManager(delegate: self, downloadData: false)
-        
-        scheduleInfoManager?.queryWeekSchedule()
+        if !viewDidJustLoad
+        {
+            scheduleInfoManager?.queryWeekSchedule()
+        }
+        else
+        {
+            viewDidJustLoad = false
+        }
         
         schoolStartEndLabel.text = "Loading..."
         tomorrowStartTimeLabel.text = "Loading..."

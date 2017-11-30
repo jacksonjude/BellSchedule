@@ -30,7 +30,6 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     @IBOutlet weak var editScheduleButton: UIButton!
     @IBOutlet weak var openCalenderButton: UIButton!
     
-    var periodPrinted = false
     var periodNumber: Int?
     
     var syncButtonValue = true
@@ -256,9 +255,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
             }
             
             self.periodNumber = periodNumber
-            
-            periodPrinted = true
-            
+                        
             if periodNames != nil
             {
                 printPeriodName(todaySchedule: todaySchedule, periodNames: periodNames!)

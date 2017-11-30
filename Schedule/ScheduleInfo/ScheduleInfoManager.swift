@@ -10,6 +10,78 @@ import CloudKit
 import UIKit
 import CoreData
 
+extension Date {
+    struct Gregorian {
+        static let calendar = Calendar(identifier: .gregorian)
+    }
+    var startOfWeek: Date? {
+        return Gregorian.calendar.date(from: Gregorian.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self))
+    }
+    func getStartOfNextWeek(nextWeek: Int) -> Date {
+        var nextWeekComponents = Gregorian.calendar.dateComponents([.yearForWeekOfYear, .weekOfYear, .weekOfMonth], from: self)
+        if nextWeekComponents.weekOfYear != nil
+        {
+            nextWeekComponents.weekOfYear! += nextWeek
+        }
+        return Gregorian.calendar.date(from: nextWeekComponents)!
+    }
+    func getDayOfWeek() -> Int {
+        let todayDate = Date()
+        let calendar = NSCalendar(calendarIdentifier: .gregorian)!
+        let components = calendar.components(.weekday, from: todayDate)
+        let weekDay = components.weekday
+        return weekDay!-1
+    }
+    func getStringDayOfWeek(day: Int) -> String
+    {
+        switch day {
+        case 0:
+            return "Sunday"
+        case 1:
+            return "Monday"
+        case 2:
+            return "Tuesday"
+        case 3:
+            return "Wednesday"
+        case 4:
+            return "Thursday"
+        case 5:
+            return "Friday"
+        case 6:
+            return "Saturday"
+        default:
+            return ""
+        }
+    }
+    func convertToStandardTime(date: String) -> String!
+    {
+        var hourMin = date.split(separator: ":")
+        var newDate = date
+        if Int(hourMin[0])! > 12
+        {
+            newDate = String(Int(hourMin[0])!-12) + ":" + hourMin[1]
+        }
+        return newDate
+    }
+}
+
+protocol ScheduleInfoDelegate
+{
+    func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject, periodNames: Array<String>?)
+    
+    func printPeriodName(todaySchedule: NSManagedObject, periodNames: Array<String>)
+    
+    func printCurrentMessage(message: String)
+    
+    func printInternalError(message: String, labelNumber: Int)
+    
+    func printSchoolStartEndMessage(message: String)
+    
+    func printSchoolStartEndTime(periodTimes: Array<String>)
+    
+    func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int)
+}
+
 class ScheduleInfoManager: NSObject {
     let kCurrentPeriodLabel = 0
     let kSchoolStartTime = 1
@@ -69,9 +141,10 @@ class ScheduleInfoManager: NSObject {
         
         UserDefaults.standard.set(Date(), forKey: "fetchingCloudData")
         
-        CloudManager.fetchAllCloudData(entityType: "WeekSchedules")
-        CloudManager.fetchAllCloudData(entityType: "Schedule")
-        //appDelegate.cloudManager!.fetchAllCloudData(entityType: "UserSchedule")
+        CloudManager.fetchAllDataQueue.append("WeekSchedules")
+        CloudManager.fetchAllDataQueue.append("Schedule")
+        
+        CloudManager.initFetchAllDataQueue()
     }
     
     @objc func finishedFetchingData()
@@ -116,24 +189,6 @@ class ScheduleInfoManager: NSObject {
         let userScheduleQueryPredicate = NSPredicate(format: "userID == %@", userID)
         
         CloudManager.fetchPublicDatabaseObject(type: "UserSchedule", predicate: userScheduleQueryPredicate, returnID: queryUserScheduleID)
-        
-        /*if let periodNamesRecord = appDelegate.cloudManager!.fetchLocalObjects(type: "UserSchedule", predicate: userScheduleQueryPredicate)?.first as? NSManagedObject
-        {
-            Logger.println(" USRSCH: Received periodNamesRecord")
-            periodNames = periodNamesRecord.value(forKey: "periodNames") as? [String]
-            
-            if periodPrinted
-            {
-                if periodNames!.count > periodNumber!-1
-                {
-                    viewController.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
-                }
-            }
-        }
-        else
-        {
-            Logger.println(" USRSCH: Did not receive periodNamesRecord")
-        }*/
     }
     
     @objc func receiveUserSchedule(notification: NSNotification)
@@ -378,6 +433,7 @@ class ScheduleInfoManager: NSObject {
                 if periodRangeContainsDate
                 {
                     periodFound = true
+                    periodPrinted = true
                     Logger.println(" FCURPER: Found current period!")
                     infoDelegate.printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn, todaySchedule: self.todaySchedule!, periodNames: self.periodNames)
                     

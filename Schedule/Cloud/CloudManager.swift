@@ -13,8 +13,10 @@ import UIKit
 
 class CloudManager: NSObject
 {
-    static let publicDatabase = CKContainer.default().publicCloudDatabase
+    static let publicDatabase = CKContainer(identifier: "iCloud.com.jacksonjude.BellSchedule").publicCloudDatabase
     static var savingCloudChanges = false
+    static var fetchAllDataQueue = Array<String>()
+    static var queueIsRunning = false
     
     static func fetchPublicDatabaseObject(type: String, predicate: NSPredicate, returnID: String)
     {
@@ -72,6 +74,8 @@ class CloudManager: NSObject
     
     static func fetchAllCloudData(entityType: String)
     {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.contextSaved), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
+        
         Logger.println("↓ - Fetching Changes from Cloud")
         
         let lastUpdatedDate = UserDefaults.standard.object(forKey: "lastUpdatedData") as? NSDate ?? Date.distantPast as NSDate
@@ -114,12 +118,42 @@ class CloudManager: NSObject
         }
     }
     
-    @objc func contextSaved()
+    @objc static func contextSaved()
     {
         if CloudManager.savingCloudChanges
         {
             CloudManager.savingCloudChanges = false
             NotificationCenter.default.post(name: Notification.Name(rawValue: "finishedFetchingAllData"), object: nil)
+            
+            NotificationCenter.default.removeObserver(self)
+            
+            loopFetchAllData()
+        }
+    }
+    
+    static func initFetchAllDataQueue()
+    {
+        if !queueIsRunning
+        {
+            queueIsRunning = true
+            
+            loopFetchAllData()
+        }
+    }
+    
+    static func loopFetchAllData()
+    {
+        if fetchAllDataQueue.count > 0
+        {
+            let entityTypeToFetch = fetchAllDataQueue[0]
+            
+            fetchAllDataQueue.remove(at: 0)
+            
+            fetchAllCloudData(entityType: entityTypeToFetch)
+        }
+        else
+        {
+            queueIsRunning = false
         }
     }
     
@@ -142,13 +176,6 @@ class CloudManager: NSObject
         }
         
         return fetchResults
-    }
-    
-    override init()
-    {
-        super.init()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(contextSaved), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
     }
     
     static func updateFromRemote(record: CKRecord, object: NSManagedObject, fields: Array<String>)
