@@ -24,9 +24,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
     }
     
     func printCurrentMessage(message: String) {
-        OperationQueue.main.addOperation {
-            self.schoolStartEndLabel.text = message
-        }
+        return
     }
     
     func printInternalError(message: String, labelNumber: Int) {
