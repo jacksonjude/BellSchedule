@@ -33,6 +33,7 @@
 		7A796F991F871D1400D9658D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A796F971F871D1400D9658D /* LaunchScreen.storyboard */; };
 		7A796FA31F871D3300D9658D /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A796FA21F871D3300D9658D /* CloudKit.framework */; };
 		7A796FA51F87250600D9658D /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796FA41F87250600D9658D /* CloudManager.swift */; };
+		7A7E98721FCF8EEC00309E3E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A7E98711FCF8EEC00309E3E /* Default-568h@2x.png */; };
 		7AA09CDF1F9C4B4D006B5F08 /* Consola.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */; };
 		7AC0A3381F8C3EE0005E5FA3 /* ScheduleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */; };
 		7AF3A2501F8DC01B00C509AC /* UserScheduleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3A24F1F8DC01B00C509AC /* UserScheduleTableViewController.swift */; };
@@ -87,6 +88,7 @@
 		7A796FA01F871D2F00D9658D /* Schedule.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Schedule.entitlements; sourceTree = "<group>"; };
 		7A796FA21F871D3300D9658D /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		7A796FA41F87250600D9658D /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
+		7A7E98711FCF8EEC00309E3E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consola.ttf; sourceTree = "<group>"; };
 		7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoManager.swift; sourceTree = "<group>"; };
 		7AF3A24F1F8DC01B00C509AC /* UserScheduleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScheduleTableViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 		7A796F7F1F871D1400D9658D = {
 			isa = PBXGroup;
 			children = (
+				7A7E98711FCF8EEC00309E3E /* Default-568h@2x.png */,
 				7A61F5A51FCD35890060580A /* Shared */,
 				7A796F8A1F871D1400D9658D /* Schedule */,
 				7A24189C1FC7E883000407B8 /* ScheduleWidget */,
@@ -368,6 +371,7 @@
 				7A796F991F871D1400D9658D /* LaunchScreen.storyboard in Resources */,
 				7A796F961F871D1400D9658D /* Assets.xcassets in Resources */,
 				7A796F911F871D1400D9658D /* Main.storyboard in Resources */,
+				7A7E98721FCF8EEC00309E3E /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
