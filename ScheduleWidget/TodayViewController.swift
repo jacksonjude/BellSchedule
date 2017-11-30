@@ -176,19 +176,15 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
     override func viewDidAppear(_ animated: Bool) {
         if !viewDidJustLoad
         {
-            scheduleInfoManager?.queryWeekSchedule()
+            updateScheduleInfo()
         }
         else
         {
             viewDidJustLoad = false
         }
-        
-        schoolStartEndLabel.text = "Loading..."
-        tomorrowStartTimeLabel.text = "Loading..."
     }
     
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
-        print(maxSize)
         if activeDisplayMode == .expanded
         {
             self.preferredContentSize = CGSize(width: maxSize.width, height: 180)
@@ -197,6 +193,10 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
         {
             self.preferredContentSize = maxSize
         }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        updateScheduleInfo()
     }
     
     override func didReceiveMemoryWarning() {
@@ -211,6 +211,16 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
         // If there's no update required, use NCUpdateResult.NoData
         // If there's an update, use NCUpdateResult.NewData
         
+        updateScheduleInfo()
+        
         completionHandler(NCUpdateResult.newData)
+    }
+    
+    func updateScheduleInfo()
+    {
+        schoolStartEndLabel.text = "Loading..."
+        tomorrowStartTimeLabel.text = "Loading..."
+        
+        scheduleInfoManager?.downloadCloudData()
     }
 }

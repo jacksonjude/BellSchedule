@@ -127,7 +127,6 @@
 		7A2D98951F9587AC00288665 /* Developer */ = {
 			isa = PBXGroup;
 			children = (
-				7A2D98911F95837900288665 /* Logger.swift */,
 				7A2D98931F95879B00288665 /* DeveloperViewController.swift */,
 			);
 			path = Developer;
@@ -144,7 +143,11 @@
 		7A61F5A51FCD35890060580A /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				7A61F5A91FCD3A600060580A /* CoreDataStack.swift */,
+				7AF3A24D1F8DBE0500C509AC /* Assets */,
+				7AC47B361FCFC9C3009A2F38 /* CoreData */,
+				7A796FA41F87250600D9658D /* CloudManager.swift */,
+				7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */,
+				7A2D98911F95837900288665 /* Logger.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -173,9 +176,7 @@
 		7A796F8A1F871D1400D9658D /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				7AF3A24D1F8DBE0500C509AC /* Assets */,
 				7A43745F1F8F241900E4BDB2 /* Calendar */,
-				7AF3A24C1F8DBDEF00C509AC /* Cloud */,
 				7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */,
 				7AF3A24E1F8DBF7900C509AC /* UserSchedule */,
 				7A2D98951F9587AC00288665 /* Developer */,
@@ -185,7 +186,6 @@
 				7A796F951F871D1400D9658D /* Assets.xcassets */,
 				7A796F971F871D1400D9658D /* LaunchScreen.storyboard */,
 				7A796F9A1F871D1400D9658D /* Info.plist */,
-				7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -200,21 +200,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7AC47B361FCFC9C3009A2F38 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				7A61F5A91FCD3A600060580A /* CoreDataStack.swift */,
+				7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */ = {
 			isa = PBXGroup;
 			children = (
 				7A796F8D1F871D1400D9658D /* ScheduleInfoViewController.swift */,
-				7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */,
 			);
 			path = ScheduleInfo;
-			sourceTree = "<group>";
-		};
-		7AF3A24C1F8DBDEF00C509AC /* Cloud */ = {
-			isa = PBXGroup;
-			children = (
-				7A796FA41F87250600D9658D /* CloudManager.swift */,
-			);
-			path = Cloud;
 			sourceTree = "<group>";
 		};
 		7AF3A24D1F8DBE0500C509AC /* Assets */ = {
