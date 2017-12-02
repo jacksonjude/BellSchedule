@@ -200,7 +200,7 @@ class ScheduleInfoManager: NSObject {
             
             if periodPrinted
             {
-                if periodNames!.count > periodNumber!-1
+                if (periodNames?.count ?? 0) > periodNumber!-1
                 {
                     infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
                 }
@@ -433,6 +433,7 @@ class ScheduleInfoManager: NSObject {
                 if periodRangeContainsDate
                 {
                     periodFound = true
+                    self.periodNumber = periodOn
                     periodPrinted = true
                     Logger.println(" FCURPER: Found current period!")
                     infoDelegate.printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn, todaySchedule: self.todaySchedule!, periodNames: self.periodNames)
