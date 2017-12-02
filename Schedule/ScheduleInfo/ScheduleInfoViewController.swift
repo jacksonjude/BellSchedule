@@ -270,6 +270,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
             OperationQueue.main.addOperation {
                 if periodNames.count > periodNumbers[self.periodNumber!-1]-1
                 {
+                    self.scheduleManager?.periodNamePrinted = true
                     self.currentPeriodLabel.text = self.currentPeriodLabel.text! + "\n" + periodNames[periodNumbers[self.periodNumber!-1]-1]
                 }
             }

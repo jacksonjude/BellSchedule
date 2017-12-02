@@ -93,6 +93,7 @@ class ScheduleInfoManager: NSObject {
     
     var periodNames: Array<String>?
     var periodPrinted = false
+    var periodNamePrinted = false
     var periodNumber: Int?
     
     var todaySchedule: NSManagedObject?
@@ -198,11 +199,12 @@ class ScheduleInfoManager: NSObject {
             Logger.println(" USRSCH: Received periodNamesRecord")
             periodNames = periodNamesRecord.object(forKey: "periodNames") as? [String]
             
-            if periodPrinted
+            if periodPrinted && !periodNamePrinted
             {
                 if (periodNames?.count ?? 0) > periodNumber!-1
                 {
                     infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
+                    periodNamePrinted = true
                 }
             }
         }
