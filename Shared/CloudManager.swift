@@ -76,7 +76,7 @@ class CloudManager: NSObject
     {
         NotificationCenter.default.addObserver(self, selector: #selector(self.contextSaved), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
         
-        Logger.println("↓ - Fetching Changes from Cloud")
+        Logger.println("↓ - Fetching Changes from Cloud: " + entityType)
         
         let lastUpdatedDate = UserDefaults.standard.object(forKey: "lastUpdatedData") as? NSDate ?? Date.distantPast as NSDate
         let cloudEntityQuery = CKQuery(recordType: entityType, predicate: NSPredicate(format: "modificationDate >= %@", lastUpdatedDate))
@@ -170,11 +170,11 @@ class CloudManager: NSObject
         } catch let error1 as NSError {
             error = error1
             fetchResults = nil
-            NSLog("An Error Occored:", error!)
+            print("An Error Occored: " + error!.localizedDescription)
         } catch {
             fatalError()
         }
-        
+                
         return fetchResults
     }
     
