@@ -23,6 +23,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     var weekScheduleCodes: Array<String> = []
     var weekOn = 0
     var dateToggle = 0
+    var currentScheduleObject: NSManagedObject?
     
     override func viewDidLoad() {
         Logger.println("Loading Calender...")
@@ -122,6 +123,9 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1
         {
+            currentDateString = nil
+            currentScheduleObject = nil
+            
             let dateComponents = getDate(indexPath: indexPath)
             
             currentDateString = zeroPadding(int: dateComponents.month!) + "/" + zeroPadding(int: dateComponents.day!) + "/" + zeroPadding(int: dateComponents.year!)
@@ -251,6 +255,8 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
             let message1 = "Code: " + scheduleCode + "\nStart: "
             let message2 =  Date().convertToStandardTime(date: (startTime ?? "")) + "\nEnd: " + Date().convertToStandardTime(date: (endTime ?? ""))
             message = message1 + message2
+            
+            currentScheduleObject = scheduleRecord
         }
         else
         {
@@ -263,6 +269,14 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     func alertUser(message: String)
     {
         let schoolTimeAlert = UIAlertController(title: currentDateString!, message: message, preferredStyle: .alert)
+        
+        if currentScheduleObject != nil && currentDateString != nil
+        {
+            schoolTimeAlert.addAction(UIAlertAction(title: "Details", style: .default, handler: { (alert) in
+                
+                self.performSegue(withIdentifier: "openPeriodTimesView", sender: self)
+            }))
+        }
         
         schoolTimeAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert) in
             
@@ -307,5 +321,19 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
             self.codeToggleButton.title = "Codes"
         }
         collectionView.reloadData()
+    }
+    
+    @IBAction func exitScheduleTimesViewController(_ segue: UIStoryboardSegue)
+    {
+        Logger.println(" CAL: Exiting ScheduleTimesViewController")
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "openPeriodTimesView")
+        {
+            let scheduleTimesViewController = segue.destination as! ScheduleTimesViewController
+            scheduleTimesViewController.scheduleRecord = currentScheduleObject!
+            scheduleTimesViewController.scheduleDateString = currentDateString
+        }
     }
 }

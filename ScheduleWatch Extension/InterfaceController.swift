@@ -173,7 +173,7 @@ class InterfaceController: WKInterfaceController, ScheduleInfoDelegate {
         }
         catch
         {
-            print(error)
+            Logger.println(error)
             return nil
         }
     }

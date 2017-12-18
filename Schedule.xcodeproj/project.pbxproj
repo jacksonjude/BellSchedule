@@ -53,6 +53,7 @@
 		7ADFEDA71FDDCB6700BFD0E1 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61F5A91FCD3A600060580A /* CoreDataStack.swift */; };
 		7ADFEDA81FDDCB6A00BFD0E1 /* Schedule.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */; };
 		7ADFEDAA1FDDD00400BFD0E1 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ADFEDA91FDDD00400BFD0E1 /* CloudKit.framework */; };
+		7AE495E21FE6F2C500AE2EB3 /* ScheduleTimesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE495E11FE6F2C500AE2EB3 /* ScheduleTimesViewController.swift */; };
 		7AF3A2501F8DC01B00C509AC /* UserScheduleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3A24F1F8DC01B00C509AC /* UserScheduleTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -155,6 +156,7 @@
 		7ADFEDA51FDDCA0700BFD0E1 /* ScheduleWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScheduleWatch.entitlements; sourceTree = "<group>"; };
 		7ADFEDA61FDDCA1000BFD0E1 /* ScheduleWatch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ScheduleWatch Extension.entitlements"; sourceTree = "<group>"; };
 		7ADFEDA91FDDD00400BFD0E1 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS4.2.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
+		7AE495E11FE6F2C500AE2EB3 /* ScheduleTimesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTimesViewController.swift; sourceTree = "<group>"; };
 		7AF3A24F1F8DC01B00C509AC /* UserScheduleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScheduleTableViewController.swift; sourceTree = "<group>"; };
 		88CDEA5355ACC48FB722D116 /* Pods_Schedule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Schedule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A304A4F351FF74274D9454E /* Pods-Schedule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Schedule.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Schedule/Pods-Schedule.debug.xcconfig"; sourceTree = "<group>"; };
@@ -233,14 +235,6 @@
 			path = Developer;
 			sourceTree = "<group>";
 		};
-		7A43745F1F8F241900E4BDB2 /* Calendar */ = {
-			isa = PBXGroup;
-			children = (
-				7A4374621F8F252400E4BDB2 /* CalendarCollectionViewController.swift */,
-			);
-			path = Calendar;
-			sourceTree = "<group>";
-		};
 		7A61F5A51FCD35890060580A /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -281,7 +275,6 @@
 		7A796F8A1F871D1400D9658D /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
-				7A43745F1F8F241900E4BDB2 /* Calendar */,
 				7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */,
 				7AF3A24E1F8DBF7900C509AC /* UserSchedule */,
 				7A2D98951F9587AC00288665 /* Developer */,
@@ -319,6 +312,8 @@
 			isa = PBXGroup;
 			children = (
 				7A796F8D1F871D1400D9658D /* ScheduleInfoViewController.swift */,
+				7A4374621F8F252400E4BDB2 /* CalendarCollectionViewController.swift */,
+				7AE495E11FE6F2C500AE2EB3 /* ScheduleTimesViewController.swift */,
 			);
 			path = ScheduleInfo;
 			sourceTree = "<group>";
@@ -654,6 +649,7 @@
 				7A796FA51F87250600D9658D /* CloudManager.swift in Sources */,
 				7A61F5AA1FCD3A600060580A /* CoreDataStack.swift in Sources */,
 				7A796F8C1F871D1400D9658D /* AppDelegate.swift in Sources */,
+				7AE495E21FE6F2C500AE2EB3 /* ScheduleTimesViewController.swift in Sources */,
 				7AF3A2501F8DC01B00C509AC /* UserScheduleTableViewController.swift in Sources */,
 				7A2D98921F95837900288665 /* Logger.swift in Sources */,
 				7A2D98941F95879B00288665 /* DeveloperViewController.swift in Sources */,

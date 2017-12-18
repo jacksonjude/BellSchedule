@@ -141,7 +141,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
         }
         catch
         {
-            print(error)
+            Logger.println(error)
             return nil
         }
     }
