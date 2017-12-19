@@ -29,7 +29,7 @@ class ScheduleTimesViewController: UIViewController
         titleLabel.addCorners()
         periodTimesTextView.addCorners()
         
-        Logger.println(" SCT: Opening ScheduleTimesViewController")
+        Logger.println("Opening ScheduleTimes...")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -53,7 +53,7 @@ class ScheduleTimesViewController: UIViewController
             
             let scheduleCode = String(describing: scheduleRecord!.value(forKey: "scheduleCode")!)
             
-            dateTitle = scheduleMonth + "-" + scheduleDay + " -- " + scheduleCode
+            dateTitle = scheduleMonth + "-" + scheduleDay + scheduleYear +  " -- " + scheduleCode
             
             let periodTimes = appDelegate.decodeArrayFromJSON(object: scheduleRecord!, field: "periodTimes") as! Array<String>
             

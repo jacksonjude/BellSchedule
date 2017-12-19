@@ -325,7 +325,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     
     @IBAction func exitScheduleTimesViewController(_ segue: UIStoryboardSegue)
     {
-        Logger.println(" CAL: Exiting ScheduleTimesViewController")
+        Logger.println("Exiting ScheduleTimesViewController...")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

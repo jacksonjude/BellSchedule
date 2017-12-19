@@ -65,7 +65,7 @@ extension Date {
     }
 }
 
-protocol ScheduleInfoDelegate
+@objc protocol ScheduleInfoDelegate
 {
     func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject, periodNames: Array<String>?)
     
@@ -80,6 +80,8 @@ protocol ScheduleInfoDelegate
     func printSchoolStartEndTime(periodTimes: Array<String>)
     
     func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int)
+    
+    @objc optional func setTimer(_ time: String)
 }
 
 class ScheduleInfoManager: NSObject {
@@ -440,6 +442,9 @@ class ScheduleInfoManager: NSObject {
                     Logger.println(" FCURPER: Found current period!")
                     infoDelegate.printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn, todaySchedule: self.todaySchedule!, periodNames: self.periodNames)
                     
+                    
+                    infoDelegate.setTimer?(String(periodRangeString.split(separator: "-")[1]))
+                    
                     break
                 }
                 else if lastPeriodEnd != nil
@@ -487,7 +492,10 @@ class ScheduleInfoManager: NSObject {
                 {
                     passingPeriodMessage2 = passingPeriodMessage2 + periodNames![nextPeriodNumber!-1]
                 }
+                
                 infoDelegate.printCurrentMessage(message: passingPeriodMessage1 + passingPeriodMessage2)
+                
+                infoDelegate.setTimer?(String(nextPeriodStart!))
             }
             else
             {

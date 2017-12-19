@@ -68,7 +68,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
             appDelegate.justLaunched = false
         }
         
-        calculateTimerRefresh()
+        //calculateTimerRefresh()
     }
     
     deinit
@@ -99,6 +99,26 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         Logger.println("Timer will start in: " + String(timeUntilNext5minutes))
         
         self.refreshTimer = Timer.scheduledTimer(timeInterval: timeUntilNext5minutes, target: self, selector: #selector(startRefreshTimer), userInfo: nil, repeats: false)
+    }
+    
+    func setTimer(_ time: String) {
+        var currentTimeComponents = Date.Gregorian.calendar.dateComponents([.year, .day, .month, .hour, .minute, .second], from: Date())
+        
+        var timeOfNextPeriodString = String(describing: currentTimeComponents.year!) + "-" + String(describing: currentTimeComponents.month!) + "-" + String(describing: currentTimeComponents.day!)
+        
+        timeOfNextPeriodString += "-" + String(time.split(separator: ":")[0])
+        timeOfNextPeriodString += "-" + String(time.split(separator: ":")[1])
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-dd-HH-mm"
+        
+        let timeUntilNextPeriodComponents = Date.Gregorian.calendar.dateComponents([.hour, .minute, .second], from: Date(), to: dateFormatter.date(from: timeOfNextPeriodString) ?? Date.distantFuture)
+        
+        let timeUntilNextPeriodInterval = TimeInterval((timeUntilNextPeriodComponents.hour! * 3600) + (timeUntilNextPeriodComponents.minute! * 60) + (timeUntilNextPeriodComponents.second!))
+        
+        Logger.println("Timer will start in: " + String(timeUntilNextPeriodInterval))
+        
+        self.refreshTimer = Timer.scheduledTimer(timeInterval: timeUntilNextPeriodInterval, target: self, selector: #selector(startRefreshTimer), userInfo: nil, repeats: false)
     }
     
     @objc func startRefreshTimer()
