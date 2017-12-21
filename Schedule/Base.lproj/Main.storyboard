@@ -100,7 +100,7 @@
                                     <constraint firstAttribute="width" constant="130" id="iBm-dW-i4Y"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="Calender"/>
+                                <state key="normal" title="Calendar"/>
                                 <connections>
                                     <segue destination="coS-90-xE6" kind="show" id="1sC-hB-yM0"/>
                                 </connections>
@@ -135,7 +135,7 @@
                     <connections>
                         <outlet property="currentPeriodLabel" destination="vnh-7m-UjO" id="qd3-kd-yUo"/>
                         <outlet property="editScheduleButton" destination="EMJ-6p-Aoe" id="fpy-ZJ-uZx"/>
-                        <outlet property="openCalenderButton" destination="83q-QD-tnu" id="y4i-gK-fQm"/>
+                        <outlet property="openCalendarButton" destination="83q-QD-tnu" id="Gbm-Dk-5gy"/>
                         <outlet property="schoolStartEndLabel" destination="cxY-Xp-bBx" id="kzS-Tc-JtS"/>
                         <outlet property="tomorrowStartTimeLabel" destination="4fs-2f-E1I" id="AS4-Dh-GZU"/>
                         <segue destination="Sf9-3T-Ivb" kind="show" identifier="openDeveloperView" id="gsL-Vl-r2x"/>
@@ -438,20 +438,20 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zBu-mk-Gkx">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zBu-mk-Gkx">
                                 <rect key="frame" x="39" y="190" width="297" height="100"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.84999999999999998" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" text="Loading..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gbe-R1-L1A">
                                         <rect key="frame" x="0.0" y="0.0" width="297" height="100"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="32"/>
+                                        <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="29"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="245" id="3bo-LP-QvN"/>
+                                    <constraint firstAttribute="height" constant="100" id="3bo-LP-QvN"/>
                                 </constraints>
                             </view>
                         </subviews>

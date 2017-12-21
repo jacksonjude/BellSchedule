@@ -16,7 +16,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Logger.println(" USRV: Loading UserSchedule...")
+        Logger.println("Loading UserSchedule...")
         
         tableView.addCorners()
     }

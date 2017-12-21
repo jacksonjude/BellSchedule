@@ -30,6 +30,8 @@ class DeveloperViewController: UIViewController
         setLogText()
         
         NotificationCenter.default.addObserver(self, selector: #selector(setLogText), name: Notification.Name(rawValue: "loggerChangedData"), object: nil)
+        
+        Logger.println("Loading Developer View...")
     }
     
     override func viewWillDisappear(_ animated: Bool) {

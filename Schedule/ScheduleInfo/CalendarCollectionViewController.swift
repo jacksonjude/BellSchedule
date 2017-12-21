@@ -26,7 +26,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     var currentScheduleObject: NSManagedObject?
     
     override func viewDidLoad() {
-        Logger.println("Loading Calender...")
+        Logger.println("Loading Calendar...")
         fetchAllWeeks(weeksToAdd: 0)
     }
     

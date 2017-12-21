@@ -53,7 +53,7 @@ class ScheduleTimesViewController: UIViewController
             
             let scheduleCode = String(describing: scheduleRecord!.value(forKey: "scheduleCode")!)
             
-            dateTitle = scheduleMonth + "-" + scheduleDay + scheduleYear +  " -- " + scheduleCode
+            dateTitle = scheduleMonth + "-" + scheduleDay + "-" + scheduleYear +  " -- " + scheduleCode
             
             let periodTimes = appDelegate.decodeArrayFromJSON(object: scheduleRecord!, field: "periodTimes") as! Array<String>
             
@@ -62,7 +62,8 @@ class ScheduleTimesViewController: UIViewController
             for periodNumber in periodNumbers
             {
                 let periodIndex = periodNumbers.index(of: periodNumber) ?? 0
-                periodTimesText += "Period " + String(periodNumber) + " -- " + periodTimes[periodIndex]
+                let periodMinutes = String(calculateMinutes(periodRangeString: periodTimes[periodIndex]))
+                periodTimesText += "PER " + String(periodNumber) + " - " + periodTimes[periodIndex] + " - " + periodMinutes + " MIN"
                 if periodIndex+1 != periodNumbers.count
                 {
                     periodTimesText += "\n"
@@ -73,6 +74,21 @@ class ScheduleTimesViewController: UIViewController
             
             refreshText()
         }
+    }
+    
+    func calculateMinutes(periodRangeString: String) -> Int
+    {
+        let periodStart = periodRangeString.split(separator: "-")[0]
+        let periodStartHour = Int(periodStart.split(separator: ":")[0]) ?? 0
+        let periodStartMinute = Int(periodStart.split(separator: ":")[1]) ?? 0
+        
+        let periodEnd = periodRangeString.split(separator: "-")[1]
+        let periodEndHour = Int(periodEnd.split(separator: ":")[0]) ?? 0
+        let periodEndMinute = Int(periodEnd.split(separator: ":")[1]) ?? 0
+        
+        let totalMinutes = (60*(periodEndHour - periodStartHour)) + (periodEndMinute - periodStartMinute)
+        
+        return totalMinutes
     }
     
     func refreshText()

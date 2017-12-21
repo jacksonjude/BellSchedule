@@ -28,7 +28,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     @IBOutlet weak var schoolStartEndLabel: UILabel!
     @IBOutlet weak var tomorrowStartTimeLabel: UILabel!
     @IBOutlet weak var editScheduleButton: UIButton!
-    @IBOutlet weak var openCalenderButton: UIButton!
+    @IBOutlet weak var openCalendarButton: UIButton!
     
     var periodNumber: Int?
     
@@ -61,7 +61,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         schoolStartEndLabel.addCorners()
         tomorrowStartTimeLabel.addCorners()
         editScheduleButton.addCorners()
-        openCalenderButton.addCorners()
+        openCalendarButton.addCorners()
         
         if appDelegate.justLaunched
         {
