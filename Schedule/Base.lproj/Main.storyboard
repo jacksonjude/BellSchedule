@@ -16,9 +16,6 @@
         <array key="CooleyCasual.ttf">
             <string>CooleyCasual</string>
         </array>
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue</string>
-        </array>
     </customFonts>
     <scenes>
         <!--Schedule Info View Controller-->
@@ -86,7 +83,7 @@
                                     <constraint firstAttribute="height" constant="57" id="MFX-3s-f24"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="a1N-TJ-nUL"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Edit Schedule"/>
                                 <connections>
                                     <segue destination="dVf-ul-WaQ" kind="show" identifier="showEditUserSchedule" id="QEh-xb-ZY5"/>
@@ -99,6 +96,7 @@
                                     <constraint firstAttribute="height" constant="57" id="kj6-eY-DVN"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="yOd-VK-Ved"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Announcements"/>
                                 <connections>
                                     <segue destination="3tW-Pm-1XJ" kind="show" id="ycC-6P-Lse"/>
@@ -111,7 +109,11 @@
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="dIb-tQ-cE3"/>
                                     <constraint firstAttribute="height" constant="57" id="dSb-Ii-yL6"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Help"/>
+                                <connections>
+                                    <action selector="openHelp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="s05-bC-ody"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="83q-QD-tnu">
                                 <rect key="frame" x="229" y="517" width="130" height="57"/>
@@ -120,7 +122,7 @@
                                     <constraint firstAttribute="height" constant="57" id="3Gf-Hm-m9c"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="iBm-dW-i4Y"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Calendar"/>
                                 <connections>
                                     <segue destination="coS-90-xE6" kind="show" id="1sC-hB-yM0"/>
@@ -353,7 +355,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.84999999999999998" contentMode="scaleToFill" text="Loading..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QvZ-w3-gSd">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.84999999999999998" contentMode="scaleToFill" editable="NO" text="Loading..." translatesAutoresizingMaskIntoConstraints="NO" id="QvZ-w3-gSd">
                                 <rect key="frame" x="38" y="190" width="299" height="176"/>
                                 <color key="backgroundColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -432,7 +434,7 @@
                                     <constraint firstAttribute="height" constant="57" id="HKJ-OL-2pv"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="yRI-if-WIZ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Clear Log"/>
                                 <connections>
                                     <action selector="clearConsole:" destination="Sf9-3T-Ivb" eventType="touchUpInside" id="jwD-J3-roJ"/>
@@ -445,7 +447,7 @@
                                     <constraint firstAttribute="height" constant="57" id="0TT-ng-i84"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="YO3-SM-q3T"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Clear CoreData"/>
                                 <connections>
                                     <action selector="clearCoreData:" destination="Sf9-3T-Ivb" eventType="touchUpInside" id="BaX-xM-6pC"/>

@@ -44,7 +44,7 @@ class AnnouncementManager: NSObject
             //Convert the date to a string
             let tmpAnnouncementPostDate = announcementPostDates[announcementUUIDs.index(of: announcementUUID)!]
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "YYYY-MM-dd"
+            dateFormatter.dateFormat = "YYYY-MM-dd HH:mm "
             let tmpAnnouncementPostDateString = dateFormatter.string(from: tmpAnnouncementPostDate)
             
             //Set in dictionary key -> Date, value -> UUID
@@ -58,11 +58,11 @@ class AnnouncementManager: NSObject
             //Convert the date to a string
             let tmpAnnouncementPostDate = announcementPostDates[announcementTitles.index(of: title)!]
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "YYYY-MM-dd"
+            dateFormatter.dateFormat = "YYYY-MM-dd HH:mm "
             let tmpAnnouncementPostDateString = dateFormatter.string(from: tmpAnnouncementPostDate)
             
             //Add the announcement title and the date into one string
-            combinedAnnouncementTitles.append(tmpAnnouncementPostDateString + ":" + title)
+            combinedAnnouncementTitles.append(tmpAnnouncementPostDateString + "— " + title)
         }
         
         combinedAnnouncementTitles = combinedAnnouncementTitles.sorted(by: >)

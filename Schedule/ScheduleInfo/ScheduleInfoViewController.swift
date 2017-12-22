@@ -9,6 +9,7 @@
 import UIKit
 import CloudKit
 import CoreData
+import SafariServices
 
 let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -412,6 +413,12 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         OperationQueue.main.addOperation {
             labelToSwitch!.text = "Internal Error:\n" + message
         }
+    }
+    
+    @IBAction func openHelp(_ sender: Any) {
+        let faqURL = URL(string: "http://jjcooley.ddns.net/lowellschedule")
+        let svc = SFSafariViewController(url: faqURL!)
+        self.present(svc, animated: true, completion: nil)
     }
     
     @IBAction func exitUserScheduleTableView(_ segue: UIStoryboardSegue)

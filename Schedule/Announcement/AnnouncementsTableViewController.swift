@@ -43,7 +43,7 @@ class AnnouncementsTableViewController: UIViewController, UITableViewDelegate, U
             announcementManager?.announcementViewController = announcementViewController
             
             //Find the selected post date
-            let selectedAnnouncementPostDate = String(announcementTitles![selectedRow].split(separator: ":")[0])
+            let selectedAnnouncementPostDate = String(announcementTitles![selectedRow].split(separator: "—")[0])
             
             //Get the recordUUID from the announcementID array using the post date
             announcementManager?.fetchAnnouncementRecord(recordUUID: (announcementManager?.announcementIDs[selectedAnnouncementPostDate])!)
