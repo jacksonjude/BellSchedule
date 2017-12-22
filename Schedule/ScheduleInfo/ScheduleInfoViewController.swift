@@ -443,12 +443,12 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     
     @IBAction func exitDeveloperView(_ segue: UIStoryboardSegue)
     {
-        Logger.println("Exiting Developer View...")
+        Logger.println("Exiting DeveloperView...")
     }
     
     @IBAction func exitAnnouncementsTableView(_ segue: UIStoryboardSegue)
     {
-        Logger.println("Exiting Announcements Table View...")
+        Logger.println("Exiting AnnouncementsTableView...")
     }
 }
 

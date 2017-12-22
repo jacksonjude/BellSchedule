@@ -65,6 +65,8 @@ class AnnouncementManager: NSObject
             combinedAnnouncementTitles.append(tmpAnnouncementPostDateString + ":" + title)
         }
         
+        combinedAnnouncementTitles = combinedAnnouncementTitles.sorted(by: >)
+        
         //Handoff the combined titles
         announcementsTableViewController.announcementTitles = combinedAnnouncementTitles
         

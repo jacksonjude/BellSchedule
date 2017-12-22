@@ -30,6 +30,8 @@ class AnnouncementsTableViewController: UIViewController, UITableViewDelegate, U
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedRow = indexPath.row
         
+        tableView.deselectRow(at: indexPath, animated: true)
+        
         self.performSegue(withIdentifier: "openAnnouncementView", sender: self)
     }
     

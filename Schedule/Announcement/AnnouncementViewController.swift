@@ -21,6 +21,8 @@ class AnnouncementViewController: UIViewController
     override func viewDidLoad() {
         bodyTextView.addCorners()
         dateLabel.addCorners()
+        
+        Logger.println("Opening AnnouncementView...")
     }
     
     func loadDataFromRecord()
