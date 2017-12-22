@@ -86,6 +86,10 @@ class CloudManager: NSObject
                 Logger.println(error!)
                 
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "cloudKitError"), object: error!)
+                
+                NotificationCenter.default.removeObserver(self)
+                
+                loopFetchAllData()
             }
             else
             {
@@ -107,7 +111,7 @@ class CloudManager: NSObject
                     }
                 }
                 
-                Logger.println(" Updated " + String(results?.count ?? 0) + " records from " + entityType)
+                Logger.println("↓ - Updated " + String(results?.count ?? 0) + " records from " + entityType)
                 
                 OperationQueue.main.addOperation {
                     CloudManager.savingCloudChanges = true
@@ -206,6 +210,55 @@ class CloudManager: NSObject
                 object.setValue(record.recordID.recordName, forKey: "uuid")
             }
         }
+    }
+    
+    static func fetchSpecificFields(entityType: String, fields: [String], completionHandler: (@escaping (Dictionary<String,Array<CKRecordValue>>) -> Void))
+    {
+        Logger.println("↓ - Fetching specific fields from Cloud: " + entityType)
+        
+        let truePredicate = NSPredicate(value: true)
+        let specificFieldQuery = CKQuery(recordType: entityType, predicate: truePredicate)
+        let specificFieldOperation = CKQueryOperation(query: specificFieldQuery)
+        specificFieldOperation.desiredKeys = fields
+        
+        var fetchedItems = Array<CKRecord>()
+        
+        var fetchedFieldObjects = Dictionary<String,Array<CKRecordValue>>()
+        
+        for field in fields
+        {
+            fetchedFieldObjects[field] = Array<CKRecordValue>()
+        }
+        fetchedFieldObjects["uuid"] = Array<CKRecordValue>()
+        
+        specificFieldOperation.queryCompletionBlock = ( { (cursor, error) -> Void in
+            if error != nil
+            {
+                Logger.println("Error: " + error!.localizedDescription)
+            }
+            else
+            {
+                Logger.println("↓ - Fetched " + String(fetchedItems.count) + " " + entityType)
+                
+                for record in fetchedItems
+                {
+                    for field in fields
+                    {
+                        fetchedFieldObjects[field]?.append(record.object(forKey: field)!)
+                    }
+                    
+                    fetchedFieldObjects["uuid"]?.append(record.recordID.recordName as CKRecordValue)
+                }
+                
+                completionHandler(fetchedFieldObjects)
+            }
+        })
+        
+        specificFieldOperation.recordFetchedBlock = ( { (record) -> Void in
+            fetchedItems.append(record)
+        })
+        
+        publicDatabase.add(specificFieldOperation)
     }
     
     static func getFieldsFromEntity(entityType: String) -> Array<String>

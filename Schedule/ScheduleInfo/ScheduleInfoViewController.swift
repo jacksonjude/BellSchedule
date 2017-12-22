@@ -27,8 +27,12 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     @IBOutlet weak var currentPeriodLabel: UILabel!
     @IBOutlet weak var schoolStartEndLabel: UILabel!
     @IBOutlet weak var tomorrowStartTimeLabel: UILabel!
+    
     @IBOutlet weak var editScheduleButton: UIButton!
     @IBOutlet weak var openCalendarButton: UIButton!
+    @IBOutlet weak var announcementButton: UIButton!
+    @IBOutlet weak var helpButton: UIButton!
+    
     
     var periodNumber: Int?
     
@@ -62,6 +66,8 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         tomorrowStartTimeLabel.addCorners()
         editScheduleButton.addCorners()
         openCalendarButton.addCorners()
+        helpButton.addCorners()
+        announcementButton.addCorners()
         
         if appDelegate.justLaunched
         {
@@ -438,6 +444,11 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     @IBAction func exitDeveloperView(_ segue: UIStoryboardSegue)
     {
         Logger.println("Exiting Developer View...")
+    }
+    
+    @IBAction func exitAnnouncementsTableView(_ segue: UIStoryboardSegue)
+    {
+        Logger.println("Exiting Announcements Table View...")
     }
 }
 

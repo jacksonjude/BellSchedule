@@ -23,6 +23,9 @@
 		7A2D98921F95837900288665 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D98911F95837900288665 /* Logger.swift */; };
 		7A2D98941F95879B00288665 /* DeveloperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D98931F95879B00288665 /* DeveloperViewController.swift */; };
 		7A4374631F8F252400E4BDB2 /* CalendarCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4374621F8F252400E4BDB2 /* CalendarCollectionViewController.swift */; };
+		7A5687341FEC889800744A30 /* AnnouncementsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5687331FEC889800744A30 /* AnnouncementsTableViewController.swift */; };
+		7A5687361FEC8DF600744A30 /* AnnouncementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5687351FEC8DF600744A30 /* AnnouncementManager.swift */; };
+		7A5687381FECD86800744A30 /* AnnouncementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5687371FECD86800744A30 /* AnnouncementViewController.swift */; };
 		7A61F5A11FCD0CC80060580A /* ScheduleWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A2418991FC7E883000407B8 /* ScheduleWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7A61F5A31FCD2FA70060580A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D98911F95837900288665 /* Logger.swift */; };
 		7A61F5AA1FCD3A600060580A /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61F5A91FCD3A600060580A /* CoreDataStack.swift */; };
@@ -138,6 +141,9 @@
 		7A2D98911F95837900288665 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		7A2D98931F95879B00288665 /* DeveloperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperViewController.swift; sourceTree = "<group>"; };
 		7A4374621F8F252400E4BDB2 /* CalendarCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewController.swift; sourceTree = "<group>"; };
+		7A5687331FEC889800744A30 /* AnnouncementsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsTableViewController.swift; sourceTree = "<group>"; };
+		7A5687351FEC8DF600744A30 /* AnnouncementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementManager.swift; sourceTree = "<group>"; };
+		7A5687371FECD86800744A30 /* AnnouncementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementViewController.swift; sourceTree = "<group>"; };
 		7A61F5A91FCD3A600060580A /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		7A61F5AE1FCD3DC20060580A /* ScheduleWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScheduleWidget.entitlements; sourceTree = "<group>"; };
 		7A796F881F871D1400D9658D /* Schedule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedule.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -235,6 +241,16 @@
 			path = Developer;
 			sourceTree = "<group>";
 		};
+		7A5687321FEC78FD00744A30 /* Announcement */ = {
+			isa = PBXGroup;
+			children = (
+				7A5687331FEC889800744A30 /* AnnouncementsTableViewController.swift */,
+				7A5687351FEC8DF600744A30 /* AnnouncementManager.swift */,
+				7A5687371FECD86800744A30 /* AnnouncementViewController.swift */,
+			);
+			path = Announcement;
+			sourceTree = "<group>";
+		};
 		7A61F5A51FCD35890060580A /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -275,6 +291,7 @@
 		7A796F8A1F871D1400D9658D /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				7A5687321FEC78FD00744A30 /* Announcement */,
 				7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */,
 				7AF3A24E1F8DBF7900C509AC /* UserSchedule */,
 				7A2D98951F9587AC00288665 /* Developer */,
@@ -648,8 +665,11 @@
 				7A796F941F871D1400D9658D /* Schedule.xcdatamodeld in Sources */,
 				7A796FA51F87250600D9658D /* CloudManager.swift in Sources */,
 				7A61F5AA1FCD3A600060580A /* CoreDataStack.swift in Sources */,
+				7A5687341FEC889800744A30 /* AnnouncementsTableViewController.swift in Sources */,
 				7A796F8C1F871D1400D9658D /* AppDelegate.swift in Sources */,
+				7A5687361FEC8DF600744A30 /* AnnouncementManager.swift in Sources */,
 				7AE495E21FE6F2C500AE2EB3 /* ScheduleTimesViewController.swift in Sources */,
+				7A5687381FECD86800744A30 /* AnnouncementViewController.swift in Sources */,
 				7AF3A2501F8DC01B00C509AC /* UserScheduleTableViewController.swift in Sources */,
 				7A2D98921F95837900288665 /* Logger.swift in Sources */,
 				7A2D98941F95879B00288665 /* DeveloperViewController.swift in Sources */,
@@ -870,6 +890,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IBSC_ERRORS = YES;
+				IBSC_NOTICES = YES;
+				IBSC_WARNINGS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -921,6 +944,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IBSC_ERRORS = YES;
+				IBSC_NOTICES = YES;
+				IBSC_WARNINGS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
