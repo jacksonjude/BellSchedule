@@ -31,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.set(nil, forKey: "lastUpdatedData")
         }
         
+        backgroundName = (UserDefaults.standard.object(forKey: "backgroundName") as? String) ?? "background1"
+        
         return true
     }
 

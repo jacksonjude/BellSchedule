@@ -23,6 +23,8 @@ class AnnouncementViewController: UIViewController
         dateLabel.addCorners()
         
         Logger.println("Opening AnnouncementView...")
+        
+        self.view.setBackground()
     }
     
     func loadDataFromRecord()

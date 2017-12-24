@@ -16,7 +16,6 @@
 		7A15FC911FDDC7CD0012A883 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A15FC901FDDC7CD0012A883 /* ExtensionDelegate.swift */; };
 		7A15FC931FDDC7CD0012A883 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A15FC921FDDC7CD0012A883 /* ComplicationController.swift */; };
 		7A15FC951FDDC7CD0012A883 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A15FC941FDDC7CD0012A883 /* Assets.xcassets */; };
-		7A15FC991FDDC7CD0012A883 /* ScheduleWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7A15FC7D1FDDC7CD0012A883 /* ScheduleWatch.app */; };
 		7A24189B1FC7E883000407B8 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A24189A1FC7E883000407B8 /* NotificationCenter.framework */; };
 		7A24189E1FC7E883000407B8 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A24189D1FC7E883000407B8 /* TodayViewController.swift */; };
 		7A2418A11FC7E883000407B8 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A24189F1FC7E883000407B8 /* MainInterface.storyboard */; };
@@ -102,7 +101,6 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				7A15FC991FDDC7CD0012A883 /* ScheduleWatch.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;

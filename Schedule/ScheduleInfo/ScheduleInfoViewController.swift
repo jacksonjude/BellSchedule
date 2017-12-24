@@ -13,12 +13,19 @@ import SafariServices
 
 let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
+var backgroundName = "background1"
+
 extension UIView
 {
     func addCorners()
     {
         self.layer.cornerRadius = 8
         self.layer.masksToBounds = true
+    }
+    
+    func setBackground()
+    {
+        (self.viewWithTag(819) as! UIImageView).image = UIImage(named: backgroundName)
     }
 }
 
@@ -52,6 +59,8 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         scheduleManager = ScheduleInfoManager(delegate: self, downloadData: true)
         
         NotificationCenter.default.addObserver(self, selector: #selector(printCloudKitError(notification:)), name: Notification.Name(rawValue: "cloudKitError"), object: nil)
+        
+        self.view.setBackground()
     }
 
     override func didReceiveMemoryWarning() {
@@ -144,6 +153,11 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
             textFeild.placeholder = (UserDefaults.standard.object(forKey: "userID") as? String) ?? "UserID"
         }
         
+        settingsAlert.addTextField { (textFeild) in
+            let backgroundNumber = String(describing: backgroundName.last ?? Character(""))
+            textFeild.text = String(describing: backgroundNumber)
+        }
+        
         settingsAlert.view.addSubview(createSwitch())
         
         let syncLabel = UILabel(frame: CGRect(x: 15, y: 40, width: 200, height: 70))
@@ -161,6 +175,16 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
             {
                 UserDefaults.standard.set(userID, forKey: "userID")
                 Logger.println(" USRID: Set userID: " + userID!)
+            }
+            
+            let backgroundFileNumber = settingsAlert.textFields![1].text ?? "1"
+            
+            if UIImage(named: "background" + backgroundFileNumber) != nil
+            {
+                backgroundName = "background" + backgroundFileNumber
+                self.view.setBackground()
+                
+                UserDefaults.standard.set(backgroundName, forKey: "backgroundName")
             }
             
             UserDefaults.standard.set(self.syncButtonValue, forKey: "syncData")

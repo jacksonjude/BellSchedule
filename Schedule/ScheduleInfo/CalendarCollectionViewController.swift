@@ -28,6 +28,8 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     override func viewDidLoad() {
         Logger.println("Loading Calendar...")
         fetchAllWeeks(weeksToAdd: 0)
+        
+        self.view.setBackground()
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -30,6 +30,8 @@ class ScheduleTimesViewController: UIViewController
         periodTimesTextView.addCorners()
         
         Logger.println("Opening ScheduleTimes...")
+        
+        self.view.setBackground()
     }
     
     override func viewDidAppear(_ animated: Bool) {

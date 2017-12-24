@@ -57,6 +57,8 @@ class AnnouncementsTableViewController: UIViewController, UITableViewDelegate, U
         tableView.addCorners()
         
         announcementManager = AnnouncementManager(viewController: self)
+        
+        self.view.setBackground()
     }
     
     @IBAction func exitAnnouncementView(_ segue: UIStoryboardSegue)

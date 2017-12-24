@@ -19,6 +19,8 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
         Logger.println("Loading UserSchedule...")
         
         tableView.addCorners()
+        
+        self.view.setBackground()
     }
     
     override func viewDidAppear(_ animated: Bool) {
