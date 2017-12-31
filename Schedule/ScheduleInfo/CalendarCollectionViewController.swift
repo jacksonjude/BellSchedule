@@ -149,6 +149,14 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         let gregorian = Calendar(identifier: .gregorian)
         var startOfWeekComponents = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
         startOfWeekComponents.hour = 12
+        
+        var timeZoneToSet = "PST"
+        if TimeZone.current.isDaylightSavingTime(for: gregorian.date(from: startOfWeekComponents)!)
+        {
+            timeZoneToSet = "PDT"
+        }
+        startOfWeekComponents.timeZone = TimeZone(abbreviation: timeZoneToSet)
+        
         let startOfWeekFormatted = gregorian.date(from: startOfWeekComponents)!
         
         Logger.println(startOfWeekFormatted)

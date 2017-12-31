@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import MTMigration
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,10 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var cloudManager: CloudManager?
     var justLaunched = true
     var firstLaunch = false
+    var scheduleNotificationManager: ScheduleNotificationManager?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        cloudManager = CloudManager()
         // Override point for customization after application launch.
+        
+        cloudManager = CloudManager()
+        
         if UserDefaults.standard.object(forKey: "firstLaunch") != nil
         {
             firstLaunch = true
@@ -32,6 +36,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         backgroundName = (UserDefaults.standard.object(forKey: "backgroundName") as? String) ?? "background1"
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+            if error == nil && granted
+            {
+                print("Granted notifications!")
+            }
+            else if error != nil
+            {
+                print("Error: \(error!.localizedDescription)")
+            }
+        }
+        
+        UIApplication.shared.setMinimumBackgroundFetchInterval(86400)
+        
+        scheduleNotificationManager = ScheduleNotificationManager()
         
         return true
     }
@@ -60,9 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
         CoreDataStack.saveContext()
     }
-
-    // MARK: - Core Data stack
-    
     
     func decodeArrayFromJSON(object: NSManagedObject, field: String) -> Array<Any>?
     {
@@ -77,6 +93,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Logger.println(error)
             return nil
         }
+    }
+    
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        scheduleNotificationManager = ScheduleNotificationManager()
     }
 }
 

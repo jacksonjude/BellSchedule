@@ -168,7 +168,8 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
         
         self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
         
-        scheduleInfoManager = ScheduleInfoManager(delegate: self, downloadData: true)
+        scheduleInfoManager = ScheduleInfoManager(delegate: self, downloadData: true, onlyFindOneDay: false)
+        scheduleInfoManager?.startInfoManager()
         
         viewDidJustLoad = true
     }

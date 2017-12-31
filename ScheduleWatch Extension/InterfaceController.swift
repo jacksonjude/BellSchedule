@@ -191,7 +191,8 @@ class InterfaceController: WKInterfaceController, ScheduleInfoDelegate {
         
         // Configure interface objects here.
         
-        scheduleInfoManager = ScheduleInfoManager(delegate: self, downloadData: true)
+        scheduleInfoManager = ScheduleInfoManager(delegate: self, downloadData: true, onlyFindOneDay: false)
+        scheduleInfoManager?.startInfoManager()
         
         //updateScheduleInfo()
     }

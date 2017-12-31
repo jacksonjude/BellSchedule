@@ -82,6 +82,8 @@ extension Date {
     func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int)
     
     @objc optional func setTimer(_ time: String)
+    
+    @objc optional func noSchoolTomorrow(nextDayCount: Int, nextWeekCount: Int)
 }
 
 class ScheduleInfoManager: NSObject {
@@ -104,6 +106,9 @@ class ScheduleInfoManager: NSObject {
     var nextWeekOn: Int?
     var nextDayOn: Int?
     
+    var onlyFindOneDay: Bool
+    var downloadData: Bool
+    
     var loadedData = 0
     {
         didSet
@@ -121,11 +126,16 @@ class ScheduleInfoManager: NSObject {
     
     var loadedAllData = false
     
-    init(delegate: ScheduleInfoDelegate, downloadData: Bool) {
+    init(delegate: ScheduleInfoDelegate, downloadData: Bool, onlyFindOneDay: Bool) {
         self.infoDelegate = delegate
+        self.onlyFindOneDay = onlyFindOneDay
+        self.downloadData = downloadData
         
         super.init()
-        
+    }
+    
+    func startInfoManager()
+    {
         if downloadData
         {
             NotificationCenter.default.addObserver(self, selector: #selector(finishedFetchingData), name: Notification.Name(rawValue: "finishedFetchingAllData"), object: nil)
@@ -226,6 +236,14 @@ class ScheduleInfoManager: NSObject {
         let gregorian = Calendar(identifier: .gregorian)
         var startOfWeekComponents = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: startOfWeekRaw)
         startOfWeekComponents.hour = 12
+        
+        var timeZoneToSet = "PST"
+        if TimeZone.current.isDaylightSavingTime(for: gregorian.date(from: startOfWeekComponents)!)
+        {
+            timeZoneToSet = "PDT"
+        }
+        startOfWeekComponents.timeZone = TimeZone(abbreviation: timeZoneToSet)
+        
         let startOfWeekFormatted = gregorian.date(from: startOfWeekComponents)!
         
         let weekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfWeekFormatted as CVarArg)
@@ -345,10 +363,17 @@ class ScheduleInfoManager: NSObject {
                 }
                 else
                 {
-                    Logger.println(" FTOMWS: No school tomorrow, loading next day")
-                    nextDayOn!+=1
-                    
-                    queryTomorrowSchedule(weekSchedules: self.nextWeekSchedules!, addDays: nextDayOn!, loadedNextWeek: loadedNextWeek)
+                    if onlyFindOneDay
+                    {
+                        infoDelegate.noSchoolTomorrow?(nextDayCount: nextDayOn!, nextWeekCount: nextWeekOn ?? 0)
+                    }
+                    else
+                    {
+                        Logger.println(" FTOMWS: No school tomorrow, loading next day")
+                        nextDayOn!+=1
+                        
+                        queryTomorrowSchedule(weekSchedules: self.nextWeekSchedules!, addDays: nextDayOn!, loadedNextWeek: loadedNextWeek)
+                    }
                 }
             }
             else
@@ -370,6 +395,14 @@ class ScheduleInfoManager: NSObject {
         let gregorian = Calendar(identifier: .gregorian)
         var startOfNextWeekComponents = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: startOfNextWeekRaw)
         startOfNextWeekComponents.hour = 12
+        
+        var timeZoneToSet = "PST"
+        if TimeZone.current.isDaylightSavingTime(for: gregorian.date(from: startOfNextWeekComponents)!)
+        {
+            timeZoneToSet = "PDT"
+        }
+        startOfNextWeekComponents.timeZone = TimeZone(abbreviation: timeZoneToSet)
+        
         let startOfNextWeekFormatted = gregorian.date(from: startOfNextWeekComponents)!
         
         let nextWeekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfNextWeekFormatted as CVarArg)

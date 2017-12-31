@@ -43,6 +43,7 @@
 		7A796FA51F87250600D9658D /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796FA41F87250600D9658D /* CloudManager.swift */; };
 		7AA09CDF1F9C4B4D006B5F08 /* Consola.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */; };
 		7AC0A3381F8C3EE0005E5FA3 /* ScheduleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */; };
+		7ACF12C21FEF929B007D1320 /* ScheduleNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */; };
 		7ADFED9C1FDDC97300BFD0E1 /* CooleyCasual.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A0A74631F8C277700249FAB /* CooleyCasual.ttf */; };
 		7ADFED9D1FDDC97400BFD0E1 /* CooleyCasual.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A0A74631F8C277700249FAB /* CooleyCasual.ttf */; };
 		7ADFED9E1FDDC97400BFD0E1 /* CooleyCasual.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A0A74631F8C277700249FAB /* CooleyCasual.ttf */; };
@@ -157,6 +158,7 @@
 		7A796FA41F87250600D9658D /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
 		7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consola.ttf; sourceTree = "<group>"; };
 		7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoManager.swift; sourceTree = "<group>"; };
+		7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotificationManager.swift; sourceTree = "<group>"; };
 		7ADFEDA51FDDCA0700BFD0E1 /* ScheduleWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScheduleWatch.entitlements; sourceTree = "<group>"; };
 		7ADFEDA61FDDCA1000BFD0E1 /* ScheduleWatch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ScheduleWatch Extension.entitlements"; sourceTree = "<group>"; };
 		7ADFEDA91FDDD00400BFD0E1 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS4.2.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -290,9 +292,10 @@
 			isa = PBXGroup;
 			children = (
 				7A5687321FEC78FD00744A30 /* Announcement */,
+				7A2D98951F9587AC00288665 /* Developer */,
+				7ACF12C01FEF9259007D1320 /* Notification */,
 				7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */,
 				7AF3A24E1F8DBF7900C509AC /* UserSchedule */,
-				7A2D98951F9587AC00288665 /* Developer */,
 				7A796FA01F871D2F00D9658D /* Schedule.entitlements */,
 				7A796F8B1F871D1400D9658D /* AppDelegate.swift */,
 				7A796F8F1F871D1400D9658D /* Main.storyboard */,
@@ -321,6 +324,14 @@
 				7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		7ACF12C01FEF9259007D1320 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */ = {
@@ -493,6 +504,9 @@
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -658,6 +672,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A4374631F8F252400E4BDB2 /* CalendarCollectionViewController.swift in Sources */,
+				7ACF12C21FEF929B007D1320 /* ScheduleNotificationManager.swift in Sources */,
 				7A796F8E1F871D1400D9658D /* ScheduleInfoViewController.swift in Sources */,
 				7AC0A3381F8C3EE0005E5FA3 /* ScheduleInfoManager.swift in Sources */,
 				7A796F941F871D1400D9658D /* Schedule.xcdatamodeld in Sources */,

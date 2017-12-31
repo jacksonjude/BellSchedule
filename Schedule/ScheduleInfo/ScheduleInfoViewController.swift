@@ -56,7 +56,8 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         
         // Do any additional setup after loading the view, typically from a nib.
         
-        scheduleManager = ScheduleInfoManager(delegate: self, downloadData: true)
+        scheduleManager = ScheduleInfoManager(delegate: self, downloadData: true, onlyFindOneDay: false)
+        scheduleManager?.startInfoManager()
         
         NotificationCenter.default.addObserver(self, selector: #selector(printCloudKitError(notification:)), name: Notification.Name(rawValue: "cloudKitError"), object: nil)
         
@@ -83,8 +84,6 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         {
             appDelegate.justLaunched = false
         }
-        
-        //calculateTimerRefresh()
     }
     
     deinit
