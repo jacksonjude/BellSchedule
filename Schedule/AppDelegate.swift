@@ -40,11 +40,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
             if error == nil && granted
             {
-                print("Granted notifications!")
+                Logger.println("Granted notifications!")
             }
             else if error != nil
             {
-                print("Error: \(error!.localizedDescription)")
+                Logger.println("Error: \(error!.localizedDescription)")
             }
         }
         

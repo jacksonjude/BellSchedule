@@ -111,12 +111,12 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
                 let schoolStartTimeNotification = UNNotificationRequest(identifier: UUID().uuidString,  content: schoolStartTimeNotificationContent, trigger: schoolStartTimeNotificationTrigger)
                 
                 UNUserNotificationCenter.current().add(schoolStartTimeNotification) { (error) in
-                    print("Added notification at: " + String(describing: (schoolStartTimeNotification.trigger as! UNCalendarNotificationTrigger).dateComponents))
+                    Logger.println("Added notification at: " + String(describing: (schoolStartTimeNotification.trigger as! UNCalendarNotificationTrigger).dateComponents))
                     notificationsAdded += 1
                     if notificationsAdded == schoolStartTimeOn
                     {
                         UNUserNotificationCenter.current().getPendingNotificationRequests { (notificationRequests) in
-                            print(notificationRequests)
+                            //Logger.println(notificationRequests)
                         }
                     }
                 }
