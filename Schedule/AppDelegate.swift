@@ -25,15 +25,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         cloudManager = CloudManager()
         
-        if UserDefaults.standard.object(forKey: "firstLaunch") != nil
+        if UserDefaults.standard.object(forKey: "firstLaunch") == nil
         {
             firstLaunch = true
             UserDefaults.standard.set(618, forKey: "firstLaunch")
         }
         
-        MTMigration.migrate(toVersion: "1.1") {
+        MTMigration.applicationUpdate {
             UserDefaults.standard.set(nil, forKey: "lastUpdatedData")
         }
+        
+        /*MTMigration.migrate(toVersion: "1.1") {
+            UserDefaults.standard.set(nil, forKey: "lastUpdatedData")
+        }*/
         
         backgroundName = (UserDefaults.standard.object(forKey: "backgroundName") as? String) ?? "background1"
         
@@ -51,6 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.setMinimumBackgroundFetchInterval(86400)
         
         scheduleNotificationManager = ScheduleNotificationManager()
+        scheduleNotificationManager?.gatherNotificationData()
         
         return true
     }
@@ -97,6 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         scheduleNotificationManager = ScheduleNotificationManager()
+        scheduleNotificationManager?.gatherNotificationData()
     }
 }
 

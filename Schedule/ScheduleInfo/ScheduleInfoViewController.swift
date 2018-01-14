@@ -146,15 +146,48 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     //MARK: Settings
     
     @IBAction func openSettings(_ sender: Any) {
+        Logger.println("SET: Opening settings...")
+        
         let settingsAlert = UIAlertController(title: "Settings", message: "\n\n", preferredStyle: .alert)
         
-        settingsAlert.addTextField { (textFeild) in
-            textFeild.placeholder = (UserDefaults.standard.object(forKey: "userID") as? String) ?? "UserID"
+        settingsAlert.addTextField { (textField) in
+            textField.placeholder = (UserDefaults.standard.object(forKey: "userID") as? String) ?? "UserID"
         }
         
-        settingsAlert.addTextField { (textFeild) in
+        settingsAlert.addTextField { (textField) in
             let backgroundNumber = String(describing: backgroundName.last ?? Character(""))
-            textFeild.text = String(describing: backgroundNumber)
+            textField.text = String(describing: backgroundNumber)
+        }
+        
+        settingsAlert.addTextField{ (textField) in
+            var notificationAlertTime = (UserDefaults.standard.object(forKey: "notificationAlertTime") as? String) ?? "21:00"
+            var formattedNotificationAlertTime = ""
+            
+            if Int(notificationAlertTime.split(separator: ":")[1]) ?? 0 < 10
+            {
+                notificationAlertTime = notificationAlertTime.split(separator: ":")[0] + ":0" + notificationAlertTime.split(separator: ":")[1]
+            }
+            
+            if (Int(notificationAlertTime.split(separator: ":")[0]) ?? 0) > 12 || (Int(notificationAlertTime.split(separator: ":")[0]) ?? 0) == 0
+            {
+                let formattedNotificationAlertTime1 = String((Int(notificationAlertTime.split(separator: ":")[0]) ?? 0) - 12)
+                let formattedNotificationAlertTime2 = ":" + String(notificationAlertTime.split(separator: ":")[1]) + " PM"
+                formattedNotificationAlertTime = formattedNotificationAlertTime1 + formattedNotificationAlertTime2
+            }
+            else if (Int(notificationAlertTime.split(separator: ":")[0]) ?? 0) == 12
+            {
+                formattedNotificationAlertTime = notificationAlertTime + " PM"
+            }
+            else if (Int(notificationAlertTime.split(separator: ":")[0]) ?? 0) == 0
+            {
+                formattedNotificationAlertTime = "12:" + String(notificationAlertTime.split(separator: ":")[1]) + " AM"
+            }
+            else
+            {
+                formattedNotificationAlertTime = notificationAlertTime + " AM"
+            }
+            
+            textField.text = formattedNotificationAlertTime
         }
         
         settingsAlert.view.addSubview(createSwitch())
@@ -169,6 +202,8 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         }))
         
         settingsAlert.addAction(UIAlertAction(title: "Set", style: .default, handler: { (alert) in
+            Logger.println("SET: Updating settings...")
+            
             let userID = settingsAlert.textFields![0].text
             if userID != nil && userID != ""
             {
@@ -177,13 +212,48 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
             }
             
             let backgroundFileNumber = settingsAlert.textFields![1].text ?? "1"
-            
             if UIImage(named: "background" + backgroundFileNumber) != nil
             {
                 backgroundName = "background" + backgroundFileNumber
                 self.view.setBackground()
                 
                 UserDefaults.standard.set(backgroundName, forKey: "backgroundName")
+            }
+            
+            /*var dateRegex: NSRegularExpression? = nil
+             do
+             {
+             dateRegex =  try NSRegularExpression(pattern: "^\\s*\\d+:\\d\\d\\s*[apAP]?[mM]?$", options: NSRegularExpression.Options.caseInsensitive)
+             }
+             catch
+             {
+             print(error.localizedDescription)
+             }
+             
+             let range = NSMakeRange(0, notificationAlertTimeString.count)
+             let matches = dateRegex?.matches(in: notificationAlertTimeString, options: NSRegularExpression.MatchingOptions.anchored, range: range)
+             if matches != nil && matches!.count > 0*/
+            
+            let notificationAlertTimeString = settingsAlert.textFields![2].text ?? ((UserDefaults.standard.object(forKey: "notificationAlertTime") as? String) ?? "21:00")
+            if notificationAlertTimeString.range(of: "^\\s*\\d+:\\d\\d\\s*[apAP]?[mM]?$", options: .regularExpression, range: nil, locale: nil) != nil
+            {
+                Logger.println("NAT: Formatting notification alert time: " + notificationAlertTimeString)
+                
+                var notificationAlertTimeHour = Int(notificationAlertTimeString.split(separator: ":")[0]) ?? 21
+                let notificationAlertTimeMinute = Int(notificationAlertTimeString.split(separator: ":")[1]) ?? 0
+                
+                if notificationAlertTimeString.lowercased().range(of: "pm") != nil && notificationAlertTimeHour != 12
+                {
+                    notificationAlertTimeHour += 12
+                }
+                
+                let formattedNotificationAlertTime = String(notificationAlertTimeHour) + ":" + String(notificationAlertTimeMinute)
+                
+                Logger.println("NAT: Setting notification alert time: " + formattedNotificationAlertTime)
+                
+                UserDefaults.standard.set(formattedNotificationAlertTime, forKey: "notificationAlertTime")
+                
+                appDelegate.scheduleNotificationManager?.setupNotifications()
             }
             
             UserDefaults.standard.set(self.syncButtonValue, forKey: "syncData")

@@ -36,8 +36,8 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     {
         let userIDAlert = UIAlertController(title: "Set UserID", message: "Enter a UserID to load or create a new user schedule", preferredStyle: .alert)
         
-        userIDAlert.addTextField { (textFeild) in
-            textFeild.placeholder = (UserDefaults.standard.object(forKey: "userID") as? String) ?? "UserID"
+        userIDAlert.addTextField { (textField) in
+            textField.placeholder = (UserDefaults.standard.object(forKey: "userID") as? String) ?? "UserID"
         }
         
         userIDAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (alert) in
@@ -134,8 +134,8 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let userPeriodChangeAlert = UIAlertController(title: "Period Name Change", message: "Edit the name of the period", preferredStyle: .alert)
         
-        userPeriodChangeAlert.addTextField { (textFeild) in
-            textFeild.text = self.periodNames[indexPath.row]
+        userPeriodChangeAlert.addTextField { (textField) in
+            textField.text = self.periodNames[indexPath.row]
         }
         
         userPeriodChangeAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (alert) in

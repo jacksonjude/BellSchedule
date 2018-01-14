@@ -19,7 +19,10 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     
     override init() {
         super.init()
-        
+    }
+    
+    func gatherNotificationData()
+    {
         Logger.println("SNM: Gathering notification data...")
         
         scheduleInfoManager = ScheduleInfoManager(delegate: self, downloadData: false, onlyFindOneDay: true)
@@ -111,7 +114,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
                 let schoolStartTimeNotification = UNNotificationRequest(identifier: UUID().uuidString,  content: schoolStartTimeNotificationContent, trigger: schoolStartTimeNotificationTrigger)
                 
                 UNUserNotificationCenter.current().add(schoolStartTimeNotification) { (error) in
-                    Logger.println("Added notification at: " + String(describing: (schoolStartTimeNotification.trigger as! UNCalendarNotificationTrigger).dateComponents))
+                    Logger.println("Added notification at: " + String(describing: (schoolStartTimeNotification.trigger as! UNCalendarNotificationTrigger).dateComponents) + "-- " + schoolStartTimeNotificationContent.title)
                     notificationsAdded += 1
                     if notificationsAdded == schoolStartTimeOn
                     {
@@ -140,8 +143,10 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         
         var calculatedDateComponents = Date.Gregorian.calendar.dateComponents([.day, .month, .year, .hour, .minute], from: calculatedDate)
         
-        calculatedDateComponents.hour = 16
-        calculatedDateComponents.minute = 59
+        let notificationAlertTime = (UserDefaults.standard.object(forKey: "notificationAlertTime") as? String) ?? "21:00"
+        
+        calculatedDateComponents.hour = Int(notificationAlertTime.split(separator: ":")[0])
+        calculatedDateComponents.minute = Int(notificationAlertTime.split(separator: ":")[1])
         
         return calculatedDateComponents
     }
