@@ -132,6 +132,7 @@
 		7A15FC921FDDC7CD0012A883 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		7A15FC941FDDC7CD0012A883 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A15FC961FDDC7CD0012A883 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7A1D3239201585F10062989E /* Schedule2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Schedule2.xcdatamodel; sourceTree = "<group>"; };
 		7A2418991FC7E883000407B8 /* ScheduleWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ScheduleWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A24189A1FC7E883000407B8 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		7A24189D1FC7E883000407B8 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -1060,9 +1061,10 @@
 		7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7A1D3239201585F10062989E /* Schedule2.xcdatamodel */,
 				7A796F931F871D1400D9658D /* Schedule.xcdatamodel */,
 			);
-			currentVersion = 7A796F931F871D1400D9658D /* Schedule.xcdatamodel */;
+			currentVersion = 7A1D3239201585F10062989E /* Schedule2.xcdatamodel */;
 			path = Schedule.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -30,11 +30,13 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         fetchAllWeeks(weeksToAdd: 0)
         
         self.view.setBackground()
+        
+        collectionView.addCorners()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        collectionView.addCorners()
+        collectionView.frame.size.height = CGFloat(loadedWeeks+1)*(sectionInsets.top+sectionInsets.bottom) + CGFloat(loadedWeeks+1)*(collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: IndexPath(row: 0, section: 1)).frame.size.height) + 10
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -89,7 +91,16 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
             {
                 (cell.viewWithTag(618) as! UILabel).text = String(describing: getDate(indexPath: indexPath).day!)
             }
-            cell.backgroundColor = UIColor.white
+            
+            if indexPath.row/7 == 0 && indexPath.row%7 == Date().getDayOfWeek()
+            {
+                cell.backgroundColor = UIColor(white: 0.6, alpha: 1.0)
+            }
+            else
+            {
+                cell.backgroundColor = UIColor.white
+            }
+            
             (cell.viewWithTag(618) as! UILabel).textColor = UIColor.black
         default:
             break

@@ -20,16 +20,16 @@ class CoreDataStack: NSObject
          */
         let container = NSPersistentContainer(name: "Schedule")
         
-        var persistentStoreDescriptions: NSPersistentStoreDescription
+        //var persistentStoreDescriptions: NSPersistentStoreDescription
         
-        /*let storeUrl =  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.jacksonjude.BellSchedule")!.appendingPathComponent("Schedule.sqlite")
+        let storeUrl =  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.jacksonjude.BellSchedule")!.appendingPathComponent("Schedule.sqlite")
 
         let description = NSPersistentStoreDescription()
         description.shouldInferMappingModelAutomatically = true
         description.shouldMigrateStoreAutomatically = true
-        description.url = storeUrl*/
+        description.url = storeUrl
         
-        container.persistentStoreDescriptions = [NSPersistentStoreDescription(url:  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.jacksonjude.BellSchedule")!.appendingPathComponent("Schedule.sqlite"))]
+        container.persistentStoreDescriptions = [description]
         
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
