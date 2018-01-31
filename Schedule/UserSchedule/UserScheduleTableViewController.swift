@@ -13,6 +13,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     var periodNames: Array<String> = []
     var uploadData = false
     @IBOutlet weak var tableView: UITableView!
+    var justSetUserScheduleID = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,8 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
             {
                 UserDefaults.standard.set(userID, forKey: "userID")
                 Logger.println(" USRID: Set userID: " + userID!)
+                
+                self.justSetUserScheduleID = true
                 self.getUserID()
             }
             else
@@ -112,7 +115,26 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
             Logger.println(" USRSCH: Received periodNamesRecord")
             if periodNamesRecord.object(forKey: "periodNames") as? [String] != nil
             {
-                periodNames = periodNamesRecord.object(forKey: "periodNames") as! [String]
+                OperationQueue.main.addOperation {
+                    if self.justSetUserScheduleID
+                    {
+                        let confirmUserIDAlert = UIAlertController(title: "Confirm UserID", message: "This UserID is already linked to a schedule. Load existing schedule?", preferredStyle: .alert)
+                        
+                        confirmUserIDAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (alert) in
+                            UserDefaults.standard.set(nil, forKey: "userID")
+                            self.performSegue(withIdentifier: "exitUserSchedule", sender: self)
+                        }))
+                        
+                        confirmUserIDAlert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (alert) in
+                            
+                        }))
+                        
+                        self.present(confirmUserIDAlert, animated: true, completion: {
+                            
+                        })
+                    }
+                    self.periodNames = periodNamesRecord.object(forKey: "periodNames") as! [String]
+                }
             }
             else
             {
