@@ -113,7 +113,7 @@ class ScheduleInfoManager: NSObject {
     {
         didSet
         {
-            if loadedData == 2
+            if loadedData == 3
             {
                 loadedAllData = true
             }
@@ -156,6 +156,7 @@ class ScheduleInfoManager: NSObject {
         
         CloudManager.fetchAllDataQueue.append("WeekSchedules")
         CloudManager.fetchAllDataQueue.append("Schedule")
+        CloudManager.fetchAllDataQueue.append("Announcement")
         
         CloudManager.initFetchAllDataQueue()
     }

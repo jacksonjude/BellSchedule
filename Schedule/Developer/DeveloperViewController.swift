@@ -48,7 +48,7 @@ class DeveloperViewController: UIViewController
     }
     
     @IBAction func clearCoreData(_ sender: Any) {
-        let entityTypes = ["Schedule", "WeekSchedules"]
+        let entityTypes = ["Schedule", "WeekSchedules", "Announcement"]
         
         for entityType in entityTypes
         {
@@ -70,6 +70,8 @@ class DeveloperViewController: UIViewController
         CoreDataStack.saveContext()
         
         UserDefaults.standard.set(nil, forKey: "lastUpdatedData")
+        
+        appDelegate.refreshDataOnScheduleViewController = true
     }
     
     @IBAction func clearConsole(_ sender: Any) {

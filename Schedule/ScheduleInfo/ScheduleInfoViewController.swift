@@ -84,6 +84,13 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         {
             appDelegate.justLaunched = false
         }
+        
+        if appDelegate.refreshDataOnScheduleViewController
+        {
+            appDelegate.refreshDataOnScheduleViewController = false
+            
+            refreshPeriodInfo(self)
+        }
     }
     
     deinit

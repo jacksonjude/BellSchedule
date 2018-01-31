@@ -12,18 +12,26 @@ import CloudKit
 
 class AnnouncementsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
-    var announcementTitles: Array<String>?
+    var announcementTitles: Array<String> = []
+    var announcementDates: Array<Date> = []
     @IBOutlet weak var tableView: UITableView!
     var announcementManager: AnnouncementManager?
     var selectedRow = 0
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return announcementTitles?.count ?? 0
+        return announcementTitles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AnnoucementCell", for: indexPath)
-        cell.textLabel?.text = announcementTitles?[indexPath.row]
+        let announcementTitle = announcementTitles[indexPath.row]
+        let announcementDate = announcementDates[indexPath.row]
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yy"
+        let formattedAnnouncementDate = dateFormatter.string(from: announcementDate) 
+        
+        cell.textLabel?.text = announcementTitle + " - " + formattedAnnouncementDate
         return cell
     }
     
@@ -42,11 +50,7 @@ class AnnouncementsTableViewController: UIViewController, UITableViewDelegate, U
             
             announcementManager?.announcementViewController = announcementViewController
             
-            //Find the selected post date
-            let selectedAnnouncementPostDate = String(announcementTitles![selectedRow].split(separator: "—")[0])
-            
-            //Get the recordUUID from the announcementID array using the post date
-            announcementManager?.fetchAnnouncementRecord(recordUUID: (announcementManager?.announcementIDs[selectedAnnouncementPostDate])!)
+            announcementManager?.setAnnouncementRecord(selectedRow: selectedRow)
         }
     }
     
@@ -57,6 +61,7 @@ class AnnouncementsTableViewController: UIViewController, UITableViewDelegate, U
         tableView.addCorners()
         
         announcementManager = AnnouncementManager(viewController: self)
+        announcementManager?.fetchAnnouncementTitles()
         
         self.view.setBackground()
     }

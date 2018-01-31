@@ -54,7 +54,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     }
     
     func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int) {
-        if let tomorrowPeriodTimes = appDelegate.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
+        if let tomorrowPeriodTimes = self.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
         {
             let tomorrowSchoolStartTime = String(tomorrowPeriodTimes[0].split(separator: "-")[0])
             
@@ -149,5 +149,20 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         calculatedDateComponents.minute = Int(notificationAlertTime.split(separator: ":")[1])
         
         return calculatedDateComponents
+    }
+    
+    func decodeArrayFromJSON(object: NSManagedObject, field: String) -> Array<Any>?
+    {
+        let JSONdata = object.value(forKey: field) as! Data
+        do
+        {
+            let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as! Array<Any>
+            return array
+        }
+        catch
+        {
+            Logger.println(error)
+            return nil
+        }
     }
 }

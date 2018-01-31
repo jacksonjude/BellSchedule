@@ -12,7 +12,7 @@ import CoreData
 
 class AnnouncementViewController: UIViewController
 {
-    var announcementRecord: CKRecord?
+    var announcementRecord: NSManagedObject?
     
     @IBOutlet weak var bodyTextView: UITextView!
     @IBOutlet weak var dateLabel: UILabel!
@@ -32,9 +32,9 @@ class AnnouncementViewController: UIViewController
         if announcementRecord != nil
         {
             OperationQueue.main.addOperation {
-                self.bodyTextView.text = self.announcementRecord!.object(forKey: "bodyText") as? String
-                self.announcementNavigationItem.title = self.announcementRecord!.object(forKey: "title") as? String
-                let postDate = self.announcementRecord!.object(forKey: "postDate") as! Date
+                self.bodyTextView.text = self.announcementRecord!.value(forKey: "bodyText") as? String
+                self.announcementNavigationItem.title = self.announcementRecord!.value(forKey: "title") as? String
+                let postDate = self.announcementRecord!.value(forKey: "postDate") as! Date
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "YYYY-MM-dd HH:mm "
                 self.dateLabel.text = dateFormatter.string(from: postDate)

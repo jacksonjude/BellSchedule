@@ -271,6 +271,8 @@ class CloudManager: NSObject
             return ["schedules", "weekStartDate", "uuid"]
         case "UserSchedule":
             return ["periodNames", "userID", "uuid"]
+        case "Announcement":
+            return ["title", "postDate", "bodyText", "uuid"]
         default:
             return []
         }

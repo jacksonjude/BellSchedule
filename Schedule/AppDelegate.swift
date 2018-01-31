@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var justLaunched = true
     var firstLaunch = false
     var scheduleNotificationManager: ScheduleNotificationManager?
+    var refreshDataOnScheduleViewController = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -34,10 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         MTMigration.applicationUpdate {
             UserDefaults.standard.set(nil, forKey: "lastUpdatedData")
         }
-        
-        /*MTMigration.migrate(toVersion: "1.1") {
-            UserDefaults.standard.set(nil, forKey: "lastUpdatedData")
-        }*/
         
         backgroundName = (UserDefaults.standard.object(forKey: "backgroundName") as? String) ?? "background1"
         
