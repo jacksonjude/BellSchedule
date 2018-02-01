@@ -17,9 +17,17 @@ var backgroundName = "background1"
 
 extension UIView
 {
-    func addCorners()
+    func addCorners(_ radius: Int...)
     {
-        self.layer.cornerRadius = 8
+        if radius.count > 0
+        {
+            self.layer.cornerRadius = CGFloat(radius[0])
+        }
+        else
+        {
+            self.layer.cornerRadius = 8
+        }
+        
         self.layer.masksToBounds = true
     }
     
@@ -60,8 +68,6 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         scheduleManager?.startInfoManager()
         
         NotificationCenter.default.addObserver(self, selector: #selector(printCloudKitError(notification:)), name: Notification.Name(rawValue: "cloudKitError"), object: nil)
-        
-        self.view.setBackground()
     }
 
     override func didReceiveMemoryWarning() {
@@ -91,6 +97,8 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
             
             refreshPeriodInfo(self)
         }
+        
+        self.view.setBackground()
     }
     
     deinit
@@ -527,7 +535,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         
         if source.uploadData
         {
-            Logger.println("Exiting UserSchedule and uploading...")
+            Logger.println("Exiting UserScheduleTableView and uploading...")
             if let userID = UserDefaults.standard.object(forKey: "userID") as? String
             {
                 if (source.periodNames.count > 0)
@@ -539,13 +547,13 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         }
         else
         {
-            Logger.println("Exiting UserSchedule...")
+            Logger.println("Exiting UserScheduleTableView...")
         }
     }
     
     @IBAction func exitCalendar(_ segue: UIStoryboardSegue)
     {
-        Logger.println("Exiting Calendar...")
+        Logger.println("Exiting CalendarCollectionView...")
     }
     
     @IBAction func exitDeveloperView(_ segue: UIStoryboardSegue)
@@ -556,6 +564,11 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     @IBAction func exitAnnouncementsTableView(_ segue: UIStoryboardSegue)
     {
         Logger.println("Exiting AnnouncementsTableView...")
+    }
+    
+    @IBAction func exitSettingsView(_ segue: UIStoryboardSegue)
+    {
+        Logger.println("Exiting SettingsView...")
     }
 }
 

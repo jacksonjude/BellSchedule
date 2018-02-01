@@ -136,6 +136,8 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1
         {
+            Logger.println(" CAL: Item selected at row " + String(indexPath.row))
+            
             currentDateString = nil
             currentScheduleObject = nil
             
@@ -352,6 +354,8 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "openPeriodTimesView")
         {
+            Logger.println(" CAL: Opening ScheduleTimesViewController...")
+            
             let scheduleTimesViewController = segue.destination as! ScheduleTimesViewController
             scheduleTimesViewController.scheduleRecord = currentScheduleObject!
             scheduleTimesViewController.scheduleDateString = currentDateString

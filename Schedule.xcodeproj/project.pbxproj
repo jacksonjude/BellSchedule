@@ -42,6 +42,7 @@
 		7A796FA31F871D3300D9658D /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A796FA21F871D3300D9658D /* CloudKit.framework */; };
 		7A796FA51F87250600D9658D /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796FA41F87250600D9658D /* CloudManager.swift */; };
 		7AA09CDF1F9C4B4D006B5F08 /* Consola.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */; };
+		7AA4B7872022A4AC00BC0A2C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA4B7862022A4AC00BC0A2C /* SettingsViewController.swift */; };
 		7AC0A3381F8C3EE0005E5FA3 /* ScheduleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */; };
 		7ACF12C21FEF929B007D1320 /* ScheduleNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */; };
 		7ADFED9C1FDDC97300BFD0E1 /* CooleyCasual.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A0A74631F8C277700249FAB /* CooleyCasual.ttf */; };
@@ -158,6 +159,7 @@
 		7A796FA21F871D3300D9658D /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		7A796FA41F87250600D9658D /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
 		7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consola.ttf; sourceTree = "<group>"; };
+		7AA4B7862022A4AC00BC0A2C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoManager.swift; sourceTree = "<group>"; };
 		7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotificationManager.swift; sourceTree = "<group>"; };
 		7ADFEDA51FDDCA0700BFD0E1 /* ScheduleWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScheduleWatch.entitlements; sourceTree = "<group>"; };
@@ -234,12 +236,14 @@
 			path = ScheduleWidget;
 			sourceTree = "<group>";
 		};
-		7A2D98951F9587AC00288665 /* Developer */ = {
+		7A2D98951F9587AC00288665 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
 				7A2D98931F95879B00288665 /* DeveloperViewController.swift */,
+				7AA4B7862022A4AC00BC0A2C /* SettingsViewController.swift */,
+				7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */,
 			);
-			path = Developer;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		7A5687321FEC78FD00744A30 /* Announcement */ = {
@@ -293,8 +297,7 @@
 			isa = PBXGroup;
 			children = (
 				7A5687321FEC78FD00744A30 /* Announcement */,
-				7A2D98951F9587AC00288665 /* Developer */,
-				7ACF12C01FEF9259007D1320 /* Notification */,
+				7A2D98951F9587AC00288665 /* Settings */,
 				7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */,
 				7AF3A24E1F8DBF7900C509AC /* UserSchedule */,
 				7A796FA01F871D2F00D9658D /* Schedule.entitlements */,
@@ -325,14 +328,6 @@
 				7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */,
 			);
 			path = CoreData;
-			sourceTree = "<group>";
-		};
-		7ACF12C01FEF9259007D1320 /* Notification */ = {
-			isa = PBXGroup;
-			children = (
-				7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */,
-			);
-			path = Notification;
 			sourceTree = "<group>";
 		};
 		7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */ = {
@@ -679,6 +674,7 @@
 				7A796F941F871D1400D9658D /* Schedule.xcdatamodeld in Sources */,
 				7A796FA51F87250600D9658D /* CloudManager.swift in Sources */,
 				7A61F5AA1FCD3A600060580A /* CoreDataStack.swift in Sources */,
+				7AA4B7872022A4AC00BC0A2C /* SettingsViewController.swift in Sources */,
 				7A5687341FEC889800744A30 /* AnnouncementsTableViewController.swift in Sources */,
 				7A796F8C1F871D1400D9658D /* AppDelegate.swift in Sources */,
 				7A5687361FEC8DF600744A30 /* AnnouncementManager.swift in Sources */,
