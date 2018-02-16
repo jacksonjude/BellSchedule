@@ -14,6 +14,8 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     var uploadData = false
     @IBOutlet weak var tableView: UITableView!
     var justSetUserScheduleID = false
+    var freeMods: Array<Int> = []
+    var selectedRow = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,7 +115,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
         if let periodNamesRecord = notification.object as? CKRecord
         {
             Logger.println(" USRSCH: Received periodNamesRecord")
-            if periodNamesRecord.object(forKey: "periodNames") as? [String] != nil
+            if let periodNamesFromRecord = periodNamesRecord.object(forKey: "periodNames") as? [String]
             {
                 OperationQueue.main.addOperation {
                     if self.justSetUserScheduleID
@@ -133,12 +135,24 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
                             
                         })
                     }
-                    self.periodNames = periodNamesRecord.object(forKey: "periodNames") as! [String]
+                    self.periodNames = periodNamesFromRecord
                 }
             }
             else
             {
                 periodNames = ["", "", "", "", "", "", "", "", "Registry"]
+            }
+            
+            
+            if let freeModsFromRecord = periodNamesRecord.object(forKey: "freeMods") as? [Int]
+            {
+                OperationQueue.main.addOperation {
+                    self.freeMods = freeModsFromRecord
+                }
+            }
+            else
+            {
+                freeMods = [0, 0, 0, 0, 0, 0, 0, 0]
             }
         }
         else
@@ -154,7 +168,9 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let userPeriodChangeAlert = UIAlertController(title: "Period Name Change", message: "Edit the name of the period", preferredStyle: .alert)
+        selectedRow = indexPath.row
+        
+        let userPeriodChangeAlert = UIAlertController(title: "Period Name Change", message: "Edit the name of the period\n\n", preferredStyle: .alert)
         
         userPeriodChangeAlert.addTextField { (textField) in
             textField.text = self.periodNames[indexPath.row]
@@ -177,8 +193,45 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
             }
         }))
         
+        userPeriodChangeAlert.view.addSubview(createSwitch(indexPath.row))
+        
+        let freeModLabel = UILabel(frame: CGRect(x: 15, y: 50, width: 200, height: 70))
+        freeModLabel.text = "Free Mod:"
+        freeModLabel.font = UIFont(name: "System", size: 15)
+        userPeriodChangeAlert.view.addSubview(freeModLabel)
+        
         self.present(userPeriodChangeAlert, animated: true) {
             
+        }
+    }
+    
+    func createSwitch(_ indexRow: Int) -> UISwitch
+    {
+        let newSwitch = UISwitch(frame: CGRect(x: 95, y: 70, width: 0, height: 0))
+        if freeMods.count - 1 >= indexRow
+        {
+            newSwitch.setOn(freeMods[indexRow] == 1, animated: false)
+        }
+        else
+        {
+            newSwitch.isEnabled = false
+        }
+        newSwitch.addTarget(self, action: #selector(switchValueDidChange(sender:)), for: .valueChanged)
+        return newSwitch
+    }
+    
+    @objc func switchValueDidChange(sender: Any)
+    {
+        if freeMods.count - 1 >= selectedRow
+        {
+            if freeMods[selectedRow] == 0
+            {
+                freeMods[selectedRow] = 1
+            }
+            else if freeMods[selectedRow] == 1
+            {
+                freeMods[selectedRow] = 0
+            }
         }
     }
     
@@ -187,6 +240,8 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
         if barButtonItem.tag == 618
         {
             uploadData = true
+            appDelegate.refreshUserScheduleOnScheduleViewController = true
+            appDelegate.refreshDataOnScheduleViewController = true
         }
         performSegue(withIdentifier: "exitUserSchedule", sender: self)
     }

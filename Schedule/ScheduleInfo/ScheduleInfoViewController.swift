@@ -49,9 +49,6 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     @IBOutlet weak var announcementButton: UIButton!
     @IBOutlet weak var helpButton: UIButton!
     
-    
-    var periodNumber: Int?
-    
     var syncButtonValue = true
     var refreshTimer: Timer?
     
@@ -89,6 +86,14 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         if appDelegate.justLaunched
         {
             appDelegate.justLaunched = false
+        }
+        
+        if appDelegate.refreshUserScheduleOnScheduleViewController
+        {
+            appDelegate.refreshUserScheduleOnScheduleViewController = false
+            
+            scheduleManager?.periodNames = nil
+            scheduleManager?.freeMods = nil
         }
         
         if appDelegate.refreshDataOnScheduleViewController
@@ -389,11 +394,11 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
                 self.currentPeriodLabel.text = periodInfo1 + periodInfo2
             }
             
-            self.periodNumber = periodNumber
-                        
-            if periodNames != nil
+            if periodNames != nil && !scheduleManager!.periodNamePrinted
             {
-                printPeriodName(todaySchedule: todaySchedule, periodNames: periodNames!)
+                scheduleManager?.periodNamePrinted = true
+                scheduleManager?.getPeriodName()
+                //printPeriodName(todaySchedule: todaySchedule, periodNames: periodNames!)
             }
         }
     }
@@ -402,11 +407,15 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     {
         if let periodNumbers = appDelegate.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
         {
-            OperationQueue.main.addOperation {
-                if periodNames.count > periodNumbers[self.periodNumber!-1]-1
-                {
-                    self.scheduleManager?.periodNamePrinted = true
-                    self.currentPeriodLabel.text = self.currentPeriodLabel.text! + "\n" + periodNames[periodNumbers[self.periodNumber!-1]-1]
+            if !scheduleManager!.periodNamePrinted
+            {
+                scheduleManager!.periodNamePrinted = true
+                OperationQueue.main.addOperation {
+                    if periodNames.count > periodNumbers[self.scheduleManager!.periodNumber!-1]-1
+                    {
+                        self.scheduleManager?.periodNamePrinted = true
+                        self.currentPeriodLabel.text = self.currentPeriodLabel.text! + "\n" + periodNames[periodNumbers[self.scheduleManager!.periodNumber!-1]-1]
+                    }
                 }
             }
         }
@@ -540,7 +549,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
             {
                 if (source.periodNames.count > 0)
                 {
-                    let userScheduleDictionary = ["periodNames":source.periodNames, "userID":userID] as [String : Any]
+                    let userScheduleDictionary = ["periodNames":source.periodNames, "userID":userID, "freeMods":source.freeMods] as [String : Any]
                     CloudManager.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
                 }
             }

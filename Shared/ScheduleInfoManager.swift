@@ -99,6 +99,7 @@ class ScheduleInfoManager: NSObject {
     var periodPrinted = false
     var periodNamePrinted = false
     var periodNumber: Int?
+    var freeMods: Array<Int>?
     
     var todaySchedule: NSManagedObject?
     
@@ -174,6 +175,9 @@ class ScheduleInfoManager: NSObject {
     
     func refreshScheduleInfo()
     {
+        periodPrinted = false
+        periodNamePrinted = false
+        
         getUserID()
         queryWeekSchedule()        
     }
@@ -211,19 +215,39 @@ class ScheduleInfoManager: NSObject {
         {
             Logger.println(" USRSCH: Received periodNamesRecord")
             periodNames = periodNamesRecord.object(forKey: "periodNames") as? [String]
+            freeMods = periodNamesRecord.object(forKey: "freeMods") as? [Int]
             
-            if periodPrinted && !periodNamePrinted
-            {
-                if (periodNames?.count ?? 0) > periodNumber!-1
-                {
-                    infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
-                    periodNamePrinted = true
-                }
-            }
+            getPeriodName()
         }
         else
         {
             Logger.println(" USRSCH: Did not receive periodNamesRecord")
+        }
+    }
+    
+    func getPeriodName()
+    {
+        if periodPrinted && !periodNamePrinted
+        {
+            if let periodNumbers = decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
+            {
+                periodNamePrinted = true
+                
+                print((freeMods?.count ?? 0) > periodNumber!-1)
+                print(freeMods?[periodNumbers[periodNumber!-1]-1] == 1)
+                print(((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C"))
+                if (freeMods?.count ?? 0) > periodNumber!-1 && freeMods?[periodNumbers[periodNumber!-1]-1] == 1 && ((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")
+                {
+                    if let periodTimes = decodeArrayFromJSON(object: todaySchedule!, field: "periodTimes") as? Array<String>
+                    {
+                        recalculateCurrentPeriodForMods(periodTimes: periodTimes)
+                    }
+                }
+                else if (periodNames?.count ?? 0) > periodNumber!-1
+                {
+                    infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
+                }
+            }
         }
     }
     
@@ -426,7 +450,7 @@ class ScheduleInfoManager: NSObject {
     
     //MARK: Find Current Period
     
-    func getDate(hourMinute: Substring, day: Date) -> Date
+    func getDate(hourMinute: String, day: Date) -> Date
     {
         let hourMinuteSplit = hourMinute.split(separator: ":")
         let gregorian = Calendar(identifier: .gregorian)
@@ -458,8 +482,8 @@ class ScheduleInfoManager: NSObject {
             
             let periodRangeArray = periodRangeString.split(separator: "-")
             
-            let periodStart = getDate(hourMinute: periodRangeArray[0], day: currentDate)
-            let periodEnd = getDate(hourMinute: periodRangeArray[1], day: currentDate)
+            let periodStart = getDate(hourMinute: String(periodRangeArray[0]), day: currentDate)
+            let periodEnd = getDate(hourMinute: String(periodRangeArray[1]), day: currentDate)
             
             if periodStart < periodEnd
             {
@@ -474,8 +498,8 @@ class ScheduleInfoManager: NSObject {
                     self.periodNumber = periodOn
                     periodPrinted = true
                     Logger.println(" FCURPER: Found current period!")
-                    infoDelegate.printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn, todaySchedule: self.todaySchedule!, periodNames: self.periodNames)
                     
+                    infoDelegate.printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn, todaySchedule: self.todaySchedule!, periodNames: self.periodNames)                    
                     
                     infoDelegate.setTimer?(String(periodRangeString.split(separator: "-")[1]))
                     
@@ -527,6 +551,9 @@ class ScheduleInfoManager: NSObject {
                     passingPeriodMessage2 = passingPeriodMessage2 + periodNames![nextPeriodNumber!-1]
                 }
                 
+                periodPrinted = true
+                periodNumber = nextPeriodNumber!+1
+                
                 infoDelegate.printCurrentMessage(message: passingPeriodMessage1 + passingPeriodMessage2)
                 
                 infoDelegate.setTimer?(String(nextPeriodStart!))
@@ -544,6 +571,162 @@ class ScheduleInfoManager: NSObject {
                     infoDelegate.printCurrentMessage(message: "School has ended")
                 }
             }
+        }
+    }
+    
+    func recalculateCurrentPeriodForMods(periodTimes: Array<String>)
+    {
+        if let periodNumbers = self.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? Array<Int>
+        {
+            let currentPeriodWithMod = periodNumbers[periodNumber!-1]
+        
+            let periodStart = periodTimes[periodNumber!-1].split(separator: "-")[0]
+            var periodStartHour = Int(periodStart.split(separator: ":")[0]) ?? 0
+            var periodStartMinute = Int(periodStart.split(separator: ":")[1]) ?? 0
+            
+            let periodEnd = periodTimes[periodNumber!-1].split(separator: "-")[1]
+            var periodEndHour = Int(periodEnd.split(separator: ":")[0]) ?? 0
+            var periodEndMinute = Int(periodEnd.split(separator: ":")[1]) ?? 0
+            
+            let totalMinutes = (60*(periodEndHour - periodStartHour)) + (periodEndMinute - periodStartMinute)
+            
+            Logger.println(" RCPM: Calculating period length - " + String(totalMinutes) + " mins")
+            
+            if totalMinutes == 60
+            {
+                var modStartHour = 0
+                var modStartMinute = 0
+                
+                var modEndHour = 0
+                var modEndMinute = 0
+                
+                if currentPeriodWithMod % 2 == 0
+                {
+                    //Even block number -- Mod goes before
+                    
+                    modStartHour = periodStartHour
+                    modStartMinute = periodStartMinute
+                    
+                    periodStartMinute += 15
+                    if periodStartMinute >= 60
+                    {
+                        if periodStartMinute - 5 >= 60
+                        {
+                            modEndHour = periodStartHour + 1
+                            modEndMinute = periodStartMinute - 5 - 60
+                        }
+                        else
+                        {
+                            modEndHour = periodStartHour
+                            modEndMinute = periodStartMinute - 5
+                        }
+                        
+                        periodStartMinute -= 60
+                        periodStartHour += 1
+                    }
+                    else
+                    {
+                        modEndHour = periodStartHour
+                        modEndMinute = periodStartMinute - 5
+                    }
+                    
+                }
+                else if currentPeriodWithMod % 2 == 1
+                {
+                    //Odd block number -- Mod goes after
+                    
+                    modEndHour = periodEndHour
+                    modEndMinute = periodEndMinute
+                    
+                    periodEndMinute -= 15
+                    if periodEndMinute < 0
+                    {
+                        if periodEndMinute + 5 < 0
+                        {
+                            modStartHour = periodEndHour - 1
+                            modStartMinute = periodEndMinute + 5 + 60
+                        }
+                        else
+                        {
+                            modStartHour = periodEndHour
+                            modStartMinute = periodEndMinute + 5
+                        }
+                        
+                        periodEndMinute += 60
+                        periodEndHour -= 1
+                    }
+                    else
+                    {
+                        modStartHour = periodEndHour
+                        modStartMinute = periodEndMinute + 5
+                    }
+                }
+                
+                let periodStartFormattedString = zeroPadding(periodStartHour) + ":" + zeroPadding(periodStartMinute)
+                let periodEndFormattedString = zeroPadding(periodEndHour) + ":" + zeroPadding(periodEndMinute)
+                
+                let periodStartDate = getDate(hourMinute: periodStartFormattedString, day: Date())
+                let periodEndDate = getDate(hourMinute: periodEndFormattedString, day: Date())
+                
+                let modStartFormattedString = zeroPadding(modStartHour) + ":" + zeroPadding(modStartMinute)
+                let modEndFormattedString = zeroPadding(modEndHour) + ":" + zeroPadding(modEndMinute)
+                
+                let modStartDate = getDate(hourMinute: modStartFormattedString, day: Date())
+                let modEndDate = getDate(hourMinute: modEndFormattedString, day: Date())
+                
+                let currentDate = Date()
+                let periodDateRange = periodStartDate ... periodEndDate
+                let modDateRange = modStartDate ... modEndDate
+                
+                if periodDateRange.contains(currentDate)
+                {
+                    Logger.println(" RCPM: Period is not in mod -- Printing period name -- " + periodStartFormattedString + " - " + periodEndFormattedString)
+                    infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
+                    periodNamePrinted = true
+                }
+                else if modDateRange.contains(currentDate)
+                {
+                    Logger.println(" RCPM: Period is in mod -- Printing mod -- " + modStartFormattedString + " - " + modEndFormattedString)
+                    //Print mod start end times
+                }
+                else if currentPeriodWithMod % 2 == 0 && (modEndDate ... periodStartDate).contains(currentDate)
+                {
+                    Logger.println(" RCPM: Period is passing between mod and period -- " + modEndFormattedString + " - " + periodStartFormattedString)
+                    //Passing period between mod and period
+                }
+                else if currentPeriodWithMod % 2 == 1 && (periodEndDate ... modStartDate).contains(currentDate)
+                {
+                    Logger.println(" RCPM: Period is passing between period and mod -- " + periodEndFormattedString + " - " + modStartFormattedString)
+                    //Passing period between period and mod
+                }
+                else if currentPeriodWithMod % 2 == 0 && modStartDate > currentDate
+                {
+                    Logger.println(" RCPM: Passing period before mod -- " + modStartFormattedString)
+                    //Passing period before mod
+                }
+                else if currentPeriodWithMod % 2 == 1 && modEndDate < currentDate
+                {
+                    Logger.println(" RCPM: Passing period after mod -- " + modEndFormattedString)
+                    //Passing period after mod
+                }
+            }
+            else
+            {
+                infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
+                periodNamePrinted = true
+            }
+        }
+    }
+    
+    func zeroPadding(_ int: Int) -> String
+    {
+        if int > 9
+        {
+            return String(int)
+        }
+        else
+        {
+            return "0" + String(int)
         }
     }
     

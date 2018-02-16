@@ -44,7 +44,9 @@ class DeveloperViewController: UIViewController
     
     @objc func setLogText()
     {
-        logTextView.text = Logger.printedData
+        OperationQueue.main.addOperation {
+            self.logTextView.text = Logger.printedData
+        }
     }
     
     @IBAction func clearCoreData(_ sender: Any) {

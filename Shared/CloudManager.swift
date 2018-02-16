@@ -74,8 +74,6 @@ class CloudManager: NSObject
     
     static func fetchAllCloudData(entityType: String)
     {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.contextSaved), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
-        
         Logger.println("↓ - Fetching Changes from Cloud: " + entityType)
         
         let lastUpdatedDate = UserDefaults.standard.object(forKey: "lastUpdatedData") as? NSDate ?? Date.distantPast as NSDate
@@ -129,14 +127,13 @@ class CloudManager: NSObject
             CloudManager.savingCloudChanges = false
             NotificationCenter.default.post(name: Notification.Name(rawValue: "finishedFetchingAllData"), object: nil)
             
-            NotificationCenter.default.removeObserver(self)
-            
             loopFetchAllData()
         }
     }
     
     static func initFetchAllDataQueue()
     {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.contextSaved), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
         if !queueIsRunning
         {
             queueIsRunning = true
@@ -157,6 +154,7 @@ class CloudManager: NSObject
         }
         else
         {
+            NotificationCenter.default.removeObserver(self)
             queueIsRunning = false
         }
     }

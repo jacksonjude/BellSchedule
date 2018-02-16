@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var firstLaunch = false
     var scheduleNotificationManager: ScheduleNotificationManager?
     var refreshDataOnScheduleViewController = false
+    var refreshUserScheduleOnScheduleViewController = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

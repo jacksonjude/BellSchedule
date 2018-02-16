@@ -77,6 +77,8 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         settingsPickerView.addCorners()
         
+        settingsPickerViewDoneButton.addCorners()
+        
         userIDTextField.delegate = self
         userIDTextField.returnKeyType = .done
         
