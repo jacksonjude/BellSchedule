@@ -15,7 +15,7 @@ class InterfaceController: WKInterfaceController, ScheduleInfoDelegate {
     
     var periodNumber = 0
     
-    func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject, periodNames: Array<String>?) {
+    func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject) {
         if let periodNumbers = self.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
         {
             let periodRangeSplit = periodRangeString.split(separator: "-")
@@ -30,9 +30,9 @@ class InterfaceController: WKInterfaceController, ScheduleInfoDelegate {
             
             self.periodNumber = periodNumber
             
-            if periodNames != nil
+            if self.scheduleInfoManager?.periodNames != nil
             {
-                printPeriodName(todaySchedule: todaySchedule, periodNames: periodNames!)
+                printPeriodName(todaySchedule: todaySchedule, periodNames: self.scheduleInfoManager!.periodNames!)
             }
         }
     }

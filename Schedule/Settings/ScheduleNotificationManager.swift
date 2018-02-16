@@ -29,7 +29,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         scheduleInfoManager?.startInfoManager()
     }
     
-    func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject, periodNames: Array<String>?) {
+    func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject) {
         return
     }
     

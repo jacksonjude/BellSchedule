@@ -67,7 +67,7 @@ extension Date {
 
 @objc protocol ScheduleInfoDelegate
 {
-    func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject, periodNames: Array<String>?)
+    func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject)
     
     func printPeriodName(todaySchedule: NSManagedObject, periodNames: Array<String>)
     
@@ -177,6 +177,8 @@ class ScheduleInfoManager: NSObject {
     {
         periodPrinted = false
         periodNamePrinted = false
+        periodNames = nil
+        freeMods = nil
         
         getUserID()
         queryWeekSchedule()        
@@ -231,8 +233,6 @@ class ScheduleInfoManager: NSObject {
         {
             if let periodNumbers = decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
             {
-                periodNamePrinted = true
-                
                 print((freeMods?.count ?? 0) > periodNumber!-1)
                 print(freeMods?[periodNumbers[periodNumber!-1]-1] == 1)
                 print(((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C"))
@@ -499,7 +499,7 @@ class ScheduleInfoManager: NSObject {
                     periodPrinted = true
                     Logger.println(" FCURPER: Found current period!")
                     
-                    infoDelegate.printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn, todaySchedule: self.todaySchedule!, periodNames: self.periodNames)                    
+                    infoDelegate.printCurrentPeriod(periodRangeString: periodRangeString, periodNumber: periodOn, todaySchedule: self.todaySchedule!)                    
                     
                     infoDelegate.setTimer?(String(periodRangeString.split(separator: "-")[1]))
                     
@@ -682,7 +682,6 @@ class ScheduleInfoManager: NSObject {
                 {
                     Logger.println(" RCPM: Period is not in mod -- Printing period name -- " + periodStartFormattedString + " - " + periodEndFormattedString)
                     infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
-                    periodNamePrinted = true
                 }
                 else if modDateRange.contains(currentDate)
                 {
@@ -713,7 +712,6 @@ class ScheduleInfoManager: NSObject {
             else
             {
                 infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
-                periodNamePrinted = true
             }
         }
     }

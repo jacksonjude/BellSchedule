@@ -380,7 +380,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         }
     }
     
-    func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject, periodNames: Array<String>?)
+    func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject)
     {
         if let periodNumbers = appDelegate.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
         {
@@ -394,9 +394,8 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
                 self.currentPeriodLabel.text = periodInfo1 + periodInfo2
             }
             
-            if periodNames != nil && !scheduleManager!.periodNamePrinted
+            if scheduleManager?.periodNames != nil && scheduleManager?.freeMods != nil && !scheduleManager!.periodNamePrinted
             {
-                scheduleManager?.periodNamePrinted = true
                 scheduleManager?.getPeriodName()
                 //printPeriodName(todaySchedule: todaySchedule, periodNames: periodNames!)
             }
@@ -407,15 +406,11 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     {
         if let periodNumbers = appDelegate.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
         {
-            if !scheduleManager!.periodNamePrinted
+            if !scheduleManager!.periodNamePrinted && periodNames.count > periodNumbers[self.scheduleManager!.periodNumber!-1]-1
             {
                 scheduleManager!.periodNamePrinted = true
                 OperationQueue.main.addOperation {
-                    if periodNames.count > periodNumbers[self.scheduleManager!.periodNumber!-1]-1
-                    {
-                        self.scheduleManager?.periodNamePrinted = true
-                        self.currentPeriodLabel.text = self.currentPeriodLabel.text! + "\n" + periodNames[periodNumbers[self.scheduleManager!.periodNumber!-1]-1]
-                    }
+                    self.currentPeriodLabel.text = self.currentPeriodLabel.text! + "\n" + periodNames[periodNumbers[self.scheduleManager!.periodNumber!-1]-1]
                 }
             }
         }
