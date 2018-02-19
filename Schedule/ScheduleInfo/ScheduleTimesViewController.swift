@@ -65,7 +65,19 @@ class ScheduleTimesViewController: UIViewController
             {
                 let periodIndex = periodNumbers.index(of: periodNumber) ?? 0
                 let periodMinutes = String(calculateMinutes(periodRangeString: periodTimes[periodIndex]))
-                periodTimesText += "PER " + String(periodNumber) + " - " + periodTimes[periodIndex] + " - " + periodMinutes + " MIN"
+                
+                let periodStart = periodTimes[periodIndex].split(separator: "-")[0]
+                let periodStartHour = Int(periodStart.split(separator: ":")[0]) ?? 0
+                let periodStartMinute = Int(periodStart.split(separator: ":")[1]) ?? 0
+                
+                let periodEnd = periodTimes[periodIndex].split(separator: "-")[1]
+                let periodEndHour = Int(periodEnd.split(separator: ":")[0]) ?? 0
+                let periodEndMinute = Int(periodEnd.split(separator: ":")[1]) ?? 0
+                
+                let periodStartFormatted = zeroPadding(periodStartHour) + ":" + zeroPadding(periodStartMinute)
+                let periodEndFormatted = zeroPadding(periodEndHour) + ":" + zeroPadding(periodEndMinute)
+                
+                periodTimesText += "PER " + String(periodNumber) + " - " + periodStartFormatted + "-" + periodEndFormatted + " - " + periodMinutes + " MIN"
                 if periodIndex+1 != periodNumbers.count
                 {
                     periodTimesText += "\n"
@@ -105,5 +117,17 @@ class ScheduleTimesViewController: UIViewController
         var newFrame = periodTimesTextView.frame
         newFrame.size = CGSize(width: CGFloat(fmaxf(Float(newSize.width), Float(fixedWidth))), height: newSize.height)
         periodTimesTextView.frame = newFrame        
+    }
+    
+    func zeroPadding(_ int: Int) -> String
+    {
+        if int > 9
+        {
+            return String(int)
+        }
+        else
+        {
+            return "0" + String(int)
+        }
     }
 }

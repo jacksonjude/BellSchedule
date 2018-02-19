@@ -664,14 +664,14 @@ class ScheduleInfoManager: NSObject {
                     }
                 }
                 
-                let periodStartFormattedString = zeroPadding(convertTo12Hour(periodStartHour)) + ":" + zeroPadding(periodStartMinute)
-                let periodEndFormattedString = zeroPadding(convertTo12Hour(periodEndHour)) + ":" + zeroPadding(periodEndMinute)
+                let periodStartFormattedString = String(convertTo12Hour(periodStartHour)) + ":" + zeroPadding(periodStartMinute)
+                let periodEndFormattedString = String(convertTo12Hour(periodEndHour)) + ":" + zeroPadding(periodEndMinute)
                 
                 let periodStartDate = getDate(hourMinute: zeroPadding(periodStartHour) + ":" + zeroPadding(periodStartMinute), day: Date())
                 let periodEndDate = getDate(hourMinute: zeroPadding(periodEndHour) + ":" + zeroPadding(periodEndMinute), day: Date())
                 
-                let modStartFormattedString = zeroPadding(convertTo12Hour(modStartHour)) + ":" + zeroPadding(modStartMinute)
-                let modEndFormattedString = zeroPadding(convertTo12Hour(modEndHour)) + ":" + zeroPadding(modEndMinute)
+                let modStartFormattedString = String(convertTo12Hour(modStartHour)) + ":" + zeroPadding(modStartMinute)
+                let modEndFormattedString = String(convertTo12Hour(modEndHour)) + ":" + zeroPadding(modEndMinute)
                 
                 let modStartDate = getDate(hourMinute: zeroPadding(modStartHour) + ":" + zeroPadding(modStartMinute), day: Date())
                 let modEndDate = getDate(hourMinute: zeroPadding(modEndHour) + ":" + zeroPadding(modEndMinute), day: Date())

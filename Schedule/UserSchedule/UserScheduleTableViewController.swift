@@ -224,6 +224,8 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     {
         if freeMods.count - 1 >= selectedRow
         {
+            Logger.println(" USRSCH: Free Mod toggle for " + String(selectedRow))
+            
             if freeMods[selectedRow] == 0
             {
                 freeMods[selectedRow] = 1
