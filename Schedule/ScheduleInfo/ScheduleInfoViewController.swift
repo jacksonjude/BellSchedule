@@ -136,6 +136,13 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         self.refreshTimer = Timer.scheduledTimer(timeInterval: timeUntilNext5minutes, target: self, selector: #selector(startRefreshTimer), userInfo: nil, repeats: false)
     }
     
+    @objc func startRefreshTimer()
+    {
+        refreshPeriodInfo(self)
+        let _ = Timer.scheduledTimer(timeInterval: 300.0, target: self, selector: #selector(refreshPeriodInfo(_:)), userInfo: nil, repeats: true)
+        Logger.println("Starting timer!")
+    }
+    
     func setTimer(_ time: String) {
         var currentTimeComponents = Date.Gregorian.calendar.dateComponents([.year, .day, .month, .hour, .minute, .second], from: Date())
         
@@ -153,14 +160,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         
         Logger.println("Timer will start in: " + String(timeUntilNextPeriodInterval))
         
-        self.refreshTimer = Timer.scheduledTimer(timeInterval: timeUntilNextPeriodInterval, target: self, selector: #selector(startRefreshTimer), userInfo: nil, repeats: false)
-    }
-    
-    @objc func startRefreshTimer()
-    {
-        refreshPeriodInfo(self)
-        let _ = Timer.scheduledTimer(timeInterval: 300.0, target: self, selector: #selector(refreshPeriodInfo(_:)), userInfo: nil, repeats: true)
-        Logger.println("Starting timer!")
+        self.refreshTimer = Timer.scheduledTimer(timeInterval: timeUntilNextPeriodInterval, target: self, selector: #selector(refreshPeriodInfo(_:)), userInfo: nil, repeats: false)
     }
     
     //MARK: Settings
@@ -524,6 +524,33 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         
         OperationQueue.main.addOperation {
             labelToSwitch!.text = "Internal Error:\n" + message
+        }
+    }
+    
+    func printFreeModStatus(statusType: Int, timesArray: Array<String>) {
+        OperationQueue.main.addOperation {
+            let kDuringPeriod = 0
+            let kDuringMod = 1
+            let kPassingModPeriod = 2
+            let kPassingPeriodMod = 3
+            let kPassingBeforeMod = 4
+            let kPassingAfterMod = 5
+            
+            switch statusType
+            {
+            case kDuringPeriod:
+                self.currentPeriodLabel.text = "The current period is " + timesArray[0] + "\n" + timesArray[1] + "-" + timesArray[2] + "\n" + timesArray[3]
+            case kDuringMod:
+                self.currentPeriodLabel.text = "Free Mod\n" + timesArray[0] + "-" + timesArray[1]
+            case kPassingModPeriod:
+                self.currentPeriodLabel.text = "Passing Period\nPeriod " + timesArray[0] + " starts at " + timesArray[1] + "\n" + timesArray[2]
+            case kPassingPeriodMod, kPassingBeforeMod:
+                self.currentPeriodLabel.text = "Passing Period\nFree Mod starts at " + timesArray[0] + "\nand ends at " + timesArray[1]
+            case kPassingAfterMod:
+                break
+            default:
+                break
+            }
         }
     }
     

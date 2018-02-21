@@ -84,6 +84,8 @@ extension Date {
     @objc optional func setTimer(_ time: String)
     
     @objc optional func noSchoolTomorrow(nextDayCount: Int, nextWeekCount: Int)
+    
+    @objc optional func printFreeModStatus(statusType: Int, timesArray: Array<String>)
 }
 
 class ScheduleInfoManager: NSObject {
@@ -233,10 +235,10 @@ class ScheduleInfoManager: NSObject {
         {
             if let periodNumbers = decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
             {
-                print((freeMods?.count ?? 0) > periodNumber!-1)
+                print((freeMods?.count ?? 0) > periodNumbers[periodNumber!-1]-1)
                 print(freeMods?[periodNumbers[periodNumber!-1]-1] == 1)
                 print(((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C"))
-                if (freeMods?.count ?? 0) > periodNumber!-1 && freeMods?[periodNumbers[periodNumber!-1]-1] == 1 && ((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")
+                if (freeMods?.count ?? 0) > periodNumbers[periodNumber!-1]-1 && freeMods?[periodNumbers[periodNumber!-1]-1] == 1 && ((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")
                 {
                     if let periodTimes = decodeArrayFromJSON(object: todaySchedule!, field: "periodTimes") as? Array<String>
                     {
@@ -662,51 +664,70 @@ class ScheduleInfoManager: NSObject {
                     }
                 }
                 
-                let periodStartFormattedString = zeroPadding(periodStartHour) + ":" + zeroPadding(periodStartMinute)
-                let periodEndFormattedString = zeroPadding(periodEndHour) + ":" + zeroPadding(periodEndMinute)
+                let periodStartFormattedString = zeroPadding(convertTo12Hour(periodStartHour)) + ":" + zeroPadding(periodStartMinute)
+                let periodEndFormattedString = zeroPadding(convertTo12Hour(periodEndHour)) + ":" + zeroPadding(periodEndMinute)
                 
-                let periodStartDate = getDate(hourMinute: periodStartFormattedString, day: Date())
-                let periodEndDate = getDate(hourMinute: periodEndFormattedString, day: Date())
+                let periodStartDate = getDate(hourMinute: zeroPadding(periodStartHour) + ":" + zeroPadding(periodStartMinute), day: Date())
+                let periodEndDate = getDate(hourMinute: zeroPadding(periodEndHour) + ":" + zeroPadding(periodEndMinute), day: Date())
                 
-                let modStartFormattedString = zeroPadding(modStartHour) + ":" + zeroPadding(modStartMinute)
-                let modEndFormattedString = zeroPadding(modEndHour) + ":" + zeroPadding(modEndMinute)
+                let modStartFormattedString = zeroPadding(convertTo12Hour(modStartHour)) + ":" + zeroPadding(modStartMinute)
+                let modEndFormattedString = zeroPadding(convertTo12Hour(modEndHour)) + ":" + zeroPadding(modEndMinute)
                 
-                let modStartDate = getDate(hourMinute: modStartFormattedString, day: Date())
-                let modEndDate = getDate(hourMinute: modEndFormattedString, day: Date())
+                let modStartDate = getDate(hourMinute: zeroPadding(modStartHour) + ":" + zeroPadding(modStartMinute), day: Date())
+                let modEndDate = getDate(hourMinute: zeroPadding(modEndHour) + ":" + zeroPadding(modEndMinute), day: Date())
                 
                 let currentDate = Date()
                 let periodDateRange = periodStartDate ... periodEndDate
                 let modDateRange = modStartDate ... modEndDate
                 
+                let kDuringPeriod = 0
+                let kDuringMod = 1
+                let kPassingModPeriod = 2
+                let kPassingPeriodMod = 3
+                let kPassingBeforeMod = 4
+                let kPassingAfterMod = 5
+                
                 if periodDateRange.contains(currentDate)
                 {
                     Logger.println(" RCPM: Period is not in mod -- Printing period name -- " + periodStartFormattedString + " - " + periodEndFormattedString)
-                    infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
+                    
+                    infoDelegate.printFreeModStatus?(statusType: kDuringPeriod, timesArray: [String(currentPeriodWithMod), periodStartFormattedString, periodEndFormattedString, periodNames![currentPeriodWithMod-1]])
                 }
                 else if modDateRange.contains(currentDate)
                 {
                     Logger.println(" RCPM: Period is in mod -- Printing mod -- " + modStartFormattedString + " - " + modEndFormattedString)
                     //Print mod start end times
+                    
+                    infoDelegate.printFreeModStatus?(statusType: kDuringMod, timesArray: [modStartFormattedString, modEndFormattedString])
                 }
                 else if currentPeriodWithMod % 2 == 0 && (modEndDate ... periodStartDate).contains(currentDate)
                 {
                     Logger.println(" RCPM: Period is passing between mod and period -- " + modEndFormattedString + " - " + periodStartFormattedString)
                     //Passing period between mod and period
+                    
+                    infoDelegate.printFreeModStatus?(statusType: kPassingModPeriod, timesArray: [String(currentPeriodWithMod), periodNames![currentPeriodWithMod-1], periodStartFormattedString])
                 }
                 else if currentPeriodWithMod % 2 == 1 && (periodEndDate ... modStartDate).contains(currentDate)
                 {
                     Logger.println(" RCPM: Period is passing between period and mod -- " + periodEndFormattedString + " - " + modStartFormattedString)
                     //Passing period between period and mod
+                    
+                    infoDelegate.printFreeModStatus?(statusType: kPassingPeriodMod, timesArray: [periodStartFormattedString, modEndFormattedString])
                 }
                 else if currentPeriodWithMod % 2 == 0 && modStartDate > currentDate
                 {
                     Logger.println(" RCPM: Passing period before mod -- " + modStartFormattedString)
                     //Passing period before mod
+                    
+                    infoDelegate.printFreeModStatus?(statusType: kPassingBeforeMod, timesArray: [modStartFormattedString, modEndFormattedString])
                 }
                 else if currentPeriodWithMod % 2 == 1 && modEndDate < currentDate
                 {
                     Logger.println(" RCPM: Passing period after mod -- " + modEndFormattedString)
                     //Passing period after mod
+                    //Should never call...
+                    
+                    infoDelegate.printFreeModStatus?(statusType: kPassingAfterMod, timesArray: [modEndFormattedString])
                 }
             }
             else
@@ -725,6 +746,18 @@ class ScheduleInfoManager: NSObject {
         else
         {
             return "0" + String(int)
+        }
+    }
+    
+    func convertTo12Hour(_ int: Int) -> Int
+    {
+        if int > 12
+        {
+            return int-12
+        }
+        else
+        {
+            return int
         }
     }
     

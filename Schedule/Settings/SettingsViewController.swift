@@ -145,7 +145,7 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         }
         
         currentPickerArray = alertTimeValues
-        settingsPickerView.reloadAllComponents()
+        self.reloadPickerView()
         
         settingsPickerView.isHidden = false
         settingsPickerViewDoneButton.isHidden = false
@@ -160,7 +160,7 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         let backgroundNumbers = [["Background 1", "Background 2", "Background 3", "Background 4"]]
         
         currentPickerArray = backgroundNumbers
-        settingsPickerView.reloadAllComponents()
+        self.reloadPickerView()
         
         settingsPickerView.isHidden = false
         settingsPickerViewDoneButton.isHidden = false
@@ -207,6 +207,36 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         settingsPickerView.reloadAllComponents()
         
         Logger.println(" SETV: Closed picker")
+    }
+    
+    func reloadPickerView()
+    {
+        settingsPickerView.reloadAllComponents()
+        
+        switch selectedPickerValue
+        {
+        case kAlertTimeValue:
+            let notification24Time = UserDefaults.standard.object(forKey: "notificationAlertTime") as? String ?? "21:00"
+            var notificationHour = String(notification24Time.split(separator: ":")[0])
+            let notificationMinute = String(notification24Time.split(separator: ":")[1])
+            var notificationAMPM = "AM"
+            
+            if Int(notificationHour) ?? 21 > 12
+            {
+                notificationHour = String((Int(notificationHour) ?? 21) - 12)
+                
+                notificationAMPM = "PM"
+            }
+                        
+            settingsPickerView.selectRow(currentPickerArray[0].index(of: notificationHour) ?? 0, inComponent: 0, animated: false)
+            settingsPickerView.selectRow(currentPickerArray[1].index(of: notificationMinute) ?? 0, inComponent: 1, animated: false)
+            settingsPickerView.selectRow(currentPickerArray[2].index(of: notificationAMPM) ?? 0, inComponent: 2, animated: false)
+        case kBackgroundValue:
+            let backgroundName = "Background " + (String(describing: (UserDefaults.standard.object(forKey: "backgroundName") as? String ?? "background1").last!))
+            settingsPickerView.selectRow(currentPickerArray[0].index(of: backgroundName) ?? 0, inComponent: 0, animated: false)
+        default:
+            break
+        }
     }
     
     @IBAction func toggleSync(_ sender: Any) {
