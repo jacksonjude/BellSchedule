@@ -143,6 +143,14 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         Logger.println("Starting timer!")
     }
     
+    func resetTimer() {
+        Logger.println("Resetting timer...")
+        
+        OperationQueue.main.addOperation {
+            self.refreshTimer?.invalidate()
+        }
+    }
+    
     func setTimer(_ time: String) {
         var currentTimeComponents = Date.Gregorian.calendar.dateComponents([.year, .day, .month, .hour, .minute, .second], from: Date())
         
@@ -160,7 +168,9 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
         
         Logger.println("Timer will start in: " + String(timeUntilNextPeriodInterval))
         
-        self.refreshTimer = Timer.scheduledTimer(timeInterval: timeUntilNextPeriodInterval, target: self, selector: #selector(refreshPeriodInfo(_:)), userInfo: nil, repeats: false)
+        OperationQueue.main.addOperation {
+            self.refreshTimer = Timer.scheduledTimer(timeInterval: timeUntilNextPeriodInterval, target: self, selector: #selector(self.refreshPeriodInfo(_:)), userInfo: nil, repeats: false)
+        }
     }
     
     //MARK: Settings
