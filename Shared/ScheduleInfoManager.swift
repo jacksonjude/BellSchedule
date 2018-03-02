@@ -237,9 +237,9 @@ class ScheduleInfoManager: NSObject {
         {
             if let periodNumbers = decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
             {
-                print((freeMods?.count ?? 0) > periodNumbers[periodNumber!-1]-1)
-                print(freeMods?[periodNumbers[periodNumber!-1]-1] == 1)
-                print(((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C"))
+                Logger.println(" GPN: Free mods are loaded:" + (freeMods?.count ?? 0) > periodNumbers[periodNumber!-1]-1)
+                Logger.println(" GPN: Is a free mod: " + freeMods?[periodNumbers[periodNumber!-1]-1] == 1)
+                Logger.println(" GPN: Today is a B or C code: " + ((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C"))
                 if (freeMods?.count ?? 0) > periodNumbers[periodNumber!-1]-1 && freeMods?[periodNumbers[periodNumber!-1]-1] == 1 && ((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")
                 {
                     if let periodTimes = decodeArrayFromJSON(object: todaySchedule!, field: "periodTimes") as? Array<String>

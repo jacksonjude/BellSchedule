@@ -388,7 +388,7 @@
                                 <rect key="frame" x="16" y="72" width="343" height="575"/>
                                 <color key="backgroundColor" red="0.81187152862548828" green="0.81954985857009888" blue="0.82353013753890991" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserPeriodCell" id="4po-Um-g61">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserPeriodCell" id="4po-Um-g61">
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4po-Um-g61" id="Qnz-L4-78I">
@@ -713,9 +713,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DI1-bp-Mcv">
                                 <rect key="frame" x="16" y="93" width="343" height="316"/>
                                 <subviews>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="z1g-sy-CiZ">
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="z1g-sy-CiZ">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="316"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.80402845144271851" green="0.80392156862745101" blue="0.80392156862745101" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zY1-HD-3DG">
                                             <size key="itemSize" width="50" height="50"/>
@@ -755,6 +754,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="z1g-sy-CiZ" firstAttribute="leading" secondItem="DI1-bp-Mcv" secondAttribute="leading" id="b9D-kZ-Jfn"/>
+                                    <constraint firstAttribute="trailing" secondItem="z1g-sy-CiZ" secondAttribute="trailing" id="iGq-BR-JxM"/>
+                                    <constraint firstItem="z1g-sy-CiZ" firstAttribute="top" secondItem="DI1-bp-Mcv" secondAttribute="top" id="iVD-Ua-qh8"/>
+                                    <constraint firstAttribute="bottom" secondItem="z1g-sy-CiZ" secondAttribute="bottom" id="qwx-Pe-VZr"/>
                                     <constraint firstAttribute="height" constant="316" id="zKM-by-UIX"/>
                                 </constraints>
                             </view>
@@ -821,9 +824,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zBu-mk-Gkx">
                                 <rect key="frame" x="39" y="190" width="297" height="100"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.84999999999999998" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" editable="NO" text="Loading..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gbe-R1-L1A">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.84999999999999998" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Loading..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gbe-R1-L1A">
                                         <rect key="frame" x="0.0" y="0.0" width="297" height="100"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="29"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -832,6 +834,10 @@
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="3bo-LP-QvN"/>
+                                    <constraint firstAttribute="trailing" secondItem="gbe-R1-L1A" secondAttribute="trailing" id="FmO-NZ-1M8"/>
+                                    <constraint firstItem="gbe-R1-L1A" firstAttribute="top" secondItem="zBu-mk-Gkx" secondAttribute="top" id="GwT-Ev-Bdg"/>
+                                    <constraint firstItem="gbe-R1-L1A" firstAttribute="leading" secondItem="zBu-mk-Gkx" secondAttribute="leading" id="Zr6-Ro-tLz"/>
+                                    <constraint firstAttribute="bottom" secondItem="gbe-R1-L1A" secondAttribute="bottom" id="hNx-jv-lfX"/>
                                 </constraints>
                             </view>
                         </subviews>
