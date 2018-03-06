@@ -69,13 +69,6 @@
 			remoteGlobalIDString = 7A15FC881FDDC7CD0012A883;
 			remoteInfo = "ScheduleWatch Extension";
 		};
-		7A15FC971FDDC7CD0012A883 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7A796F801F871D1400D9658D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7A15FC7C1FDDC7CD0012A883;
-			remoteInfo = ScheduleWatch;
-		};
 		7A61F59F1FCD0CC40060580A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7A796F801F871D1400D9658D /* Project object */;
@@ -437,7 +430,6 @@
 			);
 			dependencies = (
 				7A61F5A01FCD0CC40060580A /* PBXTargetDependency */,
-				7A15FC981FDDC7CD0012A883 /* PBXTargetDependency */,
 			);
 			name = Schedule;
 			productName = Schedule;
@@ -693,11 +685,6 @@
 			isa = PBXTargetDependency;
 			target = 7A15FC881FDDC7CD0012A883 /* ScheduleWatch Extension */;
 			targetProxy = 7A15FC8B1FDDC7CD0012A883 /* PBXContainerItemProxy */;
-		};
-		7A15FC981FDDC7CD0012A883 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 7A15FC7C1FDDC7CD0012A883 /* ScheduleWatch */;
-			targetProxy = 7A15FC971FDDC7CD0012A883 /* PBXContainerItemProxy */;
 		};
 		7A61F5A01FCD0CC40060580A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
