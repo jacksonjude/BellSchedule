@@ -233,13 +233,14 @@ class ScheduleInfoManager: NSObject {
     
     func getPeriodName()
     {
-        if periodPrinted && !periodNamePrinted
+        if periodPrinted && !periodNamePrinted && todaySchedule != nil && periodNumber != nil
         {
             if let periodNumbers = decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
             {
-                Logger.println(" GPN: Free mods are loaded:" + String((freeMods?.count ?? 0) > periodNumbers[periodNumber!-1]-1))
+                Logger.println(" GPN: Free mods are loaded: " + String((freeMods?.count ?? 0) > periodNumbers[periodNumber!-1]-1))
                 Logger.println(" GPN: Is a free mod: " + String(freeMods?[periodNumbers[periodNumber!-1]-1] == 1))
                 Logger.println(" GPN: Today is a B or C code: " + String(((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")))
+                
                 if (freeMods?.count ?? 0) > periodNumbers[periodNumber!-1]-1 && freeMods?[periodNumbers[periodNumber!-1]-1] == 1 && ((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")
                 {
                     if let periodTimes = decodeArrayFromJSON(object: todaySchedule!, field: "periodTimes") as? Array<String>
@@ -786,7 +787,7 @@ class ScheduleInfoManager: NSObject {
         let JSONdata = object.value(forKey: field) as! Data
         do
         {
-            let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as! Array<Any>
+            let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as? Array<Any>
             return array
         }
         catch

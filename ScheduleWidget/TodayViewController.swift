@@ -136,7 +136,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
         let JSONdata = object.value(forKey: field) as! Data
         do
         {
-            let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as! Array<Any>
+            let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as? Array<Any>
             return array
         }
         catch
