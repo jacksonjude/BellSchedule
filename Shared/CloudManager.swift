@@ -17,11 +17,31 @@ class CloudManager: NSObject
     static var savingCloudChanges = false
     static var fetchAllDataQueue = Array<String>()
     static var queueIsRunning = false
+    static var numberOfRecordsUpdated = 0
+    static var currentCloudOperations: [String:CKDatabaseOperation] = [:]
     
     static func fetchPublicDatabaseObject(type: String, predicate: NSPredicate, returnID: String)
     {
         let objectQuery = CKQuery(recordType: type, predicate: predicate)
-        CloudManager.publicDatabase.perform(objectQuery, inZoneWith: nil) { (records, error) in
+        
+        let objectQueryOperation = CKQueryOperation(query: objectQuery)
+        
+        objectQueryOperation.recordFetchedBlock = {(record) in
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + returnID), object: record)
+        }
+        
+        objectQueryOperation.queryCompletionBlock = {(cursorThingy, error) in
+            if error != nil
+            {
+                Logger.println(error!)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + returnID), object: nil)
+            }
+        }
+        
+        publicDatabase.add(objectQueryOperation)
+        self.currentCloudOperations[returnID] = objectQueryOperation
+        
+        /*CloudManager.publicDatabase.perform(objectQuery, inZoneWith: nil) { (records, error) in
             if error != nil
             {
                 Logger.println(error!)
@@ -31,7 +51,7 @@ class CloudManager: NSObject
             {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + returnID), object: records?.first)
             }
-        }
+        }*/
     }
     
     static func setPublicDatabaseObject(type: String, dataDictionary: Dictionary<String,Any>, predicate: NSPredicate)
@@ -77,8 +97,61 @@ class CloudManager: NSObject
         Logger.println("↓ - Fetching Changes from Cloud: " + entityType)
         
         let lastUpdatedDate = UserDefaults.standard.object(forKey: "lastUpdatedData") as? NSDate ?? Date.distantPast as NSDate
+                
         let cloudEntityQuery = CKQuery(recordType: entityType, predicate: NSPredicate(format: "modificationDate >= %@", lastUpdatedDate))
-        CloudManager.publicDatabase.perform(cloudEntityQuery, inZoneWith: CKRecordZone.default().zoneID) { (results, error) in
+        
+        let cloudEntityQueryOperation = CKQueryOperation(query: cloudEntityQuery)
+        
+        cloudEntityQueryOperation.recordFetchedBlock = {(record) in
+            OperationQueue.main.addOperation {
+                if let localObject = self.fetchLocalObjects(type: entityType, predicate: NSPredicate(format: "uuid == %@", record.recordID.recordName))?.first as? NSManagedObject
+                {
+                    self.updateFromRemote(record: record, object: localObject, fields: self.getFieldsFromEntity(entityType: entityType))
+                }
+                else
+                {
+                    let newObject = NSEntityDescription.insertNewObject(forEntityName: entityType, into: CoreDataStack.persistentContainer.viewContext)
+                    self.updateFromRemote(record: record, object: newObject, fields: self.getFieldsFromEntity(entityType: entityType))
+                }
+            }
+            
+            numberOfRecordsUpdated += 1
+        }
+        
+        cloudEntityQueryOperation.queryCompletionBlock = {(cursorThingy, error) in
+            let tmpNumberOfRecordsUpdated = self.numberOfRecordsUpdated
+            self.numberOfRecordsUpdated = 0
+            
+            if let fetchIndex = self.currentCloudOperations.index(forKey: "fetchAllCloudData")
+            {
+                self.currentCloudOperations.remove(at: fetchIndex)
+            }
+            
+            if error != nil
+            {
+                Logger.println(error!)
+                
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "cloudKitError"), object: error!)
+                NotificationCenter.default.removeObserver(self)
+                
+                loopFetchAllData()
+            }
+            else
+            {
+                Logger.println("↓ - Updated " + String(tmpNumberOfRecordsUpdated) + " records from " + entityType)
+                
+                OperationQueue.main.addOperation {
+                    CloudManager.savingCloudChanges = true
+                    
+                    CoreDataStack.saveContext()
+                }
+            }
+        }
+        
+        publicDatabase.add(cloudEntityQueryOperation)
+        self.currentCloudOperations["fetchAllCloudData"] = cloudEntityQueryOperation
+        
+        /*CloudManager.publicDatabase.perform(cloudEntityQuery, inZoneWith: CKRecordZone.default().zoneID) { (results, error) in
             if error != nil
             {
                 Logger.println(error!)
@@ -117,7 +190,7 @@ class CloudManager: NSObject
                     CoreDataStack.saveContext()
                 }
             }
-        }
+        }*/
     }
     
     @objc static func contextSaved()

@@ -114,6 +114,9 @@ class ScheduleInfoManager: NSObject {
     var onlyFindOneDay: Bool
     var downloadData: Bool
     
+    var currentlyDownloadingCloudData = false
+    var userScheduleQueryReturnID: String?
+    
     var loadedData = 0
     {
         didSet
@@ -155,6 +158,35 @@ class ScheduleInfoManager: NSObject {
     
     func downloadCloudData()
     {
+        if !currentlyDownloadingCloudData
+        {
+            currentlyDownloadingCloudData = true
+        }
+        else
+        {
+            if let wsIndex = CloudManager.fetchAllDataQueue.index(of: "WeekSchedules") {CloudManager.fetchAllDataQueue.remove(at: wsIndex)}
+            if let sIndex = CloudManager.fetchAllDataQueue.index(of: "Schedule") {CloudManager.fetchAllDataQueue.remove(at: sIndex)}
+            if let aIndex = CloudManager.fetchAllDataQueue.index(of: "Announcement") {CloudManager.fetchAllDataQueue.remove(at: aIndex)}
+            
+            if let currentFetchAllDataQueryOperation = CloudManager.currentCloudOperations["fetchAllData"]
+            {
+                currentFetchAllDataQueryOperation.cancel()
+                
+                let fetchIndex = CloudManager.currentCloudOperations.index(forKey: "fetchAllData")!
+                CloudManager.currentCloudOperations.remove(at: fetchIndex)
+            }
+            
+            if let currentFetchUserScheduleQueryOperation = CloudManager.currentCloudOperations["userScheduleQueryReturnID"]
+            {
+                currentFetchUserScheduleQueryOperation.cancel()
+                
+                let fetchIndex = CloudManager.currentCloudOperations.index(forKey: "fetchAllCloudData")!
+                CloudManager.currentCloudOperations.remove(at: fetchIndex)
+            }
+            
+            CloudManager.loopFetchAllData()
+        }
+        
         self.loadedData = 0
         
         UserDefaults.standard.set(Date(), forKey: "fetchingCloudData")
@@ -171,6 +203,8 @@ class ScheduleInfoManager: NSObject {
         loadedData += 1
         if loadedAllData
         {
+            currentlyDownloadingCloudData = false
+            
             UserDefaults.standard.set(UserDefaults.standard.object(forKey: "fetchingCloudData"), forKey: "lastUpdatedData")
             Logger.println("↓ - Finished fetching changes from cloud")
             refreshScheduleInfo()
@@ -212,11 +246,15 @@ class ScheduleInfoManager: NSObject {
         Logger.println(" USRSCH: Fetching periodNamesRecord")
         let userScheduleQueryPredicate = NSPredicate(format: "userID == %@", userID)
         
+        self.userScheduleQueryReturnID = queryUserScheduleID
+        
         CloudManager.fetchPublicDatabaseObject(type: "UserSchedule", predicate: userScheduleQueryPredicate, returnID: queryUserScheduleID)
     }
     
     @objc func receiveUserSchedule(notification: NSNotification)
     {
+        self.userScheduleQueryReturnID = nil
+        
         if let periodNamesRecord = notification.object as? CKRecord
         {
             Logger.println(" USRSCH: Received periodNamesRecord")

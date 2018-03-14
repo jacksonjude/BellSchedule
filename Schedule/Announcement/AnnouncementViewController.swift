@@ -36,8 +36,10 @@ class AnnouncementViewController: UIViewController
                 self.announcementNavigationItem.title = self.announcementRecord!.value(forKey: "title") as? String
                 let postDate = self.announcementRecord!.value(forKey: "postDate") as! Date
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "YYYY-MM-dd HH:mm "
+                dateFormatter.dateFormat = "YYYY-MM-dd hh:mm"
                 self.dateLabel.text = dateFormatter.string(from: postDate)
+                
+                self.bodyTextView.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             }
         }
     }

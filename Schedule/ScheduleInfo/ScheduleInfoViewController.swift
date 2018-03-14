@@ -37,7 +37,7 @@ extension UIView
     }
 }
 
-class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
+class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafariViewControllerDelegate {
     var scheduleManager: ScheduleInfoManager?
     
     @IBOutlet weak var currentPeriodLabel: UILabel!
@@ -55,6 +55,9 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     let kCurrentPeriodLabel = 0
     let kSchoolStartTime = 1
     let kTomorrowStartTimeLabel = 2
+    
+    let kLocalPage = 0
+    let kWebPage = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -565,9 +568,37 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate {
     }
     
     @IBAction func openHelp(_ sender: Any) {
-        let faqURL = URL(string: "http://jjcooley.ddns.net/lowellschedule")
-        let svc = SFSafariViewController(url: faqURL!)
-        self.present(svc, animated: true, completion: nil)
+        openFAQPage(pageType: kWebPage)
+    }
+    
+    func openFAQPage(pageType: Int)
+    {
+        let faqWebURL = URL(string: "http://jjcooley.ddns.net/lowellschedule")
+        let faqLocalURL = Bundle.main.url(forResource: "faq", withExtension: "html")
+        
+        let svc: SFSafariViewController?
+        
+        switch pageType
+        {
+        case kLocalPage:
+            svc = SFSafariViewController(url: faqLocalURL!)
+        case kWebPage:
+            svc = SFSafariViewController(url: faqWebURL!)
+        default:
+            svc = SFSafariViewController(url: faqWebURL!)
+        }
+        
+        svc?.delegate = self
+        
+        self.present(svc!, animated: true, completion: nil)
+    }
+    
+    func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
+        if !didLoadSuccessfully
+        {
+            controller.resignFirstResponder()
+            openFAQPage(pageType: kLocalPage)
+        }
     }
     
     @IBAction func exitUserScheduleTableView(_ segue: UIStoryboardSegue)

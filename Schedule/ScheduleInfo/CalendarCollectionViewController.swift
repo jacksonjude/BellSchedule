@@ -17,8 +17,11 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     fileprivate let loadedWeeks = 5
     fileprivate let itemsPerRow: CGFloat = 7
     fileprivate let sectionInsets = UIEdgeInsets(top: 10.0, left: 20.0, bottom: 10.0, right: 20.0)
-    @IBOutlet weak var codeToggleButton: UIBarButtonItem!
+    
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var codeToggleBarButton: UIBarButtonItem!
+    @IBOutlet weak var codeToggleButton: UIButton!
+    
     var currentDateString: String?
     var weekScheduleCodes: Array<String> = []
     var weekOn = 0
@@ -32,6 +35,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         self.view.setBackground()
         
         collectionView.addCorners()
+        codeToggleButton.addCorners()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -336,12 +340,14 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         if self.dateToggle == 0
         {
             self.dateToggle = 1
-            self.codeToggleButton.title = "Dates"
+            self.codeToggleBarButton.title = "Dates"
+            self.codeToggleButton.setTitle("Dates", for: .normal)
         }
         else
         {
             self.dateToggle = 0
-            self.codeToggleButton.title = "Codes"
+            self.codeToggleBarButton.title = "Codes"
+            self.codeToggleButton.setTitle("Codes", for: .normal)
         }
         collectionView.reloadData()
     }
