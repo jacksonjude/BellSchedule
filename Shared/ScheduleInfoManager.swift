@@ -275,19 +275,24 @@ class ScheduleInfoManager: NSObject {
         {
             if let periodNumbers = decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
             {
-                Logger.println(" GPN: Free mods are loaded: " + String((freeMods?.count ?? 0) > periodNumbers[periodNumber!-1]-1))
-                Logger.println(" GPN: Is a free mod: " + String(freeMods?[periodNumbers[periodNumber!-1]-1] == 1))
-                Logger.println(" GPN: Today is a B or C code: " + String(((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")))
-                
-                if (freeMods?.count ?? 0) > periodNumbers[periodNumber!-1]-1 && freeMods?[periodNumbers[periodNumber!-1]-1] == 1 && ((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")
+                let freeModsAreLoaded = (freeMods?.count ?? 0) > periodNumbers[periodNumber!-1]
+                Logger.println(" GPN: Free mods are loaded: " + String(freeModsAreLoaded))
+                if freeModsAreLoaded
                 {
-                    if let periodTimes = decodeArrayFromJSON(object: todaySchedule!, field: "periodTimes") as? Array<String>
+                    Logger.println(" GPN: Is a free mod: " + String(freeMods?[periodNumbers[periodNumber!-1]-1] == 1))
+                    Logger.println(" GPN: Today is a B or C code: " + String(((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")))
+                    
+                    if freeMods?[periodNumbers[periodNumber!-1]-1] == 1 && ((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")
                     {
-                        recalculateCurrentPeriodForMods(periodTimes: periodTimes)
+                        if let periodTimes = decodeArrayFromJSON(object: todaySchedule!, field: "periodTimes") as? Array<String>
+                        {
+                            recalculateCurrentPeriodForMods(periodTimes: periodTimes)
+                        }
                     }
                 }
                 else if (periodNames?.count ?? 0) > periodNumber!-1
                 {
+                    print(" GPN: Printing period name")
                     infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
                 }
             }
@@ -595,7 +600,11 @@ class ScheduleInfoManager: NSObject {
                 }
                 
                 periodPrinted = true
-                periodNumber = nextPeriodNumber!+1
+                
+                if let periodNumbers = decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
+                {
+                    periodNumber = (periodNumbers.index(of: nextPeriodNumber!) ?? 0)+1
+                }
                 
                 infoDelegate.printCurrentMessage(message: passingPeriodMessage1 + passingPeriodMessage2)
                 
