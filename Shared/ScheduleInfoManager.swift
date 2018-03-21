@@ -287,13 +287,16 @@ class ScheduleInfoManager: NSObject {
                         if let periodTimes = decodeArrayFromJSON(object: todaySchedule!, field: "periodTimes") as? Array<String>
                         {
                             recalculateCurrentPeriodForMods(periodTimes: periodTimes)
+                            return
                         }
                     }
                 }
-                else if (periodNames?.count ?? 0) > periodNumber!-1
+                
+                if (periodNames?.count ?? 0) > periodNumber!-1
                 {
                     print(" GPN: Printing period name")
                     infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
+                    return
                 }
             }
         }
