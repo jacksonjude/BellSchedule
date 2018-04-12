@@ -275,7 +275,7 @@ class ScheduleInfoManager: NSObject {
         {
             if let periodNumbers = decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
             {
-                let freeModsAreLoaded = (freeMods?.count ?? 0) > periodNumbers[periodNumber!-1]
+                let freeModsAreLoaded = (freeMods?.count ?? 0) >= periodNumbers[periodNumber!-1]
                 Logger.println(" GPN: Free mods are loaded: " + String(freeModsAreLoaded))
                 if freeModsAreLoaded
                 {
