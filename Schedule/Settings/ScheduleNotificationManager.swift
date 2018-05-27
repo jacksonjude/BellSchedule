@@ -42,7 +42,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     }
     
     func printInternalError(message: String, labelNumber: Int) {
-        return
+        findNextSchoolStartTime(nextDayCount: nextDayCounts.count, nextWeekCount: nextWeekCounts.count)
     }
     
     func printSchoolStartEndMessage(message: String) {
@@ -113,8 +113,9 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
                 
                 let schoolStartTimeNotification = UNNotificationRequest(identifier: UUID().uuidString,  content: schoolStartTimeNotificationContent, trigger: schoolStartTimeNotificationTrigger)
                 
+                Logger.println("Added notification at: " + String(describing: (schoolStartTimeNotification.trigger as! UNCalendarNotificationTrigger).dateComponents) + "-- " + schoolStartTimeNotificationContent.title)
+                
                 UNUserNotificationCenter.current().add(schoolStartTimeNotification) { (error) in
-                    Logger.println("Added notification at: " + String(describing: (schoolStartTimeNotification.trigger as! UNCalendarNotificationTrigger).dateComponents) + "-- " + schoolStartTimeNotificationContent.title)
                     notificationsAdded += 1
                     if notificationsAdded == schoolStartTimeOn
                     {
@@ -135,11 +136,13 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     {
         var calculatedDate = Date().getStartOfNextWeek(nextWeek: nextWeek)
         var calculatedNextDay = nextDay
-        if nextWeek > 0
+        if nextWeek == 0
         {
-            calculatedNextDay += 1*nextWeek
+            calculatedNextDay += Date().getDayOfWeek()
         }
-        calculatedDate.addTimeInterval(TimeInterval(nextDay*86400))
+        calculatedDate.addTimeInterval(TimeInterval(calculatedNextDay*86400))
+        
+        Logger.println(String(nextDay) + " -- " + String(nextWeek))
         
         var calculatedDateComponents = Date.Gregorian.calendar.dateComponents([.day, .month, .year, .hour, .minute], from: calculatedDate)
         

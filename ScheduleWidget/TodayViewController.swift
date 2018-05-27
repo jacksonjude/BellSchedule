@@ -15,8 +15,34 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
     @IBOutlet weak var schoolStartEndLabel: UILabel!
     @IBOutlet weak var tomorrowStartTimeLabel: UILabel!
     
+    var currentPeriodInfoString: String? = nil
+    {
+        didSet
+        {
+            printInFirstTextBox()
+        }
+    }
+    var todaySchoolStartInfoString: String? = nil
+    {
+        didSet
+        {
+            printInFirstTextBox()
+        }
+    }
+    var inSchool = false
+    
     func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject) {
-        return
+        if let periodNumbers = self.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
+        {
+            let periodRangeSplit = periodRangeString.split(separator: "-")
+            let periodStartString = Date().convertToStandardTime(date: String(periodRangeSplit[0]))
+            let periodEndString = Date().convertToStandardTime(date: String(periodRangeSplit[1]))
+            
+            let periodInfo1 = "The current period is " + String(periodNumbers[periodNumber-1]) + "\n"
+            let periodInfo2 = periodStartString! + "-" + periodEndString!
+            
+            self.currentPeriodInfoString = periodInfo1 + periodInfo2
+        }
     }
     
     func printPeriodName(todaySchedule: NSManagedObject, periodNames: Array<String>) {
@@ -49,29 +75,26 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
         let schoolStartToPastRange = Date.distantPast ... startTimeStart
         if schoolStartToPastRange.contains(currentDate)
         {
-            OperationQueue.main.addOperation {
-                self.schoolStartEndLabel.text = "School starts today at " + Date().convertToStandardTime(date: String(startTimeArray[0]))
-            }
+            self.inSchool = false
+            
+            todaySchoolStartInfoString = "School starts today at " + Date().convertToStandardTime(date: String(startTimeArray[0]))
         }
         else
         {
-            OperationQueue.main.addOperation {
-                self.schoolStartEndLabel.text = "School started today at " + Date().convertToStandardTime(date: String(startTimeArray[0]))
-            }
+            self.inSchool = true
+            
+            todaySchoolStartInfoString = "School started today at " + Date().convertToStandardTime(date: String(startTimeArray[0]))
         }
         
         let schoolEndToPastRange = Date.distantPast ... endTimeEnd
         if schoolEndToPastRange.contains(currentDate)
         {
-            OperationQueue.main.addOperation {
-                self.schoolStartEndLabel.text = self.schoolStartEndLabel.text! + "\nSchool ends today at " + Date().convertToStandardTime(date: String(endTimeArray[1]))
-            }
+            todaySchoolStartInfoString! += "\nSchool ends today at " + Date().convertToStandardTime(date: String(endTimeArray[1]))
         }
         else
         {
-            OperationQueue.main.addOperation {
-                self.schoolStartEndLabel.text = self.schoolStartEndLabel.text! + "\nSchool ended today at " + Date().convertToStandardTime(date: String(endTimeArray[1]))
-            }
+            self.inSchool = false
+            todaySchoolStartInfoString! += "\nSchool ended today at " + Date().convertToStandardTime(date: String(endTimeArray[1]))
         }
     }
     
@@ -223,5 +246,19 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
         tomorrowStartTimeLabel.text = "Loading..."
         
         scheduleInfoManager?.downloadCloudData()
+    }
+    
+    func printInFirstTextBox()
+    {
+        OperationQueue.main.addOperation {
+            if self.inSchool && self.currentPeriodInfoString != nil
+            {
+                self.schoolStartEndLabel.text = self.currentPeriodInfoString
+            }
+            else if self.todaySchoolStartInfoString != nil
+            {
+                self.schoolStartEndLabel.text = self.todaySchoolStartInfoString
+            }
+        }
     }
 }
