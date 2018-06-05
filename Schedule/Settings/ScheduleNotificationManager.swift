@@ -141,9 +141,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
             calculatedNextDay += Date().getDayOfWeek()
         }
         calculatedDate.addTimeInterval(TimeInterval(calculatedNextDay*86400))
-        
-        Logger.println(String(nextDay) + " -- " + String(nextWeek))
-        
+                
         var calculatedDateComponents = Date.Gregorian.calendar.dateComponents([.day, .month, .year, .hour, .minute], from: calculatedDate)
         
         let notificationAlertTime = (UserDefaults.standard.object(forKey: "notificationAlertTime") as? String) ?? "21:00"

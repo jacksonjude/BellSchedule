@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.84999999999999998" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcN-lo-r42">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="54"/>
                                 <color key="backgroundColor" white="0.92263454861111116" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.84780607876712322" colorSpace="calibratedRGB"/>
@@ -28,7 +28,7 @@
                                 <size key="shadowOffset" width="0.0" height="0.0"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.84999999999999998" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fUh-xd-tvr">
-                                <rect key="frame" x="0.0" y="57" width="320" height="53"/>
+                                <rect key="frame" x="0.0" y="56" width="320" height="54"/>
                                 <color key="backgroundColor" white="0.92263454861111116" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.85149828767123281" colorSpace="custom" customColorSpace="displayP3"/>
@@ -39,9 +39,9 @@
                         <constraints>
                             <constraint firstItem="fUh-xd-tvr" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" id="6RG-Tk-8yA"/>
                             <constraint firstItem="GcN-lo-r42" firstAttribute="leading" secondItem="ssy-KU-ocm" secondAttribute="leading" symbolic="YES" id="6Vq-gs-PHe"/>
-                            <constraint firstItem="fUh-xd-tvr" firstAttribute="top" secondItem="S3S-Oj-5AN" secondAttribute="centerY" constant="2" id="Ddw-0a-aNJ"/>
+                            <constraint firstItem="fUh-xd-tvr" firstAttribute="top" secondItem="S3S-Oj-5AN" secondAttribute="centerY" constant="1" id="Ddw-0a-aNJ"/>
                             <constraint firstItem="ssy-KU-ocm" firstAttribute="trailing" secondItem="GcN-lo-r42" secondAttribute="trailing" symbolic="YES" id="L8K-9R-egU"/>
-                            <constraint firstItem="GcN-lo-r42" firstAttribute="bottom" secondItem="S3S-Oj-5AN" secondAttribute="centerY" id="LJp-78-pPv"/>
+                            <constraint firstItem="GcN-lo-r42" firstAttribute="bottom" secondItem="S3S-Oj-5AN" secondAttribute="centerY" constant="-1" id="LJp-78-pPv"/>
                             <constraint firstItem="fUh-xd-tvr" firstAttribute="trailing" secondItem="ssy-KU-ocm" secondAttribute="trailing" id="YbB-6U-lJI"/>
                             <constraint firstItem="GcN-lo-r42" firstAttribute="top" secondItem="ssy-KU-ocm" secondAttribute="top" symbolic="YES" id="mYS-Cv-VNx"/>
                             <constraint firstItem="fUh-xd-tvr" firstAttribute="bottom" secondItem="ssy-KU-ocm" secondAttribute="bottom" id="uju-fn-ol0"/>
