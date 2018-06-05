@@ -301,7 +301,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         {
             schoolTimeAlert.addAction(UIAlertAction(title: "Details", style: .default, handler: { (alert) in
                 
-                self.performSegue(withIdentifier: "openPeriodTimesView", sender: self)
+                self.performSegue(withIdentifier: "openPeriodTimesViewFromCalendar", sender: self)
             }))
         }
         
@@ -352,19 +352,20 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         collectionView.reloadData()
     }
     
-    @IBAction func exitScheduleTimesViewController(_ segue: UIStoryboardSegue)
+    @IBAction func exitPeriodTimesViewToCalendar(_ segue: UIStoryboardSegue)
     {
-        Logger.println("Exiting ScheduleTimesViewController...")
+        Logger.println("Exiting PeriodTimesViewController...")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "openPeriodTimesView")
+        if (segue.identifier == "openPeriodTimesViewFromCalendar")
         {
             Logger.println(" CAL: Opening ScheduleTimesViewController...")
             
             let scheduleTimesViewController = segue.destination as! ScheduleTimesViewController
             scheduleTimesViewController.scheduleRecord = currentScheduleObject!
             scheduleTimesViewController.scheduleDateString = currentDateString
+            scheduleTimesViewController.parentViewControllerString = "CalendarCollectionViewController"
         }
     }
 }

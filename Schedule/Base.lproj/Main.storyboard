@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,7 +27,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" tag="819" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background1" translatesAutoresizingMaskIntoConstraints="NO" id="Xk6-aw-SuC">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
                             </imageView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5rh-cz-8u5">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -47,14 +47,14 @@
                                 </items>
                             </navigationBar>
                             <pickerView hidden="YES" alpha="0.84999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Dm-a7-wsQ">
-                                <rect key="frame" x="16" y="477" width="343" height="170"/>
+                                <rect key="frame" x="16" y="433" width="343" height="170"/>
                                 <color key="backgroundColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="170" id="p7C-xg-5WR"/>
                                 </constraints>
                             </pickerView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eqr-Gd-KQu">
-                                <rect key="frame" x="294" y="487" width="55" height="30"/>
+                                <rect key="frame" x="294" y="443" width="55" height="30"/>
                                 <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="4zW-48-hv9"/>
@@ -275,7 +275,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EMJ-6p-Aoe">
-                                <rect key="frame" x="16" y="590" width="130" height="57"/>
+                                <rect key="frame" x="16" y="546" width="130" height="57"/>
                                 <color key="backgroundColor" red="0.91764706373214722" green="0.91764718294143677" blue="0.91764706373214722" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="57" id="MFX-3s-f24"/>
@@ -288,7 +288,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lNB-as-gqN">
-                                <rect key="frame" x="16" y="517" width="130" height="57"/>
+                                <rect key="frame" x="16" y="473" width="130" height="57"/>
                                 <color key="backgroundColor" red="0.91770131229575158" green="0.91764718294143677" blue="0.91764706373214722" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="57" id="kj6-eY-DVN"/>
@@ -301,7 +301,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ci2-aC-2ne">
-                                <rect key="frame" x="229" y="590" width="130" height="57"/>
+                                <rect key="frame" x="229" y="546" width="130" height="57"/>
                                 <color key="backgroundColor" red="0.91818959354575158" green="0.91764718294143677" blue="0.91764706373214722" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="dIb-tQ-cE3"/>
@@ -314,7 +314,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="83q-QD-tnu">
-                                <rect key="frame" x="229" y="517" width="130" height="57"/>
+                                <rect key="frame" x="229" y="473" width="130" height="57"/>
                                 <color key="backgroundColor" red="0.91764706373214722" green="0.91764718294143677" blue="0.91764706373214722" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="57" id="3Gf-Hm-m9c"/>
@@ -324,6 +324,13 @@
                                 <state key="normal" title="Calendar"/>
                                 <connections>
                                     <segue destination="coS-90-xE6" kind="show" id="1sC-hB-yM0"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vjf-R5-oVO">
+                                <rect key="frame" x="323" y="91" width="32" height="32"/>
+                                <state key="normal" image="infoIcon"/>
+                                <connections>
+                                    <action selector="openPeriodTimesViewControllerForCurrentDay:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Wr-5g-j1h"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -338,6 +345,8 @@
                             <constraint firstItem="ptp-53-yZE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="DA4-b6-sXk"/>
                             <constraint firstItem="4fs-2f-E1I" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="E2e-WR-VUf"/>
                             <constraint firstItem="vnh-7m-UjO" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="J5F-qc-3FG"/>
+                            <constraint firstItem="vnh-7m-UjO" firstAttribute="top" secondItem="ptp-53-yZE" secondAttribute="bottom" constant="23" id="LP2-4T-die"/>
+                            <constraint firstItem="vnh-7m-UjO" firstAttribute="trailing" secondItem="vjf-R5-oVO" secondAttribute="trailing" constant="4" id="LtP-3I-fgi"/>
                             <constraint firstItem="cxY-Xp-bBx" firstAttribute="top" secondItem="vnh-7m-UjO" secondAttribute="bottom" constant="8" id="NmN-td-KoD"/>
                             <constraint firstItem="EMJ-6p-Aoe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="Qco-7c-AmM"/>
                             <constraint firstItem="4fs-2f-E1I" firstAttribute="top" secondItem="cxY-Xp-bBx" secondAttribute="bottom" constant="8" id="R6W-Zq-rWO"/>
@@ -350,6 +359,7 @@
                             <constraint firstItem="ptp-53-yZE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="cdp-kH-XQZ"/>
                             <constraint firstItem="Ci2-aC-2ne" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="EMJ-6p-Aoe" secondAttribute="trailing" constant="28" id="dl4-9t-ReC"/>
                             <constraint firstItem="MQI-Le-kHf" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="enq-1A-ZCN"/>
+                            <constraint firstItem="vjf-R5-oVO" firstAttribute="top" secondItem="vnh-7m-UjO" secondAttribute="top" constant="4" id="ir1-fU-0Os"/>
                             <constraint firstItem="ptp-53-yZE" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="j3Q-d1-bH2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vnh-7m-UjO" secondAttribute="trailing" constant="16" id="jAf-iZ-s3M"/>
                             <constraint firstItem="lNB-as-gqN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="k4U-WQ-DJO"/>
@@ -359,6 +369,8 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="announcementButton" destination="lNB-as-gqN" id="Mr7-uU-gsG"/>
                         <outlet property="currentPeriodLabel" destination="vnh-7m-UjO" id="qd3-kd-yUo"/>
@@ -367,11 +379,12 @@
                         <outlet property="openCalendarButton" destination="83q-QD-tnu" id="Gbm-Dk-5gy"/>
                         <outlet property="schoolStartEndLabel" destination="cxY-Xp-bBx" id="kzS-Tc-JtS"/>
                         <outlet property="tomorrowStartTimeLabel" destination="4fs-2f-E1I" id="AS4-Dh-GZU"/>
+                        <segue destination="Iwd-hS-Dn7" kind="show" identifier="openPeriodTimesViewFromScheduleInfo" id="IaJ-xN-Wcd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="135" y="132.04225352112675"/>
+            <point key="canvasLocation" x="133.59999999999999" y="131.78410794602701"/>
         </scene>
         <!--User Schedule Table View Controller-->
         <scene sceneID="gDq-s7-fIR">
@@ -385,7 +398,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wc7-lu-YE8">
-                                <rect key="frame" x="16" y="72" width="343" height="575"/>
+                                <rect key="frame" x="16" y="72" width="343" height="531"/>
                                 <color key="backgroundColor" red="0.81187152862548828" green="0.81954985857009888" blue="0.82353013753890991" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserPeriodCell" id="4po-Um-g61">
@@ -458,7 +471,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" tag="819" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background1" translatesAutoresizingMaskIntoConstraints="NO" id="JkN-84-8av">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
                             </imageView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xAw-2s-xTC">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -473,7 +486,7 @@
                                 </items>
                             </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ddl-Dl-BSU">
-                                <rect key="frame" x="16" y="72" width="343" height="575"/>
+                                <rect key="frame" x="16" y="72" width="343" height="531"/>
                                 <color key="backgroundColor" red="0.8118715286" green="0.81954985859999996" blue="0.82353013750000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AnnoucementCell" id="O0z-Zz-kdf">
@@ -528,7 +541,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" tag="819" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background1" translatesAutoresizingMaskIntoConstraints="NO" id="DKZ-Su-QIr">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
                             </imageView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="blT-Eo-Peq">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -795,7 +808,7 @@
                         <outlet property="codeToggleBarButton" destination="sZb-E6-ahm" id="hVV-sC-z7K"/>
                         <outlet property="codeToggleButton" destination="ab9-bP-PcH" id="3NR-PT-tcd"/>
                         <outlet property="collectionView" destination="z1g-sy-CiZ" id="aWX-Iu-XDV"/>
-                        <segue destination="Iwd-hS-Dn7" kind="show" identifier="openPeriodTimesView" id="afJ-AA-hCV"/>
+                        <segue destination="Iwd-hS-Dn7" kind="show" identifier="openPeriodTimesViewFromCalendar" id="afJ-AA-hCV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VK5-hE-G4I" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -812,7 +825,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" tag="819" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background1" translatesAutoresizingMaskIntoConstraints="NO" id="aBy-wI-5te">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
                             </imageView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="meJ-gS-dFV">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -820,7 +833,7 @@
                                     <navigationItem title="Period Times" id="kzJ-nc-xXw">
                                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="818-qa-h9h">
                                             <connections>
-                                                <segue destination="R3z-QW-hm0" kind="unwind" unwindAction="exitScheduleTimesViewController:" id="ofO-L3-ece"/>
+                                                <action selector="doneButtonPressed:" destination="Iwd-hS-Dn7" id="Wfc-ke-5nN"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -878,6 +891,8 @@
                     <connections>
                         <outlet property="periodTimesTextView" destination="gbe-R1-L1A" id="4YV-1m-wVu"/>
                         <outlet property="titleLabel" destination="raw-lB-I6v" id="LSW-z6-moJ"/>
+                        <segue destination="R3z-QW-hm0" kind="unwind" identifier="exitPeriodTimesViewToScheduleInfo" unwindAction="exitPeriodTimesViewToScheduleInfoView:" id="SAA-G4-tBU"/>
+                        <segue destination="R3z-QW-hm0" kind="unwind" identifier="exitPeriodTimesViewToCalendar" unwindAction="exitPeriodTimesViewToCalendar:" id="jG8-WD-CkG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iuJ-Dg-GIB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -888,5 +903,9 @@
     </scenes>
     <resources>
         <image name="background1" width="200" height="300"/>
+        <image name="infoIcon" width="32" height="32"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="afJ-AA-hCV"/>
+    </inferredMetricsTieBreakers>
 </document>

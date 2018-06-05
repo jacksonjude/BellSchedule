@@ -119,6 +119,30 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
         {
             refreshTimer?.invalidate()
         }
+        
+        if (segue.identifier == "openPeriodTimesViewFromScheduleInfo")
+        {
+            Logger.println(" SIC: Opening ScheduleTimesViewController...")
+            
+            let scheduleTimesViewController = segue.destination as! ScheduleTimesViewController
+            scheduleTimesViewController.scheduleRecord = scheduleManager?.todaySchedule!
+            
+            var currentTimeComponents = Date.Gregorian.calendar.dateComponents([.year, .day, .month, .hour, .minute, .second], from: Date())
+            scheduleTimesViewController.scheduleDateString = zeroPadding(int: currentTimeComponents.month!) + "/" + zeroPadding(int: currentTimeComponents.day!) + "/" + zeroPadding(int: currentTimeComponents.year!)
+            scheduleTimesViewController.parentViewControllerString = "ScheduleInfoViewController"
+        }
+    }
+    
+    func zeroPadding(int: Int) -> String
+    {
+        if int > 9
+        {
+            return String(int)
+        }
+        else
+        {
+            return "0" + String(int)
+        }
     }
     
     func calculateTimerRefresh()
@@ -601,6 +625,13 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
         }
     }
     
+    @IBAction func openPeriodTimesViewControllerForCurrentDay(_ sender: Any) {
+        if scheduleManager?.infoDelegate != nil
+        {
+            self.performSegue(withIdentifier: "openPeriodTimesViewFromScheduleInfo", sender: self)
+        }
+    }
+    
     @IBAction func exitUserScheduleTableView(_ segue: UIStoryboardSegue)
     {
         let source = segue.source as! UserScheduleTableViewController
@@ -641,6 +672,11 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     @IBAction func exitSettingsView(_ segue: UIStoryboardSegue)
     {
         Logger.println("Exiting SettingsView...")
+    }
+    
+    @IBAction func exitPeriodTimesViewToScheduleInfoView(_ segue: UIStoryboardSegue)
+    {
+        Logger.println("Exiting PeriodTimesView...")
     }
 }
 

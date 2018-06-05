@@ -17,6 +17,7 @@ class ScheduleTimesViewController: UIViewController
     
     var scheduleRecord: NSManagedObject?
     var scheduleDateString: String?
+    var parentViewControllerString: String?
     
     var viewHasAppeared = false
     
@@ -128,6 +129,18 @@ class ScheduleTimesViewController: UIViewController
         else
         {
             return "0" + String(int)
+        }
+    }
+    
+    @IBAction func doneButtonPressed(_ sender: Any) {
+        switch parentViewControllerString
+        {
+        case "CalendarCollectionViewController":
+            self.performSegue(withIdentifier: "exitPeriodTimesViewToCalendar", sender: self)
+        case "ScheduleInfoViewController":
+            self.performSegue(withIdentifier: "exitPeriodTimesViewToScheduleInfo", sender: self)
+        default:
+            break
         }
     }
 }
