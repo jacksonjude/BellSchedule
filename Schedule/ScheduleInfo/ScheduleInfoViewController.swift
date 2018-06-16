@@ -626,7 +626,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     }
     
     @IBAction func openPeriodTimesViewControllerForCurrentDay(_ sender: Any) {
-        if scheduleManager?.infoDelegate != nil
+        if scheduleManager?.infoDelegate != nil && scheduleManager?.todaySchedule != nil
         {
             self.performSegue(withIdentifier: "openPeriodTimesViewFromScheduleInfo", sender: self)
         }

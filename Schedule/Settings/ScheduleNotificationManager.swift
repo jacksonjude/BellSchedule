@@ -77,7 +77,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     func findNextSchoolStartTime(nextDayCount: Int, nextWeekCount: Int)
     {
         Logger.println("SNM: \(tomorrowSchoolStartTimes.count)/5")
-        if tomorrowSchoolStartTimes.count < 5
+        if tomorrowSchoolStartTimes.count < 5 && scheduleInfoManager?.nextDayOn != nil
         {
             let loadedNextWeek = nextWeekCount > 0
             scheduleInfoManager!.nextDayOn! += 1
