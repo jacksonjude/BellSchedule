@@ -21,8 +21,8 @@ class CoreDataStack: NSObject
         let container = NSPersistentContainer(name: "Schedule")
         
         //var persistentStoreDescriptions: NSPersistentStoreDescription
-        
-        let storeUrl =  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.jacksonjude.BellSchedule")!.appendingPathComponent("Schedule.sqlite")
+                
+        let storeUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.jacksonjude.BellSchedule")!.appendingPathComponent("Schedule.sqlite")
 
         let description = NSPersistentStoreDescription()
         description.shouldInferMappingModelAutomatically = true

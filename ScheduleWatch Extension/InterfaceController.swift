@@ -213,7 +213,7 @@ class InterfaceController: WKInterfaceController, ScheduleInfoDelegate {
         schoolStartEndLabel.setText("Loading...")
         tomorrowStartTimeLabel.setText("Loading...")
         
-        scheduleInfoManager?.downloadCloudData()
+        scheduleInfoManager?.refreshScheduleInfo()
     }
     
     @IBAction func refreshInfo(_ sender: Any) {

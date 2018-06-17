@@ -14,6 +14,11 @@
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
+		<key>ScheduleWatch Extension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 		<key>ScheduleWatch.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -27,6 +32,16 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>7A15FC7C1FDDC7CD0012A883</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7A15FC881FDDC7CD0012A883</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>7A2418981FC7E883000407B8</key>
 		<dict>
 			<key>primary</key>
