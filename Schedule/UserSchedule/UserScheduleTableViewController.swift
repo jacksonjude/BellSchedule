@@ -112,7 +112,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     
     @objc func receiveUserSchedule(notification: NSNotification)
     {
-        if let periodNamesRecord = notification.object as? CKRecord
+        if let periodNamesRecord = notification.userInfo?["object"] as? CKRecord
         {
             Logger.println(" USRSCH: Received periodNamesRecord")
             if let periodNamesFromRecord = periodNamesRecord.object(forKey: "periodNames") as? [String]

@@ -255,7 +255,7 @@ class ScheduleInfoManager: NSObject {
     {
         self.userScheduleQueryReturnID = nil
         
-        if let periodNamesRecord = notification.object as? CKRecord
+        if let periodNamesRecord = notification.userInfo?["object"] as? CKRecord
         {
             Logger.println(" USRSCH: Received periodNamesRecord")
             periodNames = periodNamesRecord.object(forKey: "periodNames") as? [String]

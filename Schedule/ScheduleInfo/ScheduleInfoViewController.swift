@@ -522,7 +522,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
         OperationQueue.main.addOperation {
             if (self.currentPeriodLabel.text?.contains("Loading...") ?? true)
             {
-                let cloudKitError = notification.object as! CKError
+                let cloudKitError = notification.userInfo!["object"] as! CKError
                 let errorDesc = cloudKitError.localizedDescription
                 switch cloudKitError.code
                 {

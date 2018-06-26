@@ -27,7 +27,7 @@ class CloudManager: NSObject
         let objectQueryOperation = CKQueryOperation(query: objectQuery)
         
         objectQueryOperation.recordFetchedBlock = {(record) in
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + returnID), object: record)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + returnID), object: nil, userInfo: ["object":record])
         }
         
         objectQueryOperation.queryCompletionBlock = {(cursorThingy, error) in
@@ -131,7 +131,7 @@ class CloudManager: NSObject
             {
                 Logger.println(error!)
                 
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "cloudKitError"), object: error!)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "cloudKitError"), object: nil, userInfo: ["object":error!])
                 NotificationCenter.default.removeObserver(self)
                 
                 loopFetchAllData()
