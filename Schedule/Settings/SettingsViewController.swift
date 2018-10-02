@@ -53,11 +53,11 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             
             let alertTimeString = hour + ":" + minute + " " + ampm
             
-            alertTimeButton.setTitle(alertTimeString, for: UIControlState.normal)
+            alertTimeButton.setTitle(alertTimeString, for: UIControl.State.normal)
         case kBackgroundValue:
             let backgroundName = currentPickerArray[0][pickerView.selectedRow(inComponent: 0)]
             
-            backgroundButton.setTitle(backgroundName, for: UIControlState.normal)
+            backgroundButton.setTitle(backgroundName, for: UIControl.State.normal)
         default:
             break
         }
@@ -87,7 +87,7 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         self.view.setBackground()
         
         let backgroundName = "Background " + (String(describing: (UserDefaults.standard.object(forKey: "backgroundName") as? String ?? "background1").last!))
-        backgroundButton.setTitle(backgroundName, for: UIControlState.normal)
+        backgroundButton.setTitle(backgroundName, for: UIControl.State.normal)
         
         let notification24Time = UserDefaults.standard.object(forKey: "notificationAlertTime") as? String ?? "21:00"
         var notificationHour = String(notification24Time.split(separator: ":")[0])
@@ -100,11 +100,11 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             
             notificationAMPM = "PM"
         }
-        alertTimeButton.setTitle(notificationHour + ":" + notificationMinute + " " + notificationAMPM, for: UIControlState.normal)
+        alertTimeButton.setTitle(notificationHour + ":" + notificationMinute + " " + notificationAMPM, for: UIControl.State.normal)
         
         userIDTextField.placeholder = (UserDefaults.standard.object(forKey: "userID") as? String ?? "")
         
-        syncButton.setTitle(String((UserDefaults.standard.object(forKey: "syncData") as? Bool) ?? true), for: UIControlState.normal)
+        syncButton.setTitle(String((UserDefaults.standard.object(forKey: "syncData") as? Bool) ?? true), for: UIControl.State.normal)
         
         Logger.println(" SETV: Opening SettingsViewController...")
     }
@@ -241,6 +241,6 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     @IBAction func toggleSync(_ sender: Any) {
         UserDefaults.standard.set(!((UserDefaults.standard.object(forKey: "syncData") as? Bool) ?? true), forKey: "syncData")
-        syncButton.setTitle(String((UserDefaults.standard.object(forKey: "syncData") as? Bool) ?? true), for: UIControlState.normal)
+        syncButton.setTitle(String((UserDefaults.standard.object(forKey: "syncData") as? Bool) ?? true), for: UIControl.State.normal)
     }
 }

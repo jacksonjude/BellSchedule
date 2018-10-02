@@ -42,7 +42,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     }
     
     func printInternalError(message: String, labelNumber: Int) {
-        findNextSchoolStartTime(nextDayCount: nextDayCounts.count, nextWeekCount: nextWeekCounts.count)
+        findNextSchoolStartTime(nextDayCount: nextDayCounts.count+1, nextWeekCount: nextWeekCounts.count)
     }
     
     func printSchoolStartEndMessage(message: String) {
