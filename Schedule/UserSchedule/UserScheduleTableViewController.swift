@@ -195,10 +195,10 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
         
         userPeriodChangeAlert.view.addSubview(createSwitch(indexPath.row))
         
-        let freeModLabel = UILabel(frame: CGRect(x: 15, y: 50, width: 200, height: 70))
+        /*let freeModLabel = UILabel(frame: CGRect(x: 15, y: 50, width: 200, height: 70))
         freeModLabel.text = "Free Mod:"
         freeModLabel.font = UIFont(name: "System", size: 15)
-        userPeriodChangeAlert.view.addSubview(freeModLabel)
+        userPeriodChangeAlert.view.addSubview(freeModLabel)*/
         
         self.present(userPeriodChangeAlert, animated: true) {
             

@@ -277,7 +277,7 @@ class ScheduleInfoManager: NSObject {
             {
                 let freeModsAreLoaded = (freeMods?.count ?? 0) >= periodNumbers[periodNumber!-1]
                 Logger.println(" GPN: Free mods are loaded: " + String(freeModsAreLoaded))
-                if freeModsAreLoaded
+                /*if freeModsAreLoaded
                 {
                     Logger.println(" GPN: Is a free mod: " + String(freeMods?[periodNumbers[periodNumber!-1]-1] == 1))
                     Logger.println(" GPN: Today is a B or C code: " + String(((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")))
@@ -290,7 +290,7 @@ class ScheduleInfoManager: NSObject {
                             return
                         }
                     }
-                }
+                }*/
                 
                 if (periodNames?.count ?? 0) > periodNumber!-1
                 {
