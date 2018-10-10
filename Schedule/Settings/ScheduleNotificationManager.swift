@@ -104,8 +104,8 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
             if schoolStartTime != "H"
             {
                 let schoolStartTimeNotificationContent = UNMutableNotificationContent()
-                schoolStartTimeNotificationContent.title = "School starts at \(schoolStartTime) tomorrow"
-                schoolStartTimeNotificationContent.body = "Open..."
+                schoolStartTimeNotificationContent.title = "Tomorrow School Start Time"
+                schoolStartTimeNotificationContent.body = "School starts at \(schoolStartTime) tomorrow"
                 
                 let triggerDateComponents = getDate(nextDay: nextDayCounts[schoolStartTimeOn], nextWeek: nextWeekCounts[schoolStartTimeOn])
                 

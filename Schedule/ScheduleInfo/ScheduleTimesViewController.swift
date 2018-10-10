@@ -75,10 +75,12 @@ class ScheduleTimesViewController: UIViewController
                 let periodEndHour = Int(periodEnd.split(separator: ":")[0]) ?? 0
                 let periodEndMinute = Int(periodEnd.split(separator: ":")[1]) ?? 0
                 
-                let periodStartFormatted = zeroPadding(periodStartHour) + ":" + zeroPadding(periodStartMinute)
-                let periodEndFormatted = zeroPadding(periodEndHour) + ":" + zeroPadding(periodEndMinute)
+                let periodStartFormatted = String(periodStartHour) + ":" + zeroPadding(periodStartMinute)
+                let periodEndFormatted = String(periodEndHour) + ":" + zeroPadding(periodEndMinute)
                 
-                periodTimesText += "PER " + String(periodNumber) + " - " + periodStartFormatted + "-" + periodEndFormatted + " - " + periodMinutes + " MIN"
+                let periodStartEndFormatted = convertToStandardTime(date: periodStartFormatted) + "-" + convertToStandardTime(date: periodEndFormatted)
+                
+                periodTimesText += "PER " + String(periodNumber) + " - " + periodStartEndFormatted + " - " + periodMinutes + " MIN"
                 if periodIndex+1 != periodNumbers.count
                 {
                     periodTimesText += "\n"
@@ -130,6 +132,17 @@ class ScheduleTimesViewController: UIViewController
         {
             return "0" + String(int)
         }
+    }
+    
+    func convertToStandardTime(date: String) -> String!
+    {
+        var hourMin = date.split(separator: ":")
+        var newDate = date
+        if Int(hourMin[0])! > 12
+        {
+            newDate = String(Int(hourMin[0])!-12) + ":" + hourMin[1]
+        }
+        return newDate
     }
     
     @IBAction func doneButtonPressed(_ sender: Any) {
