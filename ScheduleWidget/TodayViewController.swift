@@ -50,7 +50,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
     }
     
     func printCurrentMessage(message: String) {
-        return
+        self.currentPeriodInfoString = message
     }
     
     func printInternalError(message: String, labelNumber: Int) {

@@ -193,7 +193,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
             }
         }))
         
-        userPeriodChangeAlert.view.addSubview(createSwitch(indexPath.row))
+        //userPeriodChangeAlert.view.addSubview(createSwitch(indexPath.row))
         
         /*let freeModLabel = UILabel(frame: CGRect(x: 15, y: 50, width: 200, height: 70))
         freeModLabel.text = "Free Mod:"
