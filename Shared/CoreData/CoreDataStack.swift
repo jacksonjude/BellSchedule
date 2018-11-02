@@ -65,4 +65,25 @@ class CoreDataStack: NSObject
         }
         //}
     }
+    
+    static func fetchLocalObjects(type: String, predicate: NSPredicate) -> [AnyObject]?
+    {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: type)
+        fetchRequest.predicate = predicate
+        
+        let fetchResults: [AnyObject]?
+        var error: NSError? = nil
+        
+        do {
+            fetchResults = try CoreDataStack.persistentContainer.viewContext.fetch(fetchRequest)
+        } catch let error1 as NSError {
+            error = error1
+            fetchResults = nil
+            Logger.println("An Error Occored: " + error!.localizedDescription)
+        } catch {
+            fatalError()
+        }
+        
+        return fetchResults
+    }
 }

@@ -179,7 +179,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         Logger.println(startOfWeekFormatted)
         
         let weekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfWeekFormatted as CVarArg)
-        if let weekScheduleRecord = CloudManager.fetchLocalObjects(type: "WeekSchedules", predicate: weekScheduleQueryPredicate)?.first as? NSManagedObject
+        if let weekScheduleRecord = CoreDataStack.fetchLocalObjects(type: "WeekSchedules", predicate: weekScheduleQueryPredicate)?.first as? NSManagedObject
         {
             Logger.println(" FWSCH: Received weekScheduleRecord")
             
@@ -242,7 +242,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         Logger.println(" FDSCH: Fetching schedule")
         
         let scheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", scheduleCode)
-        if let scheduleRecord = CloudManager.fetchLocalObjects(type: "Schedule", predicate: scheduleQueryPredicate)?.first as? NSManagedObject
+        if let scheduleRecord = CoreDataStack.fetchLocalObjects(type: "Schedule", predicate: scheduleQueryPredicate)?.first as? NSManagedObject
         {
             Logger.println(" FDSCH: Received scheduleRecord")
             

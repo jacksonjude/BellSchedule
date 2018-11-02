@@ -82,7 +82,11 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
             let loadedNextWeek = nextWeekCount > 0
             scheduleInfoManager!.nextDayOn! += 1
             
-            scheduleInfoManager!.queryTomorrowSchedule(weekSchedules: scheduleInfoManager!.nextWeekSchedules!, addDays: nextDayCount+1, loadedNextWeek: loadedNextWeek)
+            if let tomorrowScheduleData = scheduleInfoManager!.queryTomorrowSchedule(weekSchedules: scheduleInfoManager!.nextWeekSchedules!, addDays: nextDayCount+1, loadedNextWeek: loadedNextWeek), let tomorrowSchedule = tomorrowScheduleData.schedule
+            {
+                
+                self.printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule, nextWeekCount: nextWeekCount, nextDayCount: nextDayCount+1)
+            }
         }
         else
         {
@@ -140,8 +144,12 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         {
             calculatedNextDay += Date().getDayOfWeek()
         }
+        else
+        {
+            calculatedNextDay += 1
+        }
         calculatedDate.addTimeInterval(TimeInterval(calculatedNextDay*86400))
-                
+        
         var calculatedDateComponents = Date.Gregorian.calendar.dateComponents([.day, .month, .year, .hour, .minute], from: calculatedDate)
         
         let notificationAlertTime = (UserDefaults.standard.object(forKey: "notificationAlertTime") as? String) ?? "21:00"

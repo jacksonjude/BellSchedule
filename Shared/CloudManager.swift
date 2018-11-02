@@ -104,7 +104,7 @@ class CloudManager: NSObject
         
         cloudEntityQueryOperation.recordFetchedBlock = {(record) in
             OperationQueue.main.addOperation {
-                if let localObject = self.fetchLocalObjects(type: entityType, predicate: NSPredicate(format: "uuid == %@", record.recordID.recordName))?.first as? NSManagedObject
+                if let localObject = CoreDataStack.fetchLocalObjects(type: entityType, predicate: NSPredicate(format: "uuid == %@", record.recordID.recordName))?.first as? NSManagedObject
                 {
                     self.updateFromRemote(record: record, object: localObject, fields: self.getFieldsFromEntity(entityType: entityType))
                 }
@@ -230,27 +230,6 @@ class CloudManager: NSObject
             NotificationCenter.default.removeObserver(self)
             queueIsRunning = false
         }
-    }
-    
-    static func fetchLocalObjects(type: String, predicate: NSPredicate) -> [AnyObject]?
-    {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: type)
-        fetchRequest.predicate = predicate
-        
-        let fetchResults: [AnyObject]?
-        var error: NSError? = nil
-        
-        do {
-            fetchResults = try CoreDataStack.persistentContainer.viewContext.fetch(fetchRequest)
-        } catch let error1 as NSError {
-            error = error1
-            fetchResults = nil
-            Logger.println("An Error Occored: " + error!.localizedDescription)
-        } catch {
-            fatalError()
-        }
-                
-        return fetchResults
     }
     
     static func updateFromRemote(record: CKRecord, object: NSManagedObject, fields: Array<String>)

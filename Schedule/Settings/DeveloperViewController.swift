@@ -54,7 +54,7 @@ class DeveloperViewController: UIViewController
         
         for entityType in entityTypes
         {
-            if let objects = CloudManager.fetchLocalObjects(type: entityType, predicate: NSPredicate(format: "TRUEPREDICATE")) as? [NSManagedObject]
+            if let objects = CoreDataStack.fetchLocalObjects(type: entityType, predicate: NSPredicate(format: "TRUEPREDICATE")) as? [NSManagedObject]
             {
                 for object in objects
                 {

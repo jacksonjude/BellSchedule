@@ -152,7 +152,8 @@ class ScheduleInfoManager: NSObject {
         }
         else
         {
-            queryWeekSchedule()
+            //queryWeekSchedule()
+            refreshScheduleInfo()
         }
     }
     
@@ -219,7 +220,21 @@ class ScheduleInfoManager: NSObject {
         freeMods = nil
         
         getUserID()
-        queryWeekSchedule()        
+        
+        if let weekSchedule = queryWeekSchedule()
+        {
+            if let todaySchedule = queryTodaySchedule(weekSchedules: weekSchedule), let periodTimes = self.decodeArrayFromJSON(object: todaySchedule, field: "periodTimes") as? Array<String>
+            {
+                findCurrentPeriod(periodTimes: periodTimes)
+            }
+            
+            nextWeekOn = 0
+            nextDayOn = 0
+            if let tomorrowScheduleData = queryTomorrowSchedule(weekSchedules: weekSchedule, addDays: 0, loadedNextWeek: false), let tomorrowSchedule = tomorrowScheduleData.schedule, let nextDayOn = tomorrowScheduleData.nextDayOn, let nextWeekOn = tomorrowScheduleData.nextWeekOn
+            {
+                infoDelegate.printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule, nextWeekCount: nextWeekOn, nextDayCount: nextDayOn)
+            }
+        }
     }
     
     //MARK: UserSchedule
@@ -304,7 +319,7 @@ class ScheduleInfoManager: NSObject {
     
     //MARK: Week Schedule
     
-    func queryWeekSchedule()
+    func queryWeekSchedule() -> Array<String>?
     {
         Logger.println(" FWSCH: Fetching weekScheduleRecord")
         
@@ -323,7 +338,7 @@ class ScheduleInfoManager: NSObject {
         let startOfWeekFormatted = gregorian.date(from: startOfWeekComponents)!
         
         let weekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfWeekFormatted as CVarArg)
-        if let weekScheduleRecord = CloudManager.fetchLocalObjects(type: "WeekSchedules", predicate: weekScheduleQueryPredicate)?.first as? NSManagedObject
+        if let weekScheduleRecord = CoreDataStack.fetchLocalObjects(type: "WeekSchedules", predicate: weekScheduleQueryPredicate)?.first as? NSManagedObject
         {
             Logger.println(" FWSCH: Received weekScheduleRecord")
             infoDelegate.printCurrentMessage(message: "Loading...\nReceived weekScheduleRecord")
@@ -331,23 +346,25 @@ class ScheduleInfoManager: NSObject {
             if let schedules = self.decodeArrayFromJSON(object: weekScheduleRecord, field: "schedules") as? Array<String>
             {
                 self.nextWeekSchedules = schedules
-                queryTodaySchedule(weekSchedules: schedules)
-                nextWeekOn = 0
-                nextDayOn = 0
-                queryTomorrowSchedule(weekSchedules: schedules, addDays: 0, loadedNextWeek: false)
+                
+                return schedules
             }
+            
+            return nil
         }
         else
         {
             Logger.println(" FWSCH: Did not receive weekScheduleRecord")
             
             infoDelegate.printInternalError(message: "Week schedule codes not found", labelNumber: kCurrentPeriodLabel)
+            
+            return nil
         }
     }
     
     //MARK: Today Schedule
     
-    func queryTodaySchedule(weekSchedules: Array<String>)
+    func queryTodaySchedule(weekSchedules: Array<String>) -> Schedule?
     {
         let currentDay = Date().getDayOfWeek()-1
         if currentDay < weekSchedules.count && currentDay >= 0
@@ -358,7 +375,7 @@ class ScheduleInfoManager: NSObject {
             Logger.println(" FTODYS: Fetching todaySchedule")
             
             let todayScheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", todayScheduleCode)
-            if let todaySchedule = CloudManager.fetchLocalObjects(type: "Schedule", predicate: todayScheduleQueryPredicate)?.first as? NSManagedObject
+            if let todaySchedule = CoreDataStack.fetchLocalObjects(type: "Schedule", predicate: todayScheduleQueryPredicate)?.first as? Schedule
             {
                 Logger.println(" FTODYS: Received todaySchedule")
                 infoDelegate.printCurrentMessage(message: "Received todaySchedule")
@@ -379,11 +396,15 @@ class ScheduleInfoManager: NSObject {
                     infoDelegate.printCurrentMessage(message: "No school today")
                     infoDelegate.printSchoolStartEndMessage(message: "No school today")
                 }
+                
+                return todaySchedule
             }
             else
             {
                 Logger.println(" FTODYS: Did not receive todaySchedule")
                 infoDelegate.printCurrentMessage(message: "Error on query")
+                
+                return nil
             }
         }
         else
@@ -392,12 +413,14 @@ class ScheduleInfoManager: NSObject {
             infoDelegate.printCurrentMessage(message: "No school today")
             
             infoDelegate.printSchoolStartEndMessage(message: "No school today")
+            
+            return nil
         }
     }
     
     //MARK: Tomorrow Schedule
     
-    func queryTomorrowSchedule(weekSchedules: Array<String>, addDays: Int, loadedNextWeek: Bool)
+    func queryTomorrowSchedule(weekSchedules: Array<String>, addDays: Int, loadedNextWeek: Bool) -> (schedule: Schedule?, nextDayOn: Int?, nextWeekOn: Int?)?
     {
         var tomorrowScheduleCode = ""
         var currentlyLoadingNextWeek = false
@@ -418,7 +441,10 @@ class ScheduleInfoManager: NSObject {
             Logger.println(" FTOMWS: tomorrowDate out of schedule range, loading next week")
             nextWeekOn! += 1
             nextDayOn = 0
-            queryNextWeek()
+            if let nextWeekSchedules = queryNextWeek()
+            {
+                return queryTomorrowSchedule(weekSchedules: nextWeekSchedules, addDays: 0, loadedNextWeek: true)
+            }
             currentlyLoadingNextWeek = true
         }
         
@@ -427,7 +453,7 @@ class ScheduleInfoManager: NSObject {
             Logger.println(" FTOMWS: Fetching tomorrowSchedule")
             
             let tomorrowScheduleQueryPredicate = NSPredicate(format: "scheduleCode == %@", tomorrowScheduleCode)
-            if let tomorrowSchedule = CloudManager.fetchLocalObjects(type: "Schedule", predicate: tomorrowScheduleQueryPredicate)?.first as? NSManagedObject
+            if let tomorrowSchedule = CoreDataStack.fetchLocalObjects(type: "Schedule", predicate: tomorrowScheduleQueryPredicate)?.first as? Schedule
             {
                 Logger.println(" FTOMWS: Received tomorrowSchedule")
                 
@@ -435,7 +461,7 @@ class ScheduleInfoManager: NSObject {
                 if tomorrowScheduleCode != "H"
                 {
                     Logger.println(" FTOMWS: Tomorrow schedule found!")
-                    infoDelegate.printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule, nextWeekCount: nextWeekOn!, nextDayCount: nextDayOn!)
+                    return (schedule: tomorrowSchedule, nextDayOn: nextDayOn, nextWeekOn: nextWeekOn)
                 }
                 else
                 {
@@ -448,7 +474,7 @@ class ScheduleInfoManager: NSObject {
                         Logger.println(" FTOMWS: No school tomorrow, loading next day")
                         nextDayOn!+=1
                         
-                        queryTomorrowSchedule(weekSchedules: self.nextWeekSchedules!, addDays: nextDayOn!, loadedNextWeek: loadedNextWeek)
+                        return queryTomorrowSchedule(weekSchedules: self.nextWeekSchedules!, addDays: nextDayOn!, loadedNextWeek: loadedNextWeek)
                     }
                 }
             }
@@ -459,11 +485,13 @@ class ScheduleInfoManager: NSObject {
                 infoDelegate.printInternalError(message: "Tomorrow schedule code not found", labelNumber: kTomorrowStartTimeLabel)
             }
         }
+        
+        return nil
     }
     
     //MARK: Next Week Schedule
     
-    func queryNextWeek()
+    func queryNextWeek() -> Array<String>?
     {
         Logger.println(" FNXTWK: Fetching nextWeekScheduleRecord")
         
@@ -482,13 +510,14 @@ class ScheduleInfoManager: NSObject {
         let startOfNextWeekFormatted = gregorian.date(from: startOfNextWeekComponents)!
         
         let nextWeekScheduleQueryPredicate = NSPredicate(format: "weekStartDate == %@", startOfNextWeekFormatted as CVarArg)
-        if let nextWeekScheduleRecord = CloudManager.fetchLocalObjects(type: "WeekSchedules", predicate: nextWeekScheduleQueryPredicate)?.first as? NSManagedObject
+        if let nextWeekScheduleRecord = CoreDataStack.fetchLocalObjects(type: "WeekSchedules", predicate: nextWeekScheduleQueryPredicate)?.first as? NSManagedObject
         {
             Logger.println(" FNXTWK: Received nextWeekScheduleRecord")
             if let schedules = self.decodeArrayFromJSON(object: nextWeekScheduleRecord, field: "schedules") as? Array<String>
             {
                 self.nextWeekSchedules = schedules
-                queryTomorrowSchedule(weekSchedules: schedules, addDays: 0, loadedNextWeek: true)
+                
+                return schedules
             }
         }
         else
@@ -496,7 +525,11 @@ class ScheduleInfoManager: NSObject {
             Logger.println(" FNXTWK: Did not receive nextWeekScheduleRecord")
             
             infoDelegate.printInternalError(message: "Next week schedule codes not found", labelNumber: kTomorrowStartTimeLabel)
+            
+            return nil
         }
+        
+        return nil
     }
     
     //MARK: Find Current Period

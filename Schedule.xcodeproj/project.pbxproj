@@ -41,6 +41,9 @@
 		7A796F991F871D1400D9658D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A796F971F871D1400D9658D /* LaunchScreen.storyboard */; };
 		7A796FA31F871D3300D9658D /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A796FA21F871D3300D9658D /* CloudKit.framework */; };
 		7A796FA51F87250600D9658D /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796FA41F87250600D9658D /* CloudManager.swift */; };
+		7A9A5466218A0CD500F45B85 /* NotificationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */; };
+		7A9A5469218A1B9700F45B85 /* NotificationEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */; };
+		7A9A546B218A1CA500F45B85 /* NotificationEditorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */; };
 		7AA09CDF1F9C4B4D006B5F08 /* Consola.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */; };
 		7AA4B7872022A4AC00BC0A2C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA4B7862022A4AC00BC0A2C /* SettingsViewController.swift */; };
 		7AC0A3381F8C3EE0005E5FA3 /* ScheduleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */; };
@@ -151,6 +154,10 @@
 		7A796FA01F871D2F00D9658D /* Schedule.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Schedule.entitlements; sourceTree = "<group>"; };
 		7A796FA21F871D3300D9658D /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		7A796FA41F87250600D9658D /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
+		7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewController.swift; sourceTree = "<group>"; };
+		7A9A5467218A0D1D00F45B85 /* Schedule3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Schedule3.xcdatamodel; sourceTree = "<group>"; };
+		7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorViewController.swift; sourceTree = "<group>"; };
+		7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorState.swift; sourceTree = "<group>"; };
 		7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consola.ttf; sourceTree = "<group>"; };
 		7AA4B7862022A4AC00BC0A2C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoManager.swift; sourceTree = "<group>"; };
@@ -289,6 +296,7 @@
 		7A796F8A1F871D1400D9658D /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				7A9A5464218A0CC200F45B85 /* Notification */,
 				7A5687321FEC78FD00744A30 /* Announcement */,
 				7A2D98951F9587AC00288665 /* Settings */,
 				7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */,
@@ -312,6 +320,16 @@
 				88CDEA5355ACC48FB722D116 /* Pods_Schedule.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7A9A5464218A0CC200F45B85 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */,
+				7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */,
+				7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		7AC47B361FCFC9C3009A2F38 /* CoreData */ = {
@@ -665,6 +683,7 @@
 				7ACF12C21FEF929B007D1320 /* ScheduleNotificationManager.swift in Sources */,
 				7A796F8E1F871D1400D9658D /* ScheduleInfoViewController.swift in Sources */,
 				7AC0A3381F8C3EE0005E5FA3 /* ScheduleInfoManager.swift in Sources */,
+				7A9A5466218A0CD500F45B85 /* NotificationTableViewController.swift in Sources */,
 				7A796F941F871D1400D9658D /* Schedule.xcdatamodeld in Sources */,
 				7A796FA51F87250600D9658D /* CloudManager.swift in Sources */,
 				7A61F5AA1FCD3A600060580A /* CoreDataStack.swift in Sources */,
@@ -672,8 +691,10 @@
 				7A5687341FEC889800744A30 /* AnnouncementsTableViewController.swift in Sources */,
 				7A796F8C1F871D1400D9658D /* AppDelegate.swift in Sources */,
 				7A5687361FEC8DF600744A30 /* AnnouncementManager.swift in Sources */,
+				7A9A546B218A1CA500F45B85 /* NotificationEditorState.swift in Sources */,
 				7AE495E21FE6F2C500AE2EB3 /* ScheduleTimesViewController.swift in Sources */,
 				7A5687381FECD86800744A30 /* AnnouncementViewController.swift in Sources */,
+				7A9A5469218A1B9700F45B85 /* NotificationEditorViewController.swift in Sources */,
 				7AF3A2501F8DC01B00C509AC /* UserScheduleTableViewController.swift in Sources */,
 				7A2D98921F95837900288665 /* Logger.swift in Sources */,
 				7A2D98941F95879B00288665 /* DeveloperViewController.swift in Sources */,
@@ -1050,10 +1071,11 @@
 		7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7A9A5467218A0D1D00F45B85 /* Schedule3.xcdatamodel */,
 				7A1D3239201585F10062989E /* Schedule2.xcdatamodel */,
 				7A796F931F871D1400D9658D /* Schedule.xcdatamodel */,
 			);
-			currentVersion = 7A1D3239201585F10062989E /* Schedule2.xcdatamodel */;
+			currentVersion = 7A9A5467218A0D1D00F45B85 /* Schedule3.xcdatamodel */;
 			path = Schedule.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

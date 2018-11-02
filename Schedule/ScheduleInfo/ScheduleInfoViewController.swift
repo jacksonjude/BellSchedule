@@ -625,6 +625,9 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
         }
     }
     
+    @IBAction func openNotificationTableViewController(_ sender: Any) {
+    }
+    
     @IBAction func openPeriodTimesViewControllerForCurrentDay(_ sender: Any) {
         if scheduleManager?.infoDelegate != nil && scheduleManager?.todaySchedule != nil && scheduleManager?.todaySchedule?.value(forKey: "scheduleCode") as? String != "H"
         {
@@ -677,6 +680,11 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     @IBAction func exitPeriodTimesViewToScheduleInfoView(_ segue: UIStoryboardSegue)
     {
         Logger.println("Exiting PeriodTimesView...")
+    }
+    
+    @IBAction func exitNotificationTableView(_ segue: UIStoryboardSegue)
+    {
+        Logger.println("Exiting NotificationTableView...")
     }
 }
 
