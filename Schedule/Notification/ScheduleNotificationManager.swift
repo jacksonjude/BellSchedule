@@ -138,19 +138,15 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     
     func getDate(nextDay: Int, nextWeek: Int) -> DateComponents
     {
-        var calculatedDate = Date().getStartOfNextWeek(nextWeek: nextWeek)
+        let calculatedDate = Date().getStartOfNextWeek(nextWeek: nextWeek)
         var calculatedNextDay = nextDay
         if nextWeek == 0
         {
             calculatedNextDay += Date().getDayOfWeek()
         }
-        else
-        {
-            calculatedNextDay += 1
-        }
-        calculatedDate.addTimeInterval(TimeInterval(calculatedNextDay*86400))
         
-        var calculatedDateComponents = Date.Gregorian.calendar.dateComponents([.day, .month, .year, .hour, .minute], from: calculatedDate)
+        var calculatedDateComponents = Date.Gregorian.calendar.dateComponents([.day, .month, .year, .hour, .minute, .timeZone], from: calculatedDate)
+        calculatedDateComponents.day = calculatedDateComponents.day! + calculatedNextDay
         
         let notificationAlertTime = (UserDefaults.standard.object(forKey: "notificationAlertTime") as? String) ?? "21:00"
         
