@@ -57,8 +57,8 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
         let schoolNotification = schoolNotifications![indexPath.section][indexPath.row]
         
         (cell.viewWithTag(600) as! UILabel).text = "Period " + String(schoolNotification.notificationPeriod)
-        (cell.viewWithTag(601) as! UILabel).text = (schoolNotification.displayTimeAsOffset ? String(abs(schoolNotification.notificationTimeOffset )) + " min" : get12HourTime(hour: schoolNotification.notificationTimeHour, minute: schoolNotification.notificationTimeMinute))
-        (cell.viewWithTag(602) as! UILabel).text = (schoolNotification.shouldFireDayBefore ? ("The day before") : (schoolNotification.displayTimeAsOffset ? (schoolNotification.notificationTimeOffset < 0 ? "Before" : "After") + " the period " + (schoolNotification.shouldFireWhenPeriodStarts ? "starts" : "ends") : "The day of"))
+        (cell.viewWithTag(601) as! UILabel).text = (schoolNotification.displayTimeAsOffset ? String(abs(schoolNotification.notificationTimeOffset)) + " min" : get12HourTime(hour: schoolNotification.notificationTimeHour, minute: schoolNotification.notificationTimeMinute))
+        (cell.viewWithTag(602) as! UILabel).text = (schoolNotification.displayTimeAsOffset ? (schoolNotification.notificationTimeOffset < 0 ? "Before" : "After") + " the period " + (schoolNotification.shouldFireWhenPeriodStarts ? "starts" : "ends") : schoolNotification.shouldFireDayBefore ? "The day before" : "The day of")
         (cell.viewWithTag(603) as! UILabel).text = schoolNotification.isEnabled ? "Enabled" : "Disabled"
         (cell.viewWithTag(603) as! UILabel).textColor = schoolNotification.isEnabled ? UIColor(red: 0, green: 0.5, blue: 0, alpha: 1) : UIColor(red: 0.5, green: 0, blue: 0, alpha: 1)
         
@@ -94,7 +94,7 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
         CoreDataStack.saveContext()
         
         schoolNotifications![0].append(schoolNotification)
-        schoolNotificationsTableView.insertRows(at: [IndexPath(row: (schoolNotifications?.count ?? 0)-1, section: 0)], with: .fade)
+        schoolNotificationsTableView.insertRows(at: [IndexPath(row: (schoolNotifications?[0].count ?? 0)-1, section: 0)], with: .fade)
         
         self.performSegue(withIdentifier: "openNotificationEditor", sender: self)
     }
@@ -125,7 +125,7 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
         
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             CoreDataStack.persistentContainer.viewContext.delete(schoolNotification)
-            self.schoolNotifications?.remove(at: indexPath.row)
+            self.schoolNotifications?[indexPath.section].remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
         
