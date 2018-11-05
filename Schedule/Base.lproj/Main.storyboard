@@ -244,40 +244,50 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="559"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SchoolNotificationCell" rowHeight="90" id="a4x-hh-Xxr">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="90"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SchoolNotificationCell" rowHeight="60" id="a4x-hh-Xxr">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="a4x-hh-Xxr" id="n2i-Aq-qkG">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="a4x-hh-Xxr" id="n2i-Aq-qkG">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="600" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Period 5" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTb-S6-PWW">
-                                                    <rect key="frame" x="15" y="11" width="107" height="36"/>
+                                                    <rect key="frame" x="15" y="7" width="107" height="24"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="36" id="3rR-An-SSj"/>
+                                                        <constraint firstAttribute="height" constant="24" id="3rR-An-SSj"/>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="107" id="PBs-2r-hoU"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="601" contentMode="left" verticalHuggingPriority="251" text="5 min" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pN-3o-jlG">
-                                                    <rect key="frame" x="281" y="11" width="79" height="29"/>
+                                                    <rect key="frame" x="281" y="11" width="79" height="15"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="29" id="9hb-g8-tDY"/>
+                                                        <constraint firstAttribute="height" constant="15" id="9hb-g8-tDY"/>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="69" id="Jf9-W9-sbz"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="602" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="After the period starts" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u9u-oZ-ywP">
-                                                    <rect key="frame" x="154" y="48" width="206" height="31"/>
+                                                    <rect key="frame" x="191" y="34" width="169" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="169" id="Iuz-cY-x7v"/>
-                                                        <constraint firstAttribute="height" constant="31" id="eo2-vU-EU8"/>
+                                                        <constraint firstAttribute="height" constant="18" id="eo2-vU-EU8"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="603" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enabled" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1e-4h-w2N">
+                                                    <rect key="frame" x="15" y="34" width="169" height="18"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="169" id="AQE-6P-s2Y"/>
+                                                        <constraint firstAttribute="height" constant="18" id="aox-nQ-ggp"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -285,17 +295,20 @@
                                             <constraints>
                                                 <constraint firstItem="u9u-oZ-ywP" firstAttribute="trailing" secondItem="n2i-Aq-qkG" secondAttribute="trailingMargin" id="3RG-Qd-0gD"/>
                                                 <constraint firstItem="u9u-oZ-ywP" firstAttribute="bottom" secondItem="n2i-Aq-qkG" secondAttribute="bottomMargin" id="Gb7-b9-piw"/>
-                                                <constraint firstItem="vTb-S6-PWW" firstAttribute="top" secondItem="n2i-Aq-qkG" secondAttribute="topMargin" id="Lv3-Hm-P0F"/>
+                                                <constraint firstItem="b1e-4h-w2N" firstAttribute="top" secondItem="vTb-S6-PWW" secondAttribute="bottom" constant="3" id="I6B-SK-Tna"/>
+                                                <constraint firstItem="vTb-S6-PWW" firstAttribute="top" secondItem="n2i-Aq-qkG" secondAttribute="topMargin" constant="-4" id="Lv3-Hm-P0F"/>
                                                 <constraint firstItem="6pN-3o-jlG" firstAttribute="top" secondItem="n2i-Aq-qkG" secondAttribute="topMargin" id="Ttf-c9-23L"/>
                                                 <constraint firstItem="vTb-S6-PWW" firstAttribute="leading" secondItem="n2i-Aq-qkG" secondAttribute="leadingMargin" id="fMX-4S-AXd"/>
                                                 <constraint firstItem="u9u-oZ-ywP" firstAttribute="top" secondItem="6pN-3o-jlG" secondAttribute="bottom" constant="8" id="fTa-J8-EU0"/>
                                                 <constraint firstItem="u9u-oZ-ywP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="n2i-Aq-qkG" secondAttribute="leadingMargin" id="mFh-rD-Jc6"/>
                                                 <constraint firstItem="6pN-3o-jlG" firstAttribute="trailing" secondItem="n2i-Aq-qkG" secondAttribute="trailingMargin" id="pDr-DI-iTN"/>
                                                 <constraint firstItem="6pN-3o-jlG" firstAttribute="leading" secondItem="vTb-S6-PWW" secondAttribute="trailing" constant="159" id="ryi-Bj-mjB"/>
+                                                <constraint firstItem="b1e-4h-w2N" firstAttribute="leading" secondItem="n2i-Aq-qkG" secondAttribute="leadingMargin" id="s5t-mW-Src"/>
+                                                <constraint firstItem="u9u-oZ-ywP" firstAttribute="leading" secondItem="b1e-4h-w2N" secondAttribute="trailing" constant="7" id="vSU-eW-Kla"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="R4x-Eb-eOT" kind="show" id="7iY-fR-TD3"/>
+                                            <segue destination="R4x-Eb-eOT" kind="show" identifier="openNotificationEditor" id="7iY-fR-TD3"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -317,6 +330,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="VNE-iy-o95"/>
                     </view>
+                    <connections>
+                        <outlet property="schoolNotificationsTableView" destination="yaj-Ka-jHK" id="cNc-gk-3aK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ksU-mP-sDf" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="2II-LA-6PX" userLabel="Exit" sceneMemberID="exit"/>
@@ -343,7 +359,7 @@
                                 </constraints>
                                 <state key="normal" title="Block 2"/>
                                 <connections>
-                                    <action selector="blockButtonPressed:" destination="R4x-Eb-eOT" eventType="touchUpInside" id="3cY-eB-fz6"/>
+                                    <action selector="periodButtonPressed:" destination="R4x-Eb-eOT" eventType="touchUpInside" id="ipT-hN-epA"/>
                                 </connections>
                             </button>
                             <button opaque="NO" alpha="0.85000002384185791" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EDC-9Z-Pwc">
@@ -367,7 +383,7 @@
                                     <navigationItem title="Notification" id="rJK-wk-rk5">
                                         <barButtonItem key="rightBarButtonItem" title="Done" style="done" id="JfF-61-PU7">
                                             <connections>
-                                                <segue destination="ny0-h3-PJb" kind="unwind" unwindAction="exitNotificationEditorView:" id="wNk-ds-gfU"/>
+                                                <segue destination="ny0-h3-PJb" kind="unwind" identifier="unwindNotificationEditor" unwindAction="exitNotificationEditorView:" id="wNk-ds-gfU"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -379,6 +395,10 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="170" id="Du9-Zo-5rm"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="R4x-Eb-eOT" id="6Eg-bW-4Rd"/>
+                                    <outlet property="delegate" destination="R4x-Eb-eOT" id="wlo-eh-02M"/>
+                                </connections>
                             </pickerView>
                             <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mJD-S4-m7u">
                                 <rect key="frame" x="54" y="232" width="267" height="42"/>
@@ -446,9 +466,9 @@
                     </view>
                     <connections>
                         <outlet property="beforeAfterStartEndPeriodButton" destination="mJD-S4-m7u" id="kh1-Bz-AeR"/>
-                        <outlet property="blockButton" destination="FKM-tD-9yT" id="Fxa-P2-OEO"/>
                         <outlet property="dayBeforeButton" destination="Uv1-yS-4Yw" id="TPx-Fa-59P"/>
                         <outlet property="notificationPickerView" destination="xNF-S5-hmp" id="EAD-wY-wMh"/>
+                        <outlet property="periodButton" destination="FKM-tD-9yT" id="Udf-ZN-wiH"/>
                         <outlet property="pickerViewBottomConstraint" destination="CWt-4S-C9z" id="eCG-o0-Hme"/>
                         <outlet property="pickerViewDoneButton" destination="yWB-47-zzX" id="fcf-d9-CQu"/>
                         <outlet property="timeButton" destination="EDC-9Z-Pwc" id="PaM-Us-6eC"/>

@@ -241,7 +241,6 @@
 			children = (
 				7A2D98931F95879B00288665 /* DeveloperViewController.swift */,
 				7AA4B7862022A4AC00BC0A2C /* SettingsViewController.swift */,
-				7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -328,6 +327,7 @@
 				7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */,
 				7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */,
 				7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */,
+				7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */,
 			);
 			path = Notification;
 			sourceTree = "<group>";

@@ -309,7 +309,7 @@ class ScheduleInfoManager: NSObject {
                 
                 if (periodNames?.count ?? 0) > periodNumber!-1
                 {
-                    print(" GPN: Printing period name")
+                    Logger.println(" GPN: Printing period name")
                     infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
                     return
                 }

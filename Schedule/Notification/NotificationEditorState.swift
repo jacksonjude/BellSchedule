@@ -12,5 +12,9 @@ class NotificationEditorState
 {
     static var notificationPeriod: Int?
     static var notificationTimeOffset: Int?
+    static var notificationTimeHour: Int?
+    static var notificationTimeMinute: Int?
     static var shouldFireWhenPeriodStarts: Bool?
+    static var shouldFireDayBefore: Bool?
+    static var displayTimeAsOffset: Bool?
 }

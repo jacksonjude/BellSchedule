@@ -17,17 +17,18 @@ var backgroundName = "background1"
 
 extension UIView
 {
-    func addCorners(_ radius: Int...)
+    func addCorners(_ radius: Int? = 8)
     {
-        if radius.count > 0
+        /*if radius.count > 0
         {
             self.layer.cornerRadius = CGFloat(radius[0])
         }
         else
         {
             self.layer.cornerRadius = 8
-        }
+        }*/
         
+        self.layer.cornerRadius = CGFloat(radius ?? 8)
         self.layer.masksToBounds = true
     }
     
