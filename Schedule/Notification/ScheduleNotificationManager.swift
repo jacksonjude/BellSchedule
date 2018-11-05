@@ -13,7 +13,7 @@ import UserNotifications
 class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
 {
     var scheduleInfoManager: ScheduleInfoManager?
-    var tomorrowSchoolStartTimes = Array<String>()
+    var tomorrowSchoolCodes = Array<String>()
     var nextDayCounts = Array<Int>()
     var nextWeekCounts = Array<Int>()
     
@@ -54,20 +54,20 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     }
     
     func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int) {
-        if let tomorrowPeriodTimes = self.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
+        /*if let tomorrowPeriodTimes = self.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
         {
-            let tomorrowSchoolStartTime = String(tomorrowPeriodTimes[0].split(separator: "-")[0])
-            
-            tomorrowSchoolStartTimes.append(tomorrowSchoolStartTime)
-            nextDayCounts.append(nextDayCount)
-            nextWeekCounts.append(nextWeekCount)
-            
-            findNextSchoolStartTime(nextDayCount: nextDayCount, nextWeekCount: nextWeekCount)
-        }
+            //let tomorrowSchoolStartTime = String(tomorrowPeriodTimes[0].split(separator: "-")[0])
+        }*/
+        
+        tomorrowSchoolCodes.append((tomorrowSchedule as! Schedule).scheduleCode ?? "H")
+        nextDayCounts.append(nextDayCount)
+        nextWeekCounts.append(nextWeekCount)
+        
+        findNextSchoolStartTime(nextDayCount: nextDayCount, nextWeekCount: nextWeekCount)
     }
     
     func noSchoolTomorrow(nextDayCount: Int, nextWeekCount: Int) {
-        tomorrowSchoolStartTimes.append("H")
+        tomorrowSchoolCodes.append("H")
         nextDayCounts.append(nextDayCount)
         nextWeekCounts.append(nextWeekCount)
         
@@ -76,8 +76,8 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     
     func findNextSchoolStartTime(nextDayCount: Int, nextWeekCount: Int)
     {
-        Logger.println("SNM: \(tomorrowSchoolStartTimes.count)/5")
-        if tomorrowSchoolStartTimes.count < 5 && scheduleInfoManager?.nextDayOn != nil
+        Logger.println("SNM: \(tomorrowSchoolCodes.count)/5")
+        if tomorrowSchoolCodes.count < 5 && scheduleInfoManager?.nextDayOn != nil
         {
             let loadedNextWeek = nextWeekCount > 0
             scheduleInfoManager!.nextDayOn! += 1
@@ -103,10 +103,12 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         
         var schoolStartTimeOn = 0
-        for schoolStartTime in tomorrowSchoolStartTimes
+        for scheduleCode in tomorrowSchoolCodes
         {
-            if schoolStartTime != "H"
+            if scheduleCode != "H", let scheduleObject = CoreDataStack.fetchLocalObjects(type: "Schedule", predicate: NSPredicate(format: "scheduleCode == %@", scheduleCode)) as? [Schedule], scheduleObject.count > 0, let periodTimes = self.decodeArrayFromJSON(object: scheduleObject[0], field: "periodTimes") as? Array<String>
             {
+                let schoolStartTime = String(periodTimes[0].split(separator: "-")[0])
+                
                 let schoolStartTimeNotificationContent = UNMutableNotificationContent()
                 schoolStartTimeNotificationContent.title = "Tomorrow School Start Time"
                 schoolStartTimeNotificationContent.body = "School starts at \(schoolStartTime) tomorrow"
@@ -138,15 +140,15 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     
     func getDate(nextDay: Int, nextWeek: Int) -> DateComponents
     {
-        let calculatedDate = Date().getStartOfNextWeek(nextWeek: nextWeek)
+        var calculatedDate = Date().getStartOfNextWeek(nextWeek: nextWeek)
         var calculatedNextDay = nextDay
         if nextWeek == 0
         {
             calculatedNextDay += Date().getDayOfWeek()
         }
+        calculatedDate = Date.Gregorian.calendar.date(byAdding: .day, value: calculatedNextDay, to: calculatedDate) ?? Date()
         
         var calculatedDateComponents = Date.Gregorian.calendar.dateComponents([.day, .month, .year, .hour, .minute, .timeZone], from: calculatedDate)
-        calculatedDateComponents.day = calculatedDateComponents.day! + calculatedNextDay
         
         let notificationAlertTime = (UserDefaults.standard.object(forKey: "notificationAlertTime") as? String) ?? "21:00"
         
