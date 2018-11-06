@@ -33,6 +33,7 @@
 		7A61F5AD1FCD3CA10060580A /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796FA41F87250600D9658D /* CloudManager.swift */; };
 		7A61F5AF1FCD3DC40060580A /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A796FA21F871D3300D9658D /* CloudKit.framework */; };
 		7A61F5B01FCD3E660060580A /* Schedule.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */; };
+		7A6C37472191638F004EACDA /* NotificationEditorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6C37462191638F004EACDA /* NotificationEditorPickerViewController.swift */; };
 		7A796F8C1F871D1400D9658D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F8B1F871D1400D9658D /* AppDelegate.swift */; };
 		7A796F8E1F871D1400D9658D /* ScheduleInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F8D1F871D1400D9658D /* ScheduleInfoViewController.swift */; };
 		7A796F911F871D1400D9658D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A796F8F1F871D1400D9658D /* Main.storyboard */; };
@@ -143,6 +144,7 @@
 		7A5687371FECD86800744A30 /* AnnouncementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementViewController.swift; sourceTree = "<group>"; };
 		7A61F5A91FCD3A600060580A /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		7A61F5AE1FCD3DC20060580A /* ScheduleWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScheduleWidget.entitlements; sourceTree = "<group>"; };
+		7A6C37462191638F004EACDA /* NotificationEditorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorPickerViewController.swift; sourceTree = "<group>"; };
 		7A796F881F871D1400D9658D /* Schedule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedule.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A796F8B1F871D1400D9658D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A796F8D1F871D1400D9658D /* ScheduleInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoViewController.swift; sourceTree = "<group>"; };
@@ -326,6 +328,7 @@
 			children = (
 				7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */,
 				7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */,
+				7A6C37462191638F004EACDA /* NotificationEditorPickerViewController.swift */,
 				7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */,
 				7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */,
 			);
@@ -693,6 +696,7 @@
 				7A5687361FEC8DF600744A30 /* AnnouncementManager.swift in Sources */,
 				7A9A546B218A1CA500F45B85 /* NotificationEditorState.swift in Sources */,
 				7AE495E21FE6F2C500AE2EB3 /* ScheduleTimesViewController.swift in Sources */,
+				7A6C37472191638F004EACDA /* NotificationEditorPickerViewController.swift in Sources */,
 				7A5687381FECD86800744A30 /* AnnouncementViewController.swift in Sources */,
 				7A9A5469218A1B9700F45B85 /* NotificationEditorViewController.swift in Sources */,
 				7AF3A2501F8DC01B00C509AC /* UserScheduleTableViewController.swift in Sources */,

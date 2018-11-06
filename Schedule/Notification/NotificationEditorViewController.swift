@@ -9,19 +9,16 @@
 import UIKit
 import CoreData
 
-class NotificationEditorViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource
+class NotificationEditorViewController: UIViewController
 {
     @IBOutlet weak var periodButton: UIButton!
     @IBOutlet weak var timeButton: UIButton!
     @IBOutlet weak var beforeAfterStartEndPeriodButton: UIButton!
     @IBOutlet weak var dayBeforeButton: UIButton!
-    @IBOutlet weak var pickerViewDoneButton: UIButton!
-    @IBOutlet weak var notificationPickerView: UIPickerView!
-    @IBOutlet weak var pickerViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var editorViewDoneButton: UIButton!
+    @IBOutlet weak var editorViewBottomConstraint: NSLayoutConstraint!
     
     var schoolNotificationUUID: String?
-    
-    var pickerViewData: Array<Array<String>>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,8 +29,7 @@ class NotificationEditorViewController: UIViewController, UIPickerViewDelegate, 
         timeButton.addCorners()
         beforeAfterStartEndPeriodButton.addCorners()
         dayBeforeButton.addCorners()
-        pickerViewDoneButton.addCorners()
-        notificationPickerView.addCorners()
+        editorViewDoneButton.addCorners()
         
         setPeriodButtonTitle()
         setTimeButtonTitle()
@@ -43,6 +39,12 @@ class NotificationEditorViewController: UIViewController, UIPickerViewDelegate, 
         setEnabledButtons()
         
         self.view.setBackground()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(setEnabledButtons), name: NSNotification.Name("SetEnabledButtons"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setPeriodButtonTitle), name: NSNotification.Name("SetPeriodButtonTitle"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setTimeButtonTitle), name: NSNotification.Name("SetTimeButtonTitle"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setFireDayBeforeButtonTitle), name: NSNotification.Name("SetFireDayBeforeButtonTitle"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setBeforeAfterStartEndButtonTitle), name: NSNotification.Name("SetBeforeAfterStartEndButtonTitle"), object: nil)
     }
     
     func loadNotificationEditorState()
@@ -59,218 +61,94 @@ class NotificationEditorViewController: UIViewController, UIPickerViewDelegate, 
         }
     }
     
-    enum NotificationPickerViewType
+    //var editorViewType: NotificationEditorViewType = .none
+    
+    func loadEditorView(type: NotificationEditorViewType)
     {
-        case none
-        case period
-        case time
-        case beforeAfterStartEnd
+        if NotificationEditorState.editorViewType == .none && type != .none
+        {
+            NotificationEditorState.editorViewType = type
+            showEditorView()
+        }
+        NotificationEditorState.editorViewType = type
+        
+        if let editorView = editorViewToShow()
+        {
+            editorView.isHidden = false
+            self.view.viewWithTag(618)?.bringSubviewToFront(editorView)
+            self.view.viewWithTag(618)?.bringSubviewToFront(editorViewDoneButton)
+        }
+        
+        if NotificationEditorState.editorViewType == .beforeAfterStartEnd || NotificationEditorState.editorViewType == .time || NotificationEditorState.editorViewType == .period
+        {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReloadPickerView"), object: self)
+        }
+        
+        //REVERT
+        /*if NotificationEditorState.editorViewType == .period
+        {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReloadCollectionView"), object: self)
+        }*/
     }
     
-    var pickerViewType: NotificationPickerViewType = .none
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return pickerViewData?.count ?? 0
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return ((pickerViewData?.count ?? 0) > component) ? pickerViewData?[component].count ?? 0 : 0
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerViewData?[component][row]
-    }
-    
-    func showPickerView()
+    func showEditorView()
     {
-        pickerViewBottomConstraint.constant = notificationPickerView.frame.size.height
-        notificationPickerView.isHidden = false
-        pickerViewDoneButton.isHidden = false
-        pickerViewDoneButton.isEnabled = true
+        editorViewBottomConstraint.constant = -(self.view.viewWithTag(618)!).frame.size.height
+        
+        editorViewDoneButton.isHidden = false
+        editorViewDoneButton.isEnabled = true
         self.view.layoutIfNeeded()
         
-        self.pickerViewBottomConstraint.constant = -16
+        self.editorViewBottomConstraint.constant = 16
         
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
     }
     
-    func hidePickerView()
+    func hideEditorView()
     {
-        pickerViewBottomConstraint.constant = notificationPickerView.frame.size.height
+        editorViewBottomConstraint.constant = -(self.view.viewWithTag(618)!).frame.size.height
         
         UIView.animate(withDuration: 0.5, animations: {
             self.view.layoutIfNeeded()
         }) { (completed) in
-            self.notificationPickerView.isHidden = true
-            self.pickerViewDoneButton.isHidden = true
-            self.pickerViewDoneButton.isEnabled = false
+            self.view.viewWithTag(619)!.isHidden = true
+            self.view.viewWithTag(620)!.isHidden = true
+            self.editorViewDoneButton.isHidden = true
+            self.editorViewDoneButton.isEnabled = false
             
-            self.pickerViewBottomConstraint.constant = -16
+            self.editorViewBottomConstraint.constant = 16
             self.view.layoutIfNeeded()
         }
     }
     
-    func loadPickerView(pickerViewType: NotificationPickerViewType)
+    func editorViewToShow() -> UIView?
     {
-        switch pickerViewType
+        switch NotificationEditorState.editorViewType
         {
         case .none:
-            break
+            return nil
         case .period:
-            pickerViewData = [[]]
-            var i = 0
-            while (i < 8)
-            {
-                pickerViewData?[0].append(String(i+1))
-                i+=1
-            }
+            //REVERT
+            return self.view.viewWithTag(619)
         case .time:
-            if NotificationEditorState.displayTimeAsOffset ?? true
-            {
-                pickerViewData = [[], ["Time", "Offset"]]
-                
-                var minuteOn = 0
-                while minuteOn <= 59
-                {
-                    pickerViewData?[0].append(String(format: "%01d", minuteOn))
-                    minuteOn += 1
-                }
-            }
-            else
-            {
-                pickerViewData = [["12"], [], ["AM", "PM"], ["Time", "Offset"]]
-                
-                var hourOn = 1
-                while hourOn <= 11
-                {
-                    pickerViewData?[0].append(String(hourOn))
-                    hourOn += 1
-                }
-                
-                var minuteOn = 0
-                while minuteOn <= 59
-                {
-                    pickerViewData?[1].append(String(format: "%02d", minuteOn))
-                    minuteOn += 1
-                }
-            }
-            
+            return self.view.viewWithTag(619)
         case .beforeAfterStartEnd:
-            pickerViewData = [["Before", "After"], ["Start", "End"]]
-        }
-        
-        notificationPickerView.reloadAllComponents()
-        
-        if pickerViewType != .none && self.pickerViewType == .none
-        {
-            showPickerView()
-        }
-        
-        switch pickerViewType
-        {
-        case .none:
-            break
-        case .period:
-            notificationPickerView.selectRow(pickerViewData![0].firstIndex(of: String(NotificationEditorState.notificationPeriod ?? 0)) ?? 0, inComponent: 0, animated: true)
-        case .time:
-            if NotificationEditorState.displayTimeAsOffset ?? true
-            {
-                let notificationOffset = String(abs(NotificationEditorState.notificationTimeOffset ?? 0))
-                notificationPickerView.selectRow(pickerViewData![0].index(of: notificationOffset) ?? 0, inComponent: 0, animated: true)
-                notificationPickerView.selectRow(pickerViewData![1].index(of: "Offset") ?? 0, inComponent: 1, animated: false)
-            }
-            else
-            {
-                var notificationHour = String(NotificationEditorState.notificationTimeHour ?? 0)
-                var notificationMinute = String(NotificationEditorState.notificationTimeMinute ?? 0)
-                var notificationAMPM = "AM"
-                
-                if Int(notificationHour) ?? 21 > 12
-                {
-                    notificationHour = String((Int(notificationHour) ?? 21) - 12)
-                    
-                    notificationAMPM = "PM"
-                }
-                
-                if NotificationEditorState.notificationTimeMinute ?? 0 < 10
-                {
-                    notificationMinute = "0" + notificationMinute
-                }
-                
-                notificationPickerView.selectRow(pickerViewData![0].index(of: notificationHour) ?? 0, inComponent: 0, animated: true)
-                notificationPickerView.selectRow(pickerViewData![1].index(of: notificationMinute) ?? 0, inComponent: 1, animated: true)
-                notificationPickerView.selectRow(pickerViewData![2].index(of: notificationAMPM) ?? 0, inComponent: 2, animated: true)
-                notificationPickerView.selectRow(pickerViewData![3].index(of: "Time") ?? 0, inComponent: 3, animated: false)
-            }
-        case .beforeAfterStartEnd:
-            notificationPickerView.selectRow(pickerViewData![0].index(of: (NotificationEditorState.notificationTimeOffset ?? 0 < 0) ? "Before" : "After") ?? 0, inComponent: 0, animated: true)
-            notificationPickerView.selectRow(pickerViewData![1].index(of: NotificationEditorState.shouldFireWhenPeriodStarts ?? true ? "Start" : "End") ?? 0, inComponent: 1, animated: true)
-        }
-
-        self.pickerViewType = pickerViewType
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        switch pickerViewType
-        {
-        case .none:
-            break
-        case .period:
-            NotificationEditorState.notificationPeriod = Int(pickerViewData?[0][row] ?? "0")
-            setPeriodButtonTitle()
-        case .time:
-            if (!(NotificationEditorState.displayTimeAsOffset ?? true) && component == 3)
-            {
-                NotificationEditorState.displayTimeAsOffset = (pickerViewData?[3][notificationPickerView.selectedRow(inComponent: 3)] ?? "Offset" == "Offset")
-                loadPickerView(pickerViewType: .time)
-                setEnabledButtons()
-            }
-            else if (NotificationEditorState.displayTimeAsOffset ?? true) && component == 1
-            {
-                NotificationEditorState.displayTimeAsOffset = (pickerViewData?[1][notificationPickerView.selectedRow(inComponent: 1)] ?? "Offset" == "Offset")
-                loadPickerView(pickerViewType: .time)
-                setEnabledButtons()
-            }
-            else if NotificationEditorState.displayTimeAsOffset ?? true
-            {
-                var signum = NotificationEditorState.notificationTimeOffset?.signum() ?? 0
-                if signum == 0
-                {
-                    signum = 1
-                }
-                NotificationEditorState.notificationTimeOffset = Int(pickerViewData?[0][notificationPickerView.selectedRow(inComponent: 0)] ?? "0")!*signum
-            }
-            else
-            {
-                NotificationEditorState.notificationTimeHour = (Int(pickerViewData?[0][notificationPickerView.selectedRow(inComponent: 0)] ?? "0") ?? 0) + ((pickerViewData?[2][notificationPickerView.selectedRow(inComponent: 2)] ?? "PM" == "AM") ? 0 : 12)
-                
-                if NotificationEditorState.notificationTimeHour == 12 || NotificationEditorState.notificationTimeHour == 24
-                {
-                    NotificationEditorState.notificationTimeHour! -= 12
-                }
-                NotificationEditorState.notificationTimeMinute = Int(pickerViewData?[1][notificationPickerView.selectedRow(inComponent: 1)] ?? "0")
-            }
-            setTimeButtonTitle()
-        case .beforeAfterStartEnd:
-            NotificationEditorState.notificationTimeOffset = abs(NotificationEditorState.notificationTimeOffset ?? 0)*(pickerViewData?[0][notificationPickerView.selectedRow(inComponent: 0)] == "Before" ? -1 : 1)
-            NotificationEditorState.shouldFireWhenPeriodStarts = pickerViewData?[1][notificationPickerView.selectedRow(inComponent: 1)] == "Start"
-            
-            setBeforeAfterStartEndButtonTitle()
+            return self.view.viewWithTag(619)
         }
     }
     
     @IBAction func periodButtonPressed(_ sender: Any) {
-        loadPickerView(pickerViewType: .period)
+        loadEditorView(type: .period)
     }
     
     @IBAction func timeButtonPressed(_ sender: Any) {
-        loadPickerView(pickerViewType: .time)
+        loadEditorView(type: .time)
     }
     
     @IBAction func beforeAfterStartEndPeriodButtonPressed(_ sender: Any) {
-        loadPickerView(pickerViewType: .beforeAfterStartEnd)
+        loadEditorView(type: .beforeAfterStartEnd)
     }
     
     @IBAction func dayBeforeButtonPressed(_ sender: Any) {
@@ -279,13 +157,13 @@ class NotificationEditorViewController: UIViewController, UIPickerViewDelegate, 
         setFireDayBeforeButtonTitle()
     }
     
-    @IBAction func pickerViewDoneButtonPressed(_ sender: Any) {
-        pickerViewType = .none
+    @IBAction func editorViewDoneButtonPressed(_ sender: Any) {
+        NotificationEditorState.editorViewType = .none
         
-        hidePickerView()
+        hideEditorView()
     }
     
-    func setPeriodButtonTitle()
+    @objc func setPeriodButtonTitle()
     {
         if let notificationPeriod = NotificationEditorState.notificationPeriod
         {
@@ -293,7 +171,7 @@ class NotificationEditorViewController: UIViewController, UIPickerViewDelegate, 
         }
     }
     
-    func setTimeButtonTitle()
+    @objc func setTimeButtonTitle()
     {
         if NotificationEditorState.displayTimeAsOffset ?? true
         {
@@ -314,12 +192,12 @@ class NotificationEditorViewController: UIViewController, UIPickerViewDelegate, 
         return hourString + ":" + minuteString + " " + AMPMString
     }
     
-    func setBeforeAfterStartEndButtonTitle()
+    @objc func setBeforeAfterStartEndButtonTitle()
     {
         beforeAfterStartEndPeriodButton.setTitle((NotificationEditorState.notificationTimeOffset ?? 0 < 0 ? "Before" : "After") + " the " + (NotificationEditorState.shouldFireWhenPeriodStarts ?? true ? "start" : "end") + " of the period", for: .normal)
     }
     
-    func setFireDayBeforeButtonTitle()
+    @objc func setFireDayBeforeButtonTitle()
     {
         dayBeforeButton.setTitle("Fire on the day " + (NotificationEditorState.shouldFireDayBefore ?? false ? "before" : "of"), for: UIControl.State.normal)
     }
@@ -335,7 +213,7 @@ class NotificationEditorViewController: UIViewController, UIPickerViewDelegate, 
         return schoolNotification
     }
     
-    func setEnabledButtons()
+    @objc func setEnabledButtons()
     {
         beforeAfterStartEndPeriodButton.isEnabled = (NotificationEditorState.displayTimeAsOffset ?? true)
         dayBeforeButton.isEnabled = !(NotificationEditorState.displayTimeAsOffset ?? true)

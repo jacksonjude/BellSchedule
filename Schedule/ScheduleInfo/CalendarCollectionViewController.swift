@@ -185,7 +185,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
             
             if fetchingAllWeeks
             {
-                if let schedules = appDelegate.decodeArrayFromJSON(object: weekScheduleRecord, field: "schedules") as? Array<String>
+                if let schedules = CoreDataStack.decodeArrayFromJSON(object: weekScheduleRecord, field: "schedules") as? Array<String>
                 {
                     for schedule in schedules
                     {
@@ -203,7 +203,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
                 
                 let gregorian = Calendar(identifier: .gregorian)
                 let weekdayComponents = gregorian.dateComponents([.weekday], from: currentDate!)
-                if let schedules = appDelegate.decodeArrayFromJSON(object: weekScheduleRecord, field: "schedules") as? Array<String>
+                if let schedules = CoreDataStack.decodeArrayFromJSON(object: weekScheduleRecord, field: "schedules") as? Array<String>
                 {
                     let dayOfWeek = weekdayComponents.weekday!-2
                     if 0 <= dayOfWeek && dayOfWeek < schedules.count
@@ -265,7 +265,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
         var schoolToday = true
         if scheduleCode != "H"
         {
-            if let schedules = appDelegate.decodeArrayFromJSON(object: scheduleRecord, field: "periodTimes") as? Array<String>
+            if let schedules = CoreDataStack.decodeArrayFromJSON(object: scheduleRecord, field: "periodTimes") as? Array<String>
             {
                 startTime = String(schedules[0].split(separator: "-")[0])
                 endTime = String(schedules[schedules.count-1].split(separator: "-")[1])

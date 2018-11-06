@@ -420,7 +420,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     
     func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject)
     {
-        if let periodNumbers = appDelegate.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
+        if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
         {
             let periodRangeSplit = periodRangeString.split(separator: "-")
             let periodStartString = Date().convertToStandardTime(date: String(periodRangeSplit[0]))
@@ -442,7 +442,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     
     func printPeriodName(todaySchedule: NSManagedObject, periodNames: Array<String>)
     {
-        if let periodNumbers = appDelegate.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
+        if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
         {
             if !scheduleManager!.periodNamePrinted && periodNames.count > periodNumbers[self.scheduleManager!.periodNumber!-1]-1
             {
@@ -456,7 +456,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     
     func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int)
     {
-        if let tomorrowPeriodTimes = appDelegate.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
+        if let tomorrowPeriodTimes = CoreDataStack.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
         {
             //Determine the date when school starts next
             var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)

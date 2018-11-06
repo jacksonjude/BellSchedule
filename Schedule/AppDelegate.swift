@@ -83,21 +83,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         CoreDataStack.saveContext()
     }
     
-    func decodeArrayFromJSON(object: NSManagedObject, field: String) -> Array<Any>?
-    {
-        let JSONdata = object.value(forKey: field) as! Data
-        do
-        {
-            let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as? Array<Any>
-            return array
-        }
-        catch
-        {
-            Logger.println(error)
-            return nil
-        }
-    }
-    
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         scheduleNotificationManager = ScheduleNotificationManager()
         scheduleNotificationManager?.gatherNotificationData()

@@ -16,7 +16,7 @@ class InterfaceController: WKInterfaceController, ScheduleInfoDelegate {
     var periodNumber = 0
     
     func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject) {
-        if let periodNumbers = self.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
+        if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
         {
             let periodRangeSplit = periodRangeString.split(separator: "-")
             let periodStartString = Date().convertToStandardTime(date: String(periodRangeSplit[0]))
@@ -95,7 +95,7 @@ class InterfaceController: WKInterfaceController, ScheduleInfoDelegate {
     }
     
     func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int) {
-        if let tomorrowPeriodTimes = self.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
+        if let tomorrowPeriodTimes = CoreDataStack.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
         {
             //Determine the date when school starts next
             var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
@@ -161,21 +161,6 @@ class InterfaceController: WKInterfaceController, ScheduleInfoDelegate {
         let periodStartDate = gregorian.date(from: dateComponents)!
         
         return periodStartDate
-    }
-    
-    func decodeArrayFromJSON(object: NSManagedObject, field: String) -> Array<Any>?
-    {
-        let JSONdata = object.value(forKey: field) as! Data
-        do
-        {
-            let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as? Array<Any>
-            return array
-        }
-        catch
-        {
-            Logger.println(error)
-            return nil
-        }
     }
     
     @IBOutlet var currentPeriodLabel: WKInterfaceLabel!

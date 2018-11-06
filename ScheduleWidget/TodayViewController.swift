@@ -32,7 +32,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
     var inSchool = false
     
     func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject) {
-        if let periodNumbers = self.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
+        if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
         {
             let periodRangeSplit = periodRangeString.split(separator: "-")
             let periodStartString = Date().convertToStandardTime(date: String(periodRangeSplit[0]))
@@ -99,7 +99,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
     }
     
     func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int) {
-        if let tomorrowPeriodTimes = self.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
+        if let tomorrowPeriodTimes = CoreDataStack.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
         {
             //Determine the date when school starts next
             var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
@@ -151,21 +151,6 @@ class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDele
                 let schoolStart2 = " at " + Date().convertToStandardTime(date: String(tomorrowSchoolStartTime))
                 self.tomorrowStartTimeLabel.text = schoolStart1 + schoolStart2
             }
-        }
-    }
-    
-    func decodeArrayFromJSON(object: NSManagedObject, field: String) -> Array<Any>?
-    {
-        let JSONdata = object.value(forKey: field) as! Data
-        do
-        {
-            let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as? Array<Any>
-            return array
-        }
-        catch
-        {
-            Logger.println(error)
-            return nil
         }
     }
     

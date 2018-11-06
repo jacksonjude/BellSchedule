@@ -8,6 +8,14 @@
 
 import Foundation
 
+enum NotificationEditorViewType
+{
+    case none
+    case period
+    case time
+    case beforeAfterStartEnd
+}
+
 class NotificationEditorState
 {
     static var notificationPeriod: Int?
@@ -17,4 +25,6 @@ class NotificationEditorState
     static var shouldFireWhenPeriodStarts: Bool?
     static var shouldFireDayBefore: Bool?
     static var displayTimeAsOffset: Bool?
+    
+    static var editorViewType: NotificationEditorViewType = .none
 }

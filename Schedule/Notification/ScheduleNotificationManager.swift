@@ -27,6 +27,17 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         
         scheduleInfoManager = ScheduleInfoManager(delegate: self, downloadData: false, onlyFindOneDay: true)
         scheduleInfoManager?.startInfoManager()
+        
+        if let todaySchedule = scheduleInfoManager?.queryTodaySchedule(weekSchedules: scheduleInfoManager?.queryWeekSchedule() ?? Array<String>()), let schoolNotifications = CoreDataStack.fetchLocalObjects(type: "SchoolNotification", predicate: NSPredicate(value: true)) as? [SchoolNotification], let periodTimes = CoreDataStack.decodeArrayFromJSON(object: todaySchedule, field: "periodTimes") as? Array<String>, let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
+        {
+            for notification in schoolNotifications
+            {
+                if notification.isEnabled
+                {
+                    setupScheduledNotification(notification: notification, periodTimes: periodTimes, periodNumbers: periodNumbers, nextDayCount: 0, nextWeekCount: 0)
+                }
+            }
+        }
     }
     
     func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject) {
@@ -98,47 +109,88 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     {
         Logger.println("SNM: Setting up notifications...")
         
-        var notificationsAdded = 0
-        
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         
-        var schoolStartTimeOn = 0
+        var scheduleCodeOn = 0
         for scheduleCode in tomorrowSchoolCodes
         {
-            if scheduleCode != "H", let scheduleObject = CoreDataStack.fetchLocalObjects(type: "Schedule", predicate: NSPredicate(format: "scheduleCode == %@", scheduleCode)) as? [Schedule], scheduleObject.count > 0, let periodTimes = self.decodeArrayFromJSON(object: scheduleObject[0], field: "periodTimes") as? Array<String>
+            if scheduleCode != "H", let scheduleObject = CoreDataStack.fetchLocalObjects(type: "Schedule", predicate: NSPredicate(format: "scheduleCode == %@", scheduleCode)) as? [Schedule], scheduleObject.count > 0, let periodTimes = CoreDataStack.decodeArrayFromJSON(object: scheduleObject[0], field: "periodTimes") as? Array<String>, let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: scheduleObject[0], field: "periodNumbers") as? Array<Int>
             {
-                let schoolStartTime = String(periodTimes[0].split(separator: "-")[0])
+                setupStartTimeNotification(periodTimes: periodTimes, scheduleCodeOn: scheduleCodeOn)
                 
-                let schoolStartTimeNotificationContent = UNMutableNotificationContent()
-                schoolStartTimeNotificationContent.title = "Tomorrow School Start Time"
-                schoolStartTimeNotificationContent.body = "School starts at \(schoolStartTime) tomorrow"
-                
-                let triggerDateComponents = getDate(nextDay: nextDayCounts[schoolStartTimeOn], nextWeek: nextWeekCounts[schoolStartTimeOn])
-                
-                let schoolStartTimeNotificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
-                
-                let schoolStartTimeNotification = UNNotificationRequest(identifier: UUID().uuidString,  content: schoolStartTimeNotificationContent, trigger: schoolStartTimeNotificationTrigger)
-                
-                Logger.println("Added notification at: " + String(describing: (schoolStartTimeNotification.trigger as! UNCalendarNotificationTrigger).dateComponents) + "-- " + schoolStartTimeNotificationContent.title)
-                
-                UNUserNotificationCenter.current().add(schoolStartTimeNotification) { (error) in
-                    notificationsAdded += 1
-                    if notificationsAdded == schoolStartTimeOn
+                if let schoolNotifications = CoreDataStack.fetchLocalObjects(type: "SchoolNotification", predicate: NSPredicate(value: true)) as? [SchoolNotification]
+                {
+                    for notification in schoolNotifications
                     {
-                        UNUserNotificationCenter.current().getPendingNotificationRequests { (notificationRequests) in
-                            //Logger.println(notificationRequests)
+                        if notification.isEnabled
+                        {
+                            setupScheduledNotification(notification: notification, periodTimes: periodTimes, periodNumbers: periodNumbers, nextDayCount: nextDayCounts[scheduleCodeOn + ((notification.shouldFireDayBefore) ? 0 : 1)] + 1, nextWeekCount: nextWeekCounts[scheduleCodeOn])
                         }
                     }
                 }
             }
             
-            schoolStartTimeOn += 1
+            scheduleCodeOn += 1
         }
         
         Logger.println("SNM: Set up notifications!")
     }
     
-    func getDate(nextDay: Int, nextWeek: Int) -> DateComponents
+    func get12HourTime(hour: Int, minute: Int) -> String
+    {
+        let hourString = (hour == 0 ? "12" : (hour > 12 ? String(hour-12) : String(hour)))
+        let minuteString = (minute < 10 ? "0" : "") + String(minute)
+        let AMPMString = (hour == 12 ? "PM" : (hour > 12 ? "PM" : "AM"))
+        
+        return hourString + ":" + minuteString + " " + AMPMString
+    }
+    
+    func setupStartTimeNotification(periodTimes: Array<String>, scheduleCodeOn: Int)
+    {
+        let schoolStartTime = String(periodTimes[0].split(separator: "-")[0])
+        
+        let schoolStartTimeNotificationContent = UNMutableNotificationContent()
+        schoolStartTimeNotificationContent.title = "Tomorrow School Start Time"
+        schoolStartTimeNotificationContent.body = "School starts at \(schoolStartTime) tomorrow"
+        
+        let notificationAlertTime = (UserDefaults.standard.object(forKey: "notificationAlertTime") as? String) ?? "21:00"
+        
+        let triggerDateComponents = getDate(nextDay: nextDayCounts[scheduleCodeOn], nextWeek: nextWeekCounts[scheduleCodeOn], alertTime: notificationAlertTime, addingOffset: 0)
+        
+        let schoolStartTimeNotificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
+        
+        let schoolStartTimeNotification = UNNotificationRequest(identifier: UUID().uuidString,  content: schoolStartTimeNotificationContent, trigger: schoolStartTimeNotificationTrigger)
+        
+        addNotification(schoolNotification: schoolStartTimeNotification)
+    }
+    
+    func setupScheduledNotification(notification: SchoolNotification, periodTimes: Array<String>, periodNumbers: Array<Int>, nextDayCount: Int, nextWeekCount: Int)
+    {
+        let schoolPeriodTime = periodTimes[periodNumbers.firstIndex(of: Int(notification.notificationPeriod)) ?? 0]
+        
+        let alertTime = notification.displayTimeAsOffset ?  (String(schoolPeriodTime.split(separator: "-")[(notification.shouldFireWhenPeriodStarts ? 0 : 1)])) : (String(notification.notificationTimeHour) + ":" + String(notification.notificationTimeMinute))
+        let triggerDateComponents = getDate(nextDay: nextDayCount, nextWeek: nextWeekCount, alertTime: alertTime, addingOffset: notification.displayTimeAsOffset ? Int(notification.notificationTimeOffset) : 0)
+        let schoolNotificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
+        
+        let schoolNotificationContent = UNMutableNotificationContent()
+        schoolNotificationContent.title = "Block \(notification.notificationPeriod)"
+        schoolNotificationContent.body = get12HourTime(hour: Int(schoolPeriodTime.split(separator: "-")[0].split(separator: ":")[0]) ?? 0, minute: Int(schoolPeriodTime.split(separator: "-")[0].split(separator: ":")[1]) ?? 0) + " - " + get12HourTime(hour: Int(schoolPeriodTime.split(separator: "-")[1].split(separator: ":")[0]) ?? 0, minute: Int(schoolPeriodTime.split(separator: "-")[1].split(separator: ":")[1]) ?? 0)
+        
+        let schoolNotification = UNNotificationRequest(identifier: UUID().uuidString, content: schoolNotificationContent, trigger: schoolNotificationTrigger)
+        
+        addNotification(schoolNotification: schoolNotification)
+    }
+    
+    func addNotification(schoolNotification: UNNotificationRequest)
+    {
+        Logger.println("Added notification at: " + String(describing: (schoolNotification.trigger as! UNCalendarNotificationTrigger).dateComponents) + "-- " + schoolNotification.content.title + " / " + schoolNotification.content.body)
+        
+        UNUserNotificationCenter.current().add(schoolNotification) { (error) in
+            
+        }
+    }
+    
+    func getDate(nextDay: Int, nextWeek: Int, alertTime: String, addingOffset: Int) -> DateComponents
     {
         var calculatedDate = Date().getStartOfNextWeek(nextWeek: nextWeek)
         var calculatedNextDay = nextDay
@@ -150,26 +202,11 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         
         var calculatedDateComponents = Date.Gregorian.calendar.dateComponents([.day, .month, .year, .hour, .minute, .timeZone], from: calculatedDate)
         
-        let notificationAlertTime = (UserDefaults.standard.object(forKey: "notificationAlertTime") as? String) ?? "21:00"
+        calculatedDateComponents.hour = Int(alertTime.split(separator: ":")[0])
+        calculatedDateComponents.minute = Int(alertTime.split(separator: ":")[1])
         
-        calculatedDateComponents.hour = Int(notificationAlertTime.split(separator: ":")[0])
-        calculatedDateComponents.minute = Int(notificationAlertTime.split(separator: ":")[1])
+        calculatedDateComponents = Date.Gregorian.calendar.dateComponents([.day, .month, .year, .hour, .minute, .timeZone], from: Date.Gregorian.calendar.date(byAdding: .minute, value: addingOffset, to: Date.Gregorian.calendar.date(from: calculatedDateComponents) ?? Date()) ?? Date())
         
         return calculatedDateComponents
-    }
-    
-    func decodeArrayFromJSON(object: NSManagedObject, field: String) -> Array<Any>?
-    {
-        let JSONdata = object.value(forKey: field) as! Data
-        do
-        {
-            let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as? Array<Any>
-            return array
-        }
-        catch
-        {
-            Logger.println(error)
-            return nil
-        }
     }
 }

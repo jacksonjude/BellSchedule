@@ -223,7 +223,7 @@ class ScheduleInfoManager: NSObject {
         
         if let weekSchedule = queryWeekSchedule()
         {
-            if let todaySchedule = queryTodaySchedule(weekSchedules: weekSchedule), let periodTimes = self.decodeArrayFromJSON(object: todaySchedule, field: "periodTimes") as? Array<String>
+            if let todaySchedule = queryTodaySchedule(weekSchedules: weekSchedule), let periodTimes = CoreDataStack.decodeArrayFromJSON(object: todaySchedule, field: "periodTimes") as? Array<String>
             {
                 findCurrentPeriod(periodTimes: periodTimes)
             }
@@ -288,7 +288,7 @@ class ScheduleInfoManager: NSObject {
     {
         if periodPrinted && !periodNamePrinted && todaySchedule != nil && periodNumber != nil
         {
-            if let periodNumbers = decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
+            if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
             {
                 let freeModsAreLoaded = (freeMods?.count ?? 0) >= periodNumbers[periodNumber!-1]
                 Logger.println(" GPN: Free mods are loaded: " + String(freeModsAreLoaded))
@@ -343,7 +343,7 @@ class ScheduleInfoManager: NSObject {
             Logger.println(" FWSCH: Received weekScheduleRecord")
             infoDelegate.printCurrentMessage(message: "Loading...\nReceived weekScheduleRecord")
             
-            if let schedules = self.decodeArrayFromJSON(object: weekScheduleRecord, field: "schedules") as? Array<String>
+            if let schedules = CoreDataStack.decodeArrayFromJSON(object: weekScheduleRecord, field: "schedules") as? Array<String>
             {
                 self.nextWeekSchedules = schedules
                 
@@ -385,7 +385,7 @@ class ScheduleInfoManager: NSObject {
                 let todayCode = todaySchedule.value(forKey: "scheduleCode") as! String
                 if todayCode != "H"
                 {
-                    if let periodTimes = self.decodeArrayFromJSON(object: todaySchedule, field: "periodTimes") as? Array<String>
+                    if let periodTimes = CoreDataStack.decodeArrayFromJSON(object: todaySchedule, field: "periodTimes") as? Array<String>
                     {
                         findCurrentPeriod(periodTimes: periodTimes)
                     }
@@ -513,7 +513,7 @@ class ScheduleInfoManager: NSObject {
         if let nextWeekScheduleRecord = CoreDataStack.fetchLocalObjects(type: "WeekSchedules", predicate: nextWeekScheduleQueryPredicate)?.first as? NSManagedObject
         {
             Logger.println(" FNXTWK: Received nextWeekScheduleRecord")
-            if let schedules = self.decodeArrayFromJSON(object: nextWeekScheduleRecord, field: "schedules") as? Array<String>
+            if let schedules = CoreDataStack.decodeArrayFromJSON(object: nextWeekScheduleRecord, field: "schedules") as? Array<String>
             {
                 self.nextWeekSchedules = schedules
                 
@@ -597,7 +597,7 @@ class ScheduleInfoManager: NSObject {
                         passingPeriod = true
                         nextPeriodStart = periodRangeArray[0]
                         
-                        if let periodNumbers = self.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? Array<Int>
+                        if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? Array<Int>
                         {
                             nextPeriodNumber = periodNumbers[periodOn-1]
                         }
@@ -637,7 +637,7 @@ class ScheduleInfoManager: NSObject {
                 
                 periodPrinted = true
                 
-                if let periodNumbers = decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
+                if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
                 {
                     periodNumber = (periodNumbers.index(of: nextPeriodNumber!) ?? 0)+1
                 }
@@ -664,7 +664,7 @@ class ScheduleInfoManager: NSObject {
     
     func recalculateCurrentPeriodForMods(periodTimes: Array<String>)
     {
-        if let periodNumbers = self.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? Array<Int>
+        if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? Array<Int>
         {
             let currentPeriodWithMod = periodNumbers[periodNumber!-1]
         
@@ -862,21 +862,6 @@ class ScheduleInfoManager: NSObject {
         else
         {
             return int
-        }
-    }
-    
-    func decodeArrayFromJSON(object: NSManagedObject, field: String) -> Array<Any>?
-    {
-        let JSONdata = object.value(forKey: field) as! Data
-        do
-        {
-            let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as? Array<Any>
-            return array
-        }
-        catch
-        {
-            Logger.println(error)
-            return nil
         }
     }
 }

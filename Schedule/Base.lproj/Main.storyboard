@@ -389,17 +389,6 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <pickerView hidden="YES" alpha="0.84999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xNF-S5-hmp">
-                                <rect key="frame" x="16" y="437" width="343" height="170"/>
-                                <color key="backgroundColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="170" id="Du9-Zo-5rm"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="dataSource" destination="R4x-Eb-eOT" id="6Eg-bW-4Rd"/>
-                                    <outlet property="delegate" destination="R4x-Eb-eOT" id="wlo-eh-02M"/>
-                                </connections>
-                            </pickerView>
                             <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mJD-S4-m7u">
                                 <rect key="frame" x="54" y="232" width="267" height="42"/>
                                 <color key="backgroundColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -410,19 +399,6 @@
                                 <state key="normal" title="Before the start of the period"/>
                                 <connections>
                                     <action selector="beforeAfterStartEndPeriodButtonPressed:" destination="R4x-Eb-eOT" eventType="touchUpInside" id="DLY-bW-LtQ"/>
-                                </connections>
-                            </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yWB-47-zzX">
-                                <rect key="frame" x="294" y="447" width="55" height="30"/>
-                                <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="hvZ-k4-3rg"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="55" id="w6u-UE-JCe"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Done"/>
-                                <connections>
-                                    <action selector="pickerViewDoneButtonPressed:" destination="R4x-Eb-eOT" eventType="touchUpInside" id="MWi-18-nnU"/>
                                 </connections>
                             </button>
                             <button opaque="NO" alpha="0.85000002384185791" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uv1-yS-4Yw">
@@ -437,28 +413,70 @@
                                     <action selector="dayBeforeButtonPressed:" destination="R4x-Eb-eOT" eventType="touchUpInside" id="xpN-Tm-P9m"/>
                                 </connections>
                             </button>
+                            <view tag="618" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pJR-wp-Grq">
+                                <rect key="frame" x="16" y="433" width="343" height="170"/>
+                                <subviews>
+                                    <containerView hidden="YES" opaque="NO" tag="620" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5mY-zL-te5">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="170"/>
+                                        <connections>
+                                            <segue destination="S4R-Z5-wMj" kind="embed" id="nQg-ui-Nxj"/>
+                                        </connections>
+                                    </containerView>
+                                    <containerView hidden="YES" opaque="NO" tag="619" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fOy-YQ-x3b">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="170"/>
+                                        <connections>
+                                            <segue destination="bhy-aj-aC3" kind="embed" id="nkO-hG-XnA"/>
+                                        </connections>
+                                    </containerView>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yWB-47-zzX">
+                                        <rect key="frame" x="280" y="8" width="55" height="30"/>
+                                        <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="hvZ-k4-3rg"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="55" id="w6u-UE-JCe"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" title="Done"/>
+                                        <connections>
+                                            <action selector="editorViewDoneButtonPressed:" destination="R4x-Eb-eOT" eventType="touchUpInside" id="SjY-1g-WhC"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="170" id="Sqp-bL-ct0"/>
+                                    <constraint firstAttribute="bottom" secondItem="5mY-zL-te5" secondAttribute="bottom" id="V20-kQ-LeJ"/>
+                                    <constraint firstItem="fOy-YQ-x3b" firstAttribute="leading" secondItem="pJR-wp-Grq" secondAttribute="leading" id="ZtU-51-0l0"/>
+                                    <constraint firstItem="5mY-zL-te5" firstAttribute="leading" secondItem="pJR-wp-Grq" secondAttribute="leading" id="bwW-Ui-rOd"/>
+                                    <constraint firstItem="yWB-47-zzX" firstAttribute="top" secondItem="pJR-wp-Grq" secondAttribute="top" constant="8" id="dsT-7X-mEe"/>
+                                    <constraint firstItem="5mY-zL-te5" firstAttribute="top" secondItem="pJR-wp-Grq" secondAttribute="top" id="e1g-xW-Xvd"/>
+                                    <constraint firstItem="yWB-47-zzX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pJR-wp-Grq" secondAttribute="leading" constant="20" symbolic="YES" id="fhh-FB-7jQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="5mY-zL-te5" secondAttribute="trailing" id="k0G-Dd-aIO"/>
+                                    <constraint firstAttribute="width" constant="343" id="otT-XA-scJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="yWB-47-zzX" secondAttribute="trailing" constant="8" id="q0f-Mv-5uE"/>
+                                    <constraint firstAttribute="bottom" secondItem="fOy-YQ-x3b" secondAttribute="bottom" id="rbN-Mu-ybq"/>
+                                    <constraint firstItem="fOy-YQ-x3b" firstAttribute="top" secondItem="pJR-wp-Grq" secondAttribute="top" id="uY7-Wh-BrU"/>
+                                    <constraint firstAttribute="trailing" secondItem="fOy-YQ-x3b" secondAttribute="trailing" id="vrZ-Kb-Kfv"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.97647064924240112" green="0.97647064924240112" blue="0.97647064924240112" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="yWB-47-zzX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="rBb-Si-rkT" secondAttribute="leading" symbolic="YES" id="14Q-NV-2SH"/>
                             <constraint firstItem="mJD-S4-m7u" firstAttribute="centerX" secondItem="uVV-wG-AUF" secondAttribute="centerX" id="2WI-H3-Qsi"/>
-                            <constraint firstItem="yWB-47-zzX" firstAttribute="top" secondItem="xNF-S5-hmp" secondAttribute="top" constant="10" id="3fT-Tz-Idf"/>
                             <constraint firstItem="EDC-9Z-Pwc" firstAttribute="top" secondItem="FKM-tD-9yT" secondAttribute="bottom" constant="20" id="BNe-zq-DgJ"/>
-                            <constraint firstItem="xNF-S5-hmp" firstAttribute="bottom" secondItem="rBb-Si-rkT" secondAttribute="bottom" constant="-16" id="CWt-4S-C9z"/>
                             <constraint firstItem="mJD-S4-m7u" firstAttribute="top" secondItem="EDC-9Z-Pwc" secondAttribute="bottom" constant="20" id="DkE-Nr-JYl"/>
                             <constraint firstItem="FKM-tD-9yT" firstAttribute="centerX" secondItem="uVV-wG-AUF" secondAttribute="centerX" id="Idr-AZ-mIF"/>
                             <constraint firstItem="Uv1-yS-4Yw" firstAttribute="centerX" secondItem="uVV-wG-AUF" secondAttribute="centerX" id="OfB-YY-EWo"/>
                             <constraint firstItem="EXj-g1-86e" firstAttribute="top" secondItem="rBb-Si-rkT" secondAttribute="top" id="S3D-ZU-nN7"/>
+                            <constraint firstItem="pJR-wp-Grq" firstAttribute="centerX" secondItem="uVV-wG-AUF" secondAttribute="centerX" id="SJ5-IO-48D"/>
                             <constraint firstItem="a3G-E0-PKs" firstAttribute="trailing" secondItem="rBb-Si-rkT" secondAttribute="trailing" id="TIZ-Zg-khq"/>
+                            <constraint firstItem="rBb-Si-rkT" firstAttribute="bottom" secondItem="pJR-wp-Grq" secondAttribute="bottom" constant="20" id="Y2h-Np-JU4"/>
                             <constraint firstItem="EXj-g1-86e" firstAttribute="leading" secondItem="rBb-Si-rkT" secondAttribute="leading" id="bAs-ic-7n3"/>
-                            <constraint firstItem="xNF-S5-hmp" firstAttribute="trailing" secondItem="yWB-47-zzX" secondAttribute="trailing" constant="10" id="box-TQ-Ljm"/>
                             <constraint firstItem="a3G-E0-PKs" firstAttribute="top" secondItem="EXj-g1-86e" secondAttribute="bottom" id="dyG-EG-FB8"/>
                             <constraint firstItem="FKM-tD-9yT" firstAttribute="top" secondItem="EXj-g1-86e" secondAttribute="bottom" constant="44" id="e7F-NC-8V8"/>
                             <constraint firstItem="a3G-E0-PKs" firstAttribute="leading" secondItem="rBb-Si-rkT" secondAttribute="leading" id="hr0-sh-FR2"/>
                             <constraint firstItem="rBb-Si-rkT" firstAttribute="bottom" secondItem="a3G-E0-PKs" secondAttribute="bottom" id="iDN-qH-nR1"/>
                             <constraint firstItem="EDC-9Z-Pwc" firstAttribute="centerX" secondItem="uVV-wG-AUF" secondAttribute="centerX" id="isU-QI-d3z"/>
-                            <constraint firstItem="xNF-S5-hmp" firstAttribute="trailing" secondItem="rBb-Si-rkT" secondAttribute="trailing" constant="-16" id="np0-Ea-CmX"/>
-                            <constraint firstItem="xNF-S5-hmp" firstAttribute="leading" secondItem="rBb-Si-rkT" secondAttribute="leading" constant="16" id="sHW-ST-avP"/>
                             <constraint firstItem="EXj-g1-86e" firstAttribute="trailing" secondItem="rBb-Si-rkT" secondAttribute="trailing" id="zDg-ae-iEu"/>
                             <constraint firstItem="Uv1-yS-4Yw" firstAttribute="top" secondItem="mJD-S4-m7u" secondAttribute="bottom" constant="20" id="zge-mm-d3R"/>
                         </constraints>
@@ -467,10 +485,9 @@
                     <connections>
                         <outlet property="beforeAfterStartEndPeriodButton" destination="mJD-S4-m7u" id="kh1-Bz-AeR"/>
                         <outlet property="dayBeforeButton" destination="Uv1-yS-4Yw" id="TPx-Fa-59P"/>
-                        <outlet property="notificationPickerView" destination="xNF-S5-hmp" id="EAD-wY-wMh"/>
+                        <outlet property="editorViewBottomConstraint" destination="Y2h-Np-JU4" id="OW9-ZQ-D1M"/>
+                        <outlet property="editorViewDoneButton" destination="yWB-47-zzX" id="wDc-kl-S70"/>
                         <outlet property="periodButton" destination="FKM-tD-9yT" id="Udf-ZN-wiH"/>
-                        <outlet property="pickerViewBottomConstraint" destination="CWt-4S-C9z" id="eCG-o0-Hme"/>
-                        <outlet property="pickerViewDoneButton" destination="yWB-47-zzX" id="fcf-d9-CQu"/>
                         <outlet property="timeButton" destination="EDC-9Z-Pwc" id="PaM-Us-6eC"/>
                     </connections>
                 </viewController>
@@ -1163,6 +1180,65 @@
                 <exit id="R3z-QW-hm0" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1901.5999999999999" y="904.49775112443785"/>
+        </scene>
+        <!--Notification Editor Picker View Controller-->
+        <scene sceneID="o6S-Kt-vRm">
+            <objects>
+                <viewController id="bhy-aj-aC3" customClass="NotificationEditorPickerViewController" customModule="Schedule" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="aMO-nc-Qkl">
+                        <rect key="frame" x="0.0" y="0.0" width="343" height="170"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <pickerView alpha="0.84999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xNF-S5-hmp">
+                                <rect key="frame" x="0.0" y="0.0" width="343" height="170"/>
+                                <color key="backgroundColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="bhy-aj-aC3" id="81W-Qt-c1Z"/>
+                                    <outlet property="delegate" destination="bhy-aj-aC3" id="hzc-Ls-xNC"/>
+                                </connections>
+                            </pickerView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="xNF-S5-hmp" secondAttribute="trailing" id="Dve-aR-aG2"/>
+                            <constraint firstItem="xNF-S5-hmp" firstAttribute="top" secondItem="aMO-nc-Qkl" secondAttribute="top" id="ZHT-YK-Z7f"/>
+                            <constraint firstAttribute="bottom" secondItem="xNF-S5-hmp" secondAttribute="bottom" id="pNf-Tk-1jR"/>
+                            <constraint firstItem="xNF-S5-hmp" firstAttribute="leading" secondItem="aMO-nc-Qkl" secondAttribute="leading" id="u2q-rD-pf8"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="3Zf-bU-abx"/>
+                    </view>
+                    <connections>
+                        <outlet property="notificationPickerView" destination="xNF-S5-hmp" id="qF7-gq-WDX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FwB-OV-HWs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2825" y="-333"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ps8-mQ-5yK">
+            <objects>
+                <viewController id="S4R-Z5-wMj" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CdT-uV-Jdy">
+                        <rect key="frame" x="0.0" y="0.0" width="343" height="170"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="xee-Tz-jB3">
+                                <rect key="frame" x="0.0" y="0.0" width="343" height="170"/>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="xee-Tz-jB3" firstAttribute="leading" secondItem="CdT-uV-Jdy" secondAttribute="leading" id="ah6-qf-Uds"/>
+                            <constraint firstAttribute="bottom" secondItem="xee-Tz-jB3" secondAttribute="bottom" id="hCp-th-bie"/>
+                            <constraint firstAttribute="trailing" secondItem="xee-Tz-jB3" secondAttribute="trailing" id="jDV-0Z-uot"/>
+                            <constraint firstItem="xee-Tz-jB3" firstAttribute="top" secondItem="CdT-uV-Jdy" secondAttribute="top" id="pu1-bm-TV5"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QJS-dx-hl5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2824.8000000000002" y="-780.8095952023989"/>
         </scene>
     </scenes>
     <resources>
