@@ -124,7 +124,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
                     {
                         if notification.isEnabled
                         {
-                            setupScheduledNotification(notification: notification, periodTimes: periodTimes, periodNumbers: periodNumbers, nextDayCount: nextDayCounts[scheduleCodeOn + ((notification.shouldFireDayBefore) ? 0 : 1)] + 1, nextWeekCount: nextWeekCounts[scheduleCodeOn])
+                            setupScheduledNotification(notification: notification, periodTimes: periodTimes, periodNumbers: periodNumbers, nextDayCount: nextDayCounts[scheduleCodeOn] + (notification.shouldFireDayBefore ? 0 : 1), nextWeekCount: nextWeekCounts[scheduleCodeOn])
                         }
                     }
                 }
@@ -166,19 +166,31 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     
     func setupScheduledNotification(notification: SchoolNotification, periodTimes: Array<String>, periodNumbers: Array<Int>, nextDayCount: Int, nextWeekCount: Int)
     {
-        let schoolPeriodTime = periodTimes[periodNumbers.firstIndex(of: Int(notification.notificationPeriod)) ?? 0]
-        
-        let alertTime = notification.displayTimeAsOffset ?  (String(schoolPeriodTime.split(separator: "-")[(notification.shouldFireWhenPeriodStarts ? 0 : 1)])) : (String(notification.notificationTimeHour) + ":" + String(notification.notificationTimeMinute))
-        let triggerDateComponents = getDate(nextDay: nextDayCount, nextWeek: nextWeekCount, alertTime: alertTime, addingOffset: notification.displayTimeAsOffset ? Int(notification.notificationTimeOffset) : 0)
-        let schoolNotificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
-        
-        let schoolNotificationContent = UNMutableNotificationContent()
-        schoolNotificationContent.title = "Block \(notification.notificationPeriod)"
-        schoolNotificationContent.body = get12HourTime(hour: Int(schoolPeriodTime.split(separator: "-")[0].split(separator: ":")[0]) ?? 0, minute: Int(schoolPeriodTime.split(separator: "-")[0].split(separator: ":")[1]) ?? 0) + " - " + get12HourTime(hour: Int(schoolPeriodTime.split(separator: "-")[1].split(separator: ":")[0]) ?? 0, minute: Int(schoolPeriodTime.split(separator: "-")[1].split(separator: ":")[1]) ?? 0)
-        
-        let schoolNotification = UNNotificationRequest(identifier: UUID().uuidString, content: schoolNotificationContent, trigger: schoolNotificationTrigger)
-        
-        addNotification(schoolNotification: schoolNotification)
+        if let notificationPeriodArray = CoreDataStack.decodeArrayFromJSON(object: notification, field: "notificationPeriodArray") as? Array<Bool>
+        {
+            var periodOn = 1
+            for period in notificationPeriodArray
+            {
+                if period
+                {
+                    let schoolPeriodTime = periodTimes[periodNumbers.firstIndex(of: Int(periodOn)) ?? 0]
+                    
+                    let alertTime = notification.displayTimeAsOffset ?  (String(schoolPeriodTime.split(separator: "-")[(notification.shouldFireWhenPeriodStarts ? 0 : 1)])) : (String(notification.notificationTimeHour) + ":" + String(notification.notificationTimeMinute))
+                    let triggerDateComponents = getDate(nextDay: nextDayCount, nextWeek: nextWeekCount, alertTime: alertTime, addingOffset: notification.displayTimeAsOffset ? Int(notification.notificationTimeOffset) : 0)
+                    let schoolNotificationTrigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
+                    
+                    let schoolNotificationContent = UNMutableNotificationContent()
+                    schoolNotificationContent.title = "Block \(periodOn)"
+                    schoolNotificationContent.body = get12HourTime(hour: Int(schoolPeriodTime.split(separator: "-")[0].split(separator: ":")[0]) ?? 0, minute: Int(schoolPeriodTime.split(separator: "-")[0].split(separator: ":")[1]) ?? 0) + " - " + get12HourTime(hour: Int(schoolPeriodTime.split(separator: "-")[1].split(separator: ":")[0]) ?? 0, minute: Int(schoolPeriodTime.split(separator: "-")[1].split(separator: ":")[1]) ?? 0)
+                    
+                    let schoolNotification = UNNotificationRequest(identifier: UUID().uuidString, content: schoolNotificationContent, trigger: schoolNotificationTrigger)
+                    
+                    addNotification(schoolNotification: schoolNotification)
+                }
+                
+                periodOn += 1
+            }
+        }
     }
     
     func addNotification(schoolNotification: UNNotificationRequest)

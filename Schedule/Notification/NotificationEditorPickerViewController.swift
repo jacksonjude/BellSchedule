@@ -30,13 +30,14 @@ class NotificationEditorPickerViewController: UIViewController, UIPickerViewDele
         case .none:
             break
         case .period:
-            pickerViewData = [[]]
+            break
+            /*pickerViewData = [[]]
             var i = 0
             while (i < 8)
             {
                 pickerViewData?[0].append(String(i+1))
                 i+=1
-            }
+            }*/
         case .time:
             if NotificationEditorState.displayTimeAsOffset ?? true
             {
@@ -79,7 +80,8 @@ class NotificationEditorPickerViewController: UIViewController, UIPickerViewDele
         case .none:
             break
         case .period:
-            notificationPickerView.selectRow(pickerViewData![0].firstIndex(of: String(NotificationEditorState.notificationPeriod ?? 0)) ?? 0, inComponent: 0, animated: true)
+            //notificationPickerView.selectRow(pickerViewData![0].firstIndex(of: String(NotificationEditorState.notificationPeriod ?? 0)) ?? 0, inComponent: 0, animated: true)
+            break
         case .time:
             if NotificationEditorState.displayTimeAsOffset ?? true
             {
@@ -122,22 +124,20 @@ class NotificationEditorPickerViewController: UIViewController, UIPickerViewDele
         case .none:
             break
         case .period:
-            NotificationEditorState.notificationPeriod = Int(pickerViewData?[0][row] ?? "0")
-            postNotification("SetPeriodButtonTitle")
-            //setPeriodButtonTitle()
+            /*NotificationEditorState.notificationPeriod = Int(pickerViewData?[0][row] ?? "0")
+            postNotification("SetPeriodButtonTitle")*/
+            break
         case .time:
             if !(NotificationEditorState.displayTimeAsOffset ?? true) && component == 3
             {
                 NotificationEditorState.displayTimeAsOffset = (pickerViewData?[3][notificationPickerView.selectedRow(inComponent: 3)] ?? "Offset" == "Offset")
                 loadPickerView()
                 postNotification("SetEnabledButtons")
-                //setEnabledButtons()
                 
                 if NotificationEditorState.displayTimeAsOffset ?? true
                 {
                     NotificationEditorState.shouldFireDayBefore = false
                     postNotification("SetFireDayBeforeButtonTitle")
-                    //setFireDayBeforeButtonTitle()
                 }
             }
             else if (NotificationEditorState.displayTimeAsOffset ?? true) && component == 1
@@ -145,7 +145,6 @@ class NotificationEditorPickerViewController: UIViewController, UIPickerViewDele
                 NotificationEditorState.displayTimeAsOffset = (pickerViewData?[1][notificationPickerView.selectedRow(inComponent: 1)] ?? "Offset" == "Offset")
                 loadPickerView()
                 postNotification("SetEnabledButtons")
-                //setEnabledButtons()
             }
             else if NotificationEditorState.displayTimeAsOffset ?? true
             {
@@ -167,13 +166,11 @@ class NotificationEditorPickerViewController: UIViewController, UIPickerViewDele
                 NotificationEditorState.notificationTimeMinute = Int(pickerViewData?[1][notificationPickerView.selectedRow(inComponent: 1)] ?? "0")
             }
             postNotification("SetTimeButtonTitle")
-            //setTimeButtonTitle()
         case .beforeAfterStartEnd:
             NotificationEditorState.notificationTimeOffset = abs(NotificationEditorState.notificationTimeOffset ?? 0)*(pickerViewData?[0][notificationPickerView.selectedRow(inComponent: 0)] == "Before" ? -1 : 1)
             NotificationEditorState.shouldFireWhenPeriodStarts = pickerViewData?[1][notificationPickerView.selectedRow(inComponent: 1)] == "Start"
             
             postNotification("SetBeforeAfterStartEndButtonTitle")
-            //setBeforeAfterStartEndButtonTitle()
         }
     }
     

@@ -89,16 +89,20 @@ class CoreDataStack: NSObject
     
     static func decodeArrayFromJSON(object: NSManagedObject, field: String) -> Array<Any>?
     {
-        let JSONdata = object.value(forKey: field) as! Data
-        do
+        if let JSONdata = object.value(forKey: field) as? Data
         {
-            let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as? Array<Any>
-            return array
+            do
+            {
+                let array = try JSONSerialization.jsonObject(with: JSONdata, options: .allowFragments) as? Array<Any>
+                return array
+            }
+            catch
+            {
+                Logger.println(error)
+                return nil
+            }
         }
-        catch
-        {
-            Logger.println(error)
-            return nil
-        }
+        
+        return nil
     }
 }

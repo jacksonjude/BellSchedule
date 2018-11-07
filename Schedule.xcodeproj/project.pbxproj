@@ -21,6 +21,7 @@
 		7A2418A11FC7E883000407B8 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A24189F1FC7E883000407B8 /* MainInterface.storyboard */; };
 		7A2D98921F95837900288665 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D98911F95837900288665 /* Logger.swift */; };
 		7A2D98941F95879B00288665 /* DeveloperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D98931F95879B00288665 /* DeveloperViewController.swift */; };
+		7A3A148F2191F4F600C26347 /* NotificationCheckboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3A148E2191F4F600C26347 /* NotificationCheckboxViewController.swift */; };
 		7A4374631F8F252400E4BDB2 /* CalendarCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4374621F8F252400E4BDB2 /* CalendarCollectionViewController.swift */; };
 		7A5687341FEC889800744A30 /* AnnouncementsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5687331FEC889800744A30 /* AnnouncementsTableViewController.swift */; };
 		7A5687361FEC8DF600744A30 /* AnnouncementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5687351FEC8DF600744A30 /* AnnouncementManager.swift */; };
@@ -138,6 +139,7 @@
 		7A2418A21FC7E883000407B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A2D98911F95837900288665 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		7A2D98931F95879B00288665 /* DeveloperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperViewController.swift; sourceTree = "<group>"; };
+		7A3A148E2191F4F600C26347 /* NotificationCheckboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCheckboxViewController.swift; sourceTree = "<group>"; };
 		7A4374621F8F252400E4BDB2 /* CalendarCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewController.swift; sourceTree = "<group>"; };
 		7A5687331FEC889800744A30 /* AnnouncementsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsTableViewController.swift; sourceTree = "<group>"; };
 		7A5687351FEC8DF600744A30 /* AnnouncementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementManager.swift; sourceTree = "<group>"; };
@@ -329,6 +331,7 @@
 				7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */,
 				7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */,
 				7A6C37462191638F004EACDA /* NotificationEditorPickerViewController.swift */,
+				7A3A148E2191F4F600C26347 /* NotificationCheckboxViewController.swift */,
 				7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */,
 				7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */,
 			);
@@ -702,6 +705,7 @@
 				7AF3A2501F8DC01B00C509AC /* UserScheduleTableViewController.swift in Sources */,
 				7A2D98921F95837900288665 /* Logger.swift in Sources */,
 				7A2D98941F95879B00288665 /* DeveloperViewController.swift in Sources */,
+				7A3A148F2191F4F600C26347 /* NotificationCheckboxViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

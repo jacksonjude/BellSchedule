@@ -56,9 +56,34 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
     {
         let schoolNotification = schoolNotifications![indexPath.section][indexPath.row]
         
-        (cell.viewWithTag(600) as! UILabel).text = "Period " + String(schoolNotification.notificationPeriod)
+        if var notificationPeriodArray = CoreDataStack.decodeArrayFromJSON(object: schoolNotification, field: "notificationPeriodArray") as? Array<Bool>
+        {
+            var notificationPeriodIntArray = Array<Int>()
+            
+            var i = 0
+            while i < notificationPeriodArray.count
+            {
+                notificationPeriodIntArray.append(notificationPeriodArray[i] ? i : -1)
+                i += 1
+            }
+            
+            let convertedNotificationPeriodArray = notificationPeriodIntArray.filter { (period) -> Bool in
+                return period != -1
+                }.map { (period) -> String in
+                    return String(period+1)
+            }
+            
+            var outputString = "Period" + (convertedNotificationPeriodArray.count > 1 ? "s " : " ")
+            for period in convertedNotificationPeriodArray
+            {
+                outputString += period + (convertedNotificationPeriodArray.firstIndex(of: period) == convertedNotificationPeriodArray.count-1 ? "" : ", ")
+            }
+            
+            (cell.viewWithTag(600) as! UILabel).text = outputString
+        }
+                
         (cell.viewWithTag(601) as! UILabel).text = (schoolNotification.displayTimeAsOffset ? String(abs(schoolNotification.notificationTimeOffset)) + " min" : get12HourTime(hour: schoolNotification.notificationTimeHour, minute: schoolNotification.notificationTimeMinute))
-        (cell.viewWithTag(602) as! UILabel).text = (schoolNotification.displayTimeAsOffset ? (schoolNotification.notificationTimeOffset < 0 ? "Before" : "After") + " the period " + (schoolNotification.shouldFireWhenPeriodStarts ? "starts" : "ends") : schoolNotification.shouldFireDayBefore ? "The day before" : "The day of")
+        (cell.viewWithTag(602) as! UILabel).text = (schoolNotification.displayTimeAsOffset ? ((schoolNotification.notificationTimeOffset < 0 ? "Before" : "After") + " the period " + (schoolNotification.shouldFireWhenPeriodStarts ? "starts" : "ends")) : schoolNotification.shouldFireDayBefore ? "The day before" : "The day of")
         (cell.viewWithTag(603) as! UILabel).text = schoolNotification.isEnabled ? "Enabled" : "Disabled"
         (cell.viewWithTag(603) as! UILabel).textColor = schoolNotification.isEnabled ? UIColor(red: 0, green: 0.5, blue: 0, alpha: 1) : UIColor(red: 0.5, green: 0, blue: 0, alpha: 1)
         
@@ -82,11 +107,13 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
     @IBAction func addSchoolNotification(_ sender: Any)
     {
         let schoolNotification = NSEntityDescription.insertNewObject(forEntityName: "SchoolNotification", into: CoreDataStack.persistentContainer.viewContext) as! SchoolNotification
-        schoolNotification.notificationPeriod = 1
+        schoolNotification.notificationPeriodArray = try? JSONSerialization.data(withJSONObject: [true, false, false, false, false, false, false, false], options: JSONSerialization.WritingOptions.prettyPrinted)
         schoolNotification.notificationTimeHour = 21
         schoolNotification.notificationTimeMinute = 0
         schoolNotification.shouldFireWhenPeriodStarts = true
         schoolNotification.isEnabled = true
+        schoolNotification.displayTimeAsOffset = false
+        schoolNotification.notificationTimeOffset = 0
         schoolNotification.uuid = UUID().uuidString
         
         schoolNotificationUUID = schoolNotification.uuid
@@ -153,7 +180,6 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
         
         enableDisable.backgroundColor = schoolNotification.isEnabled ? UIColor.lightGray : UIColor(red: 0, green: 0.5, blue: 1, alpha: 1)
         
-        
         return [delete, enableDisable]
     }
     
@@ -161,9 +187,21 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
     {
         Logger.println("Exiting NotificationEditorView...")
         
-        if selectedNotificationRowIndex != nil
-        {
-            schoolNotificationsTableView.reloadRows(at: [selectedNotificationRowIndex!], with: .fade)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(coreDataSaved(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
+        
+        indexPathToReload = selectedNotificationRowIndex
+        
+        CoreDataStack.saveContext()
+    }
+    
+    var indexPathToReload: IndexPath?
+    
+    @objc func coreDataSaved(_ notification: Notification)
+    {
+        NotificationCenter.default.removeObserver(self, name: notification.name, object: nil)
+        
+        guard let indexPathToReload = indexPathToReload else { return }
+        guard let cellToReload = schoolNotificationsTableView.cellForRow(at: indexPathToReload) else { return }
+        self.configureCell(cellToReload, indexPathToReload)
     }
 }

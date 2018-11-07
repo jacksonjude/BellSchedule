@@ -15,7 +15,7 @@
     <entity name="SchoolNotification" representedClassName="SchoolNotification" syncable="YES" codeGenerationType="class">
         <attribute name="displayTimeAsOffset" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="notificationPeriod" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="notificationPeriodArray" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="notificationTimeHour" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="notificationTimeMinute" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="notificationTimeOffset" optional="YES" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>

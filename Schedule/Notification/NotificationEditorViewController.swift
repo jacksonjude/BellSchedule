@@ -30,6 +30,8 @@ class NotificationEditorViewController: UIViewController
         beforeAfterStartEndPeriodButton.addCorners()
         dayBeforeButton.addCorners()
         editorViewDoneButton.addCorners()
+        self.view.viewWithTag(619)?.addCorners()
+        self.view.viewWithTag(620)?.addCorners()
         
         setPeriodButtonTitle()
         setTimeButtonTitle()
@@ -52,7 +54,10 @@ class NotificationEditorViewController: UIViewController
         if let schoolNotification = getSchoolNotification()
         {
             NotificationEditorState.displayTimeAsOffset = schoolNotification.displayTimeAsOffset
-            NotificationEditorState.notificationPeriod = Int(schoolNotification.notificationPeriod)
+            if let notificationPeriodArray = CoreDataStack.decodeArrayFromJSON(object: schoolNotification, field: "notificationPeriodArray") as? Array<Bool>
+            {
+                NotificationEditorState.notificationPeriodArray = notificationPeriodArray
+            }
             NotificationEditorState.notificationTimeHour = Int(schoolNotification.notificationTimeHour)
             NotificationEditorState.notificationTimeMinute = Int(schoolNotification.notificationTimeMinute)
             NotificationEditorState.notificationTimeOffset = Int(schoolNotification.notificationTimeOffset)
@@ -65,11 +70,9 @@ class NotificationEditorViewController: UIViewController
     
     func loadEditorView(type: NotificationEditorViewType)
     {
-        if NotificationEditorState.editorViewType == .none && type != .none
-        {
-            NotificationEditorState.editorViewType = type
-            showEditorView()
-        }
+        let oldEditorType = NotificationEditorState.editorViewType
+        let newEditorType = type
+        
         NotificationEditorState.editorViewType = type
         
         if let editorView = editorViewToShow()
@@ -79,16 +82,20 @@ class NotificationEditorViewController: UIViewController
             self.view.viewWithTag(618)?.bringSubviewToFront(editorViewDoneButton)
         }
         
-        if NotificationEditorState.editorViewType == .beforeAfterStartEnd || NotificationEditorState.editorViewType == .time || NotificationEditorState.editorViewType == .period
+        if oldEditorType == .none && newEditorType != .none
+        {
+            showEditorView()
+        }
+        
+        if NotificationEditorState.editorViewType == .beforeAfterStartEnd || NotificationEditorState.editorViewType == .time
         {
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReloadPickerView"), object: self)
         }
         
-        //REVERT
-        /*if NotificationEditorState.editorViewType == .period
+        if NotificationEditorState.editorViewType == .period
         {
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReloadCollectionView"), object: self)
-        }*/
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReloadCheckboxView"), object: self)
+        }
     }
     
     func showEditorView()
@@ -130,8 +137,7 @@ class NotificationEditorViewController: UIViewController
         case .none:
             return nil
         case .period:
-            //REVERT
-            return self.view.viewWithTag(619)
+            return self.view.viewWithTag(620)
         case .time:
             return self.view.viewWithTag(619)
         case .beforeAfterStartEnd:
@@ -165,9 +171,30 @@ class NotificationEditorViewController: UIViewController
     
     @objc func setPeriodButtonTitle()
     {
-        if let notificationPeriod = NotificationEditorState.notificationPeriod
+        if var notificationPeriodArray = NotificationEditorState.notificationPeriodArray
         {
-            periodButton.setTitle("Period " + String(notificationPeriod), for: UIControl.State.normal)
+            var notificationPeriodIntArray = Array<Int>()
+            
+            var i = 0
+            while i < notificationPeriodArray.count
+            {
+                notificationPeriodIntArray.append(notificationPeriodArray[i] ? i : -1)
+                i += 1
+            }
+            
+            let convertedNotificationPeriodArray = notificationPeriodIntArray.filter { (period) -> Bool in
+                    return period != -1
+                }.map { (period) -> String in
+                    return String(period+1)
+            }
+            
+            var outputString = "Period" + (convertedNotificationPeriodArray.count > 1 ? "s " : " ")
+            for period in convertedNotificationPeriodArray
+            {
+                outputString += period + (convertedNotificationPeriodArray.firstIndex(of: period) == convertedNotificationPeriodArray.count-1 ? "" : ", ")
+            }
+            
+            periodButton.setTitle(outputString, for: UIControl.State.normal)
         }
     }
     
@@ -225,7 +252,7 @@ class NotificationEditorViewController: UIViewController
             if let schoolNotification = getSchoolNotification()
             {
                 schoolNotification.displayTimeAsOffset = NotificationEditorState.displayTimeAsOffset ?? true
-                schoolNotification.notificationPeriod = Int64(NotificationEditorState.notificationPeriod ?? 1)
+                schoolNotification.notificationPeriodArray = try? JSONSerialization.data(withJSONObject: NotificationEditorState.notificationPeriodArray ?? Array<Bool>(), options: JSONSerialization.WritingOptions.prettyPrinted)
                 schoolNotification.notificationTimeHour = Int64(NotificationEditorState.notificationTimeHour ?? 0)
                 schoolNotification.notificationTimeMinute = Int64(NotificationEditorState.notificationTimeMinute ?? 0)
                 schoolNotification.notificationTimeOffset = Int64(NotificationEditorState.notificationTimeOffset ?? 0)

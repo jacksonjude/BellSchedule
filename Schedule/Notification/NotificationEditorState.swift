@@ -18,7 +18,7 @@ enum NotificationEditorViewType
 
 class NotificationEditorState
 {
-    static var notificationPeriod: Int?
+    static var notificationPeriodArray: [Bool]?
     static var notificationTimeOffset: Int?
     static var notificationTimeHour: Int?
     static var notificationTimeMinute: Int?

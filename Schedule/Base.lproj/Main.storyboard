@@ -252,10 +252,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="600" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Period 5" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vTb-S6-PWW">
-                                                    <rect key="frame" x="15" y="7" width="107" height="24"/>
+                                                    <rect key="frame" x="15" y="7" width="225" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="24" id="3rR-An-SSj"/>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="107" id="PBs-2r-hoU"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="225" id="PBs-2r-hoU"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
@@ -302,7 +302,7 @@
                                                 <constraint firstItem="u9u-oZ-ywP" firstAttribute="top" secondItem="6pN-3o-jlG" secondAttribute="bottom" constant="8" id="fTa-J8-EU0"/>
                                                 <constraint firstItem="u9u-oZ-ywP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="n2i-Aq-qkG" secondAttribute="leadingMargin" id="mFh-rD-Jc6"/>
                                                 <constraint firstItem="6pN-3o-jlG" firstAttribute="trailing" secondItem="n2i-Aq-qkG" secondAttribute="trailingMargin" id="pDr-DI-iTN"/>
-                                                <constraint firstItem="6pN-3o-jlG" firstAttribute="leading" secondItem="vTb-S6-PWW" secondAttribute="trailing" constant="159" id="ryi-Bj-mjB"/>
+                                                <constraint firstItem="6pN-3o-jlG" firstAttribute="leading" secondItem="vTb-S6-PWW" secondAttribute="trailing" constant="41" id="ryi-Bj-mjB"/>
                                                 <constraint firstItem="b1e-4h-w2N" firstAttribute="leading" secondItem="n2i-Aq-qkG" secondAttribute="leadingMargin" id="s5t-mW-Src"/>
                                                 <constraint firstItem="u9u-oZ-ywP" firstAttribute="leading" secondItem="b1e-4h-w2N" secondAttribute="trailing" constant="7" id="vSU-eW-Kla"/>
                                             </constraints>
@@ -430,7 +430,7 @@
                                     </containerView>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yWB-47-zzX">
                                         <rect key="frame" x="280" y="8" width="55" height="30"/>
-                                        <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.86274509803921573" green="0.86274509803921573" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="hvZ-k4-3rg"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="55" id="w6u-UE-JCe"/>
@@ -1189,7 +1189,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="343" height="170"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <pickerView alpha="0.84999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xNF-S5-hmp">
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xNF-S5-hmp">
                                 <rect key="frame" x="0.0" y="0.0" width="343" height="170"/>
                                 <color key="backgroundColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <connections>
@@ -1215,26 +1215,33 @@
             </objects>
             <point key="canvasLocation" x="2825" y="-333"/>
         </scene>
-        <!--View Controller-->
+        <!--Notification Checkbox View Controller-->
         <scene sceneID="ps8-mQ-5yK">
             <objects>
-                <viewController id="S4R-Z5-wMj" sceneMemberID="viewController">
+                <viewController id="S4R-Z5-wMj" customClass="NotificationCheckboxViewController" customModule="Schedule" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CdT-uV-Jdy">
                         <rect key="frame" x="0.0" y="0.0" width="343" height="170"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="xee-Tz-jB3">
-                                <rect key="frame" x="0.0" y="0.0" width="343" height="170"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xee-Tz-jB3">
+                                <rect key="frame" x="20" y="60" width="303" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="WQW-Rd-mW6"/>
+                                </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="xee-Tz-jB3" firstAttribute="leading" secondItem="CdT-uV-Jdy" secondAttribute="leading" id="ah6-qf-Uds"/>
-                            <constraint firstAttribute="bottom" secondItem="xee-Tz-jB3" secondAttribute="bottom" id="hCp-th-bie"/>
-                            <constraint firstAttribute="trailing" secondItem="xee-Tz-jB3" secondAttribute="trailing" id="jDV-0Z-uot"/>
-                            <constraint firstItem="xee-Tz-jB3" firstAttribute="top" secondItem="CdT-uV-Jdy" secondAttribute="top" id="pu1-bm-TV5"/>
+                            <constraint firstItem="xee-Tz-jB3" firstAttribute="leading" secondItem="CdT-uV-Jdy" secondAttribute="leading" constant="20" id="ah6-qf-Uds"/>
+                            <constraint firstItem="xee-Tz-jB3" firstAttribute="centerY" secondItem="CdT-uV-Jdy" secondAttribute="centerY" id="iRy-iQ-Jjd"/>
+                            <constraint firstAttribute="trailing" secondItem="xee-Tz-jB3" secondAttribute="trailing" constant="20" id="jDV-0Z-uot"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="ILz-iL-CUL"/>
                     </view>
+                    <connections>
+                        <outlet property="checkboxStackView" destination="xee-Tz-jB3" id="3PU-LJ-xtX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QJS-dx-hl5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
