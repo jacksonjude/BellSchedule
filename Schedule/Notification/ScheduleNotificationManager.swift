@@ -34,7 +34,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
             {
                 if notification.isEnabled
                 {
-                    setupScheduledNotification(notification: notification, periodTimes: periodTimes, periodNumbers: periodNumbers, nextDayCount: 0, nextWeekCount: 0)
+                    setupScheduledNotification(notification: notification, periodTimes: periodTimes, periodNumbers: periodNumbers, nextDayCount: 0, nextWeekCount: 0, scheduleCode: todaySchedule.scheduleCode ?? "+")
                 }
             }
         }
@@ -124,7 +124,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
                     {
                         if notification.isEnabled
                         {
-                            setupScheduledNotification(notification: notification, periodTimes: periodTimes, periodNumbers: periodNumbers, nextDayCount: nextDayCounts[scheduleCodeOn] + (notification.shouldFireDayBefore ? 0 : 1), nextWeekCount: nextWeekCounts[scheduleCodeOn])
+                            setupScheduledNotification(notification: notification, periodTimes: periodTimes, periodNumbers: periodNumbers, nextDayCount: nextDayCounts[scheduleCodeOn] + (notification.shouldFireDayBefore ? 0 : 1), nextWeekCount: nextWeekCounts[scheduleCodeOn], scheduleCode: scheduleCode)
                         }
                     }
                 }
@@ -164,14 +164,14 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         addNotification(schoolNotification: schoolStartTimeNotification)
     }
     
-    func setupScheduledNotification(notification: SchoolNotification, periodTimes: Array<String>, periodNumbers: Array<Int>, nextDayCount: Int, nextWeekCount: Int)
+    func setupScheduledNotification(notification: SchoolNotification, periodTimes: Array<String>, periodNumbers: Array<Int>, nextDayCount: Int, nextWeekCount: Int, scheduleCode: String)
     {
-        if let notificationPeriodArray = CoreDataStack.decodeArrayFromJSON(object: notification, field: "notificationPeriodArray") as? Array<Bool>
+        if let notificationPeriodArray = CoreDataStack.decodeArrayFromJSON(object: notification, field: "notificationPeriodArray") as? Array<Bool>, notification.schedulesToFireOn != nil, let notificationScheduleCodes = try? JSONSerialization.jsonObject(with: notification.schedulesToFireOn!, options: JSONSerialization.ReadingOptions.allowFragments) as? Dictionary<String,Bool>
         {
             var periodOn = 1
             for period in notificationPeriodArray
             {
-                if period
+                if period && (notificationScheduleCodes?.keys.contains(scheduleCode) ?? false ? notificationScheduleCodes?[scheduleCode] : notificationScheduleCodes?["+"]) ?? true
                 {
                     let schoolPeriodTime = periodTimes[periodNumbers.firstIndex(of: Int(periodOn)) ?? 0]
                     

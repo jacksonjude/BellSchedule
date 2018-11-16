@@ -114,6 +114,7 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
         schoolNotification.isEnabled = true
         schoolNotification.displayTimeAsOffset = false
         schoolNotification.notificationTimeOffset = 0
+        schoolNotification.schedulesToFireOn = try? JSONSerialization.data(withJSONObject: ["N":true, "M":true, "R":true, "S":true, "+":true], options: JSONSerialization.WritingOptions.prettyPrinted)
         schoolNotification.uuid = UUID().uuidString
         
         schoolNotificationUUID = schoolNotification.uuid

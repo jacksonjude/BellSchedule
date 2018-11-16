@@ -17,6 +17,7 @@ class NotificationEditorViewController: UIViewController
     @IBOutlet weak var dayBeforeButton: UIButton!
     @IBOutlet weak var editorViewDoneButton: UIButton!
     @IBOutlet weak var editorViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var schedulesButton: UIButton!
     
     var schoolNotificationUUID: String?
     
@@ -29,6 +30,7 @@ class NotificationEditorViewController: UIViewController
         timeButton.addCorners()
         beforeAfterStartEndPeriodButton.addCorners()
         dayBeforeButton.addCorners()
+        schedulesButton.addCorners()
         editorViewDoneButton.addCorners()
         self.view.viewWithTag(619)?.addCorners()
         self.view.viewWithTag(620)?.addCorners()
@@ -37,6 +39,7 @@ class NotificationEditorViewController: UIViewController
         setTimeButtonTitle()
         setBeforeAfterStartEndButtonTitle()
         setFireDayBeforeButtonTitle()
+        setScheduleButtonTitle()
         
         setEnabledButtons()
         
@@ -47,6 +50,7 @@ class NotificationEditorViewController: UIViewController
         NotificationCenter.default.addObserver(self, selector: #selector(setTimeButtonTitle), name: NSNotification.Name("SetTimeButtonTitle"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setFireDayBeforeButtonTitle), name: NSNotification.Name("SetFireDayBeforeButtonTitle"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setBeforeAfterStartEndButtonTitle), name: NSNotification.Name("SetBeforeAfterStartEndButtonTitle"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setScheduleButtonTitle), name: NSNotification.Name("SetScheduleButtonTitle"), object: nil)
     }
     
     func loadNotificationEditorState()
@@ -63,6 +67,14 @@ class NotificationEditorViewController: UIViewController
             NotificationEditorState.notificationTimeOffset = Int(schoolNotification.notificationTimeOffset)
             NotificationEditorState.shouldFireDayBefore = schoolNotification.shouldFireDayBefore
             NotificationEditorState.shouldFireWhenPeriodStarts = schoolNotification.shouldFireWhenPeriodStarts
+            if schoolNotification.schedulesToFireOn != nil, let schedulesToFireOn = try? JSONSerialization.jsonObject(with: schoolNotification.schedulesToFireOn!, options: JSONSerialization.ReadingOptions.allowFragments) as? Dictionary<String,Bool>
+            {
+                NotificationEditorState.schedulesToFireOn = schedulesToFireOn
+            }
+            else
+            {
+                NotificationEditorState.schedulesToFireOn = ["N":true, "M":true, "R":true, "S":true, "+":true]
+            }
         }
     }
     
@@ -92,7 +104,7 @@ class NotificationEditorViewController: UIViewController
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReloadPickerView"), object: self)
         }
         
-        if NotificationEditorState.editorViewType == .period
+        if NotificationEditorState.editorViewType == .period || NotificationEditorState.editorViewType == .schedules
         {
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReloadCheckboxView"), object: self)
         }
@@ -142,6 +154,8 @@ class NotificationEditorViewController: UIViewController
             return self.view.viewWithTag(619)
         case .beforeAfterStartEnd:
             return self.view.viewWithTag(619)
+        case .schedules:
+            return self.view.viewWithTag(620)
         }
     }
     
@@ -167,6 +181,10 @@ class NotificationEditorViewController: UIViewController
         NotificationEditorState.editorViewType = .none
         
         hideEditorView()
+    }
+    
+    @IBAction func schedulesButtonPressed(_ sender: Any) {
+        loadEditorView(type: .schedules)
     }
     
     @objc func setPeriodButtonTitle()
@@ -229,6 +247,35 @@ class NotificationEditorViewController: UIViewController
         dayBeforeButton.setTitle("Fire on the day " + (NotificationEditorState.shouldFireDayBefore ?? false ? "before" : "of"), for: UIControl.State.normal)
     }
     
+    @objc func setScheduleButtonTitle()
+    {
+        schedulesButton.setTitle("Fire on" + (NotificationEditorState.schedulesToFireOn.map({ (scheduleDictionary) -> Bool in
+            for scheduleCode in scheduleDictionary
+            {
+                if !scheduleCode.value
+                {
+                    return false
+                }
+            }
+            return true
+        }) ?? true ? " all schedule codes" : (NotificationEditorState.schedulesToFireOn.map({ (scheduleDictionary) -> String in
+            var scheduleCodesString = " "
+            var keyArray = scheduleDictionary.keys.sorted()
+            if keyArray.count > 0 && keyArray[0] == "+"
+            {
+                keyArray.remove(at: 0)
+                keyArray.append("+")
+            }
+            
+            for scheduleCode in keyArray
+            {
+                scheduleCodesString += (scheduleDictionary[scheduleCode] ?? false ? scheduleCode + ", " : "")
+            }
+            scheduleCodesString = String(scheduleCodesString.dropLast().dropLast())
+            return scheduleCodesString
+        }) ?? "")), for: UIControl.State.normal)
+    }
+    
     func getSchoolNotification(_ schoolNotificationArgument: SchoolNotification? = nil) -> SchoolNotification?
     {
         var schoolNotification: SchoolNotification?
@@ -258,9 +305,12 @@ class NotificationEditorViewController: UIViewController
                 schoolNotification.notificationTimeOffset = Int64(NotificationEditorState.notificationTimeOffset ?? 0)
                 schoolNotification.shouldFireDayBefore = NotificationEditorState.shouldFireDayBefore ?? false
                 schoolNotification.shouldFireWhenPeriodStarts = NotificationEditorState.shouldFireWhenPeriodStarts ?? true
+                schoolNotification.schedulesToFireOn = try? JSONSerialization.data(withJSONObject: NotificationEditorState.schedulesToFireOn ?? ["N":true, "M":true, "R":true, "S":true, "+":true], options: JSONSerialization.WritingOptions.prettyPrinted)
                 
                 CoreDataStack.saveContext()
             }
+            
+            NotificationEditorState.editorViewType = .none
         }
     }
 }

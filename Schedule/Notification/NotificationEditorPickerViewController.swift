@@ -71,6 +71,8 @@ class NotificationEditorPickerViewController: UIViewController, UIPickerViewDele
             
         case .beforeAfterStartEnd:
             pickerViewData = [["Before", "After"], ["Start", "End"]]
+        case .schedules:
+            break
         }
         
         notificationPickerView.reloadAllComponents()
@@ -115,6 +117,8 @@ class NotificationEditorPickerViewController: UIViewController, UIPickerViewDele
         case .beforeAfterStartEnd:
             notificationPickerView.selectRow(pickerViewData![0].index(of: (NotificationEditorState.notificationTimeOffset ?? 0 < 0) ? "Before" : "After") ?? 0, inComponent: 0, animated: true)
             notificationPickerView.selectRow(pickerViewData![1].index(of: NotificationEditorState.shouldFireWhenPeriodStarts ?? true ? "Start" : "End") ?? 0, inComponent: 1, animated: true)
+        case .schedules:
+            break
         }
     }
     
@@ -171,6 +175,8 @@ class NotificationEditorPickerViewController: UIViewController, UIPickerViewDele
             NotificationEditorState.shouldFireWhenPeriodStarts = pickerViewData?[1][notificationPickerView.selectedRow(inComponent: 1)] == "Start"
             
             postNotification("SetBeforeAfterStartEndButtonTitle")
+        case .schedules:
+            break
         }
     }
     

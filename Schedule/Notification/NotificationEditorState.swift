@@ -14,6 +14,7 @@ enum NotificationEditorViewType
     case period
     case time
     case beforeAfterStartEnd
+    case schedules
 }
 
 class NotificationEditorState
@@ -25,6 +26,7 @@ class NotificationEditorState
     static var shouldFireWhenPeriodStarts: Bool?
     static var shouldFireDayBefore: Bool?
     static var displayTimeAsOffset: Bool?
+    static var schedulesToFireOn: [String:Bool]?
     
     static var editorViewType: NotificationEditorViewType = .none
 }

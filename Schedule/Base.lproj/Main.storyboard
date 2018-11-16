@@ -350,8 +350,20 @@
                             <imageView userInteractionEnabled="NO" tag="819" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background1" translatesAutoresizingMaskIntoConstraints="NO" id="a3G-E0-PKs">
                                 <rect key="frame" x="0.0" y="64" width="375" height="559"/>
                             </imageView>
+                            <button opaque="NO" alpha="0.85000002384185791" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wSF-My-TUR">
+                                <rect key="frame" x="54" y="270" width="267" height="42"/>
+                                <color key="backgroundColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="267" id="4lK-s0-dmn"/>
+                                    <constraint firstAttribute="height" constant="42" id="5Wb-pf-DUU"/>
+                                </constraints>
+                                <state key="normal" title="Fire on all schedules"/>
+                                <connections>
+                                    <action selector="schedulesButtonPressed:" destination="R4x-Eb-eOT" eventType="touchUpInside" id="PYE-dz-N3X"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" alpha="0.85000002384185791" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKM-tD-9yT">
-                                <rect key="frame" x="54" y="108" width="267" height="42"/>
+                                <rect key="frame" x="54" y="99" width="267" height="42"/>
                                 <color key="backgroundColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="267" id="N5x-1S-cCD"/>
@@ -363,7 +375,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" alpha="0.85000002384185791" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EDC-9Z-Pwc">
-                                <rect key="frame" x="54" y="170" width="267" height="42"/>
+                                <rect key="frame" x="54" y="156" width="267" height="42"/>
                                 <color key="backgroundColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="WNC-0J-ku8"/>
@@ -390,7 +402,7 @@
                                 </items>
                             </navigationBar>
                             <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mJD-S4-m7u">
-                                <rect key="frame" x="54" y="232" width="267" height="42"/>
+                                <rect key="frame" x="54" y="213" width="267" height="42"/>
                                 <color key="backgroundColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="267" id="ELa-tt-KGE"/>
@@ -399,18 +411,6 @@
                                 <state key="normal" title="Before the start of the period"/>
                                 <connections>
                                     <action selector="beforeAfterStartEndPeriodButtonPressed:" destination="R4x-Eb-eOT" eventType="touchUpInside" id="DLY-bW-LtQ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" alpha="0.85000002384185791" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uv1-yS-4Yw">
-                                <rect key="frame" x="54" y="294" width="267" height="42"/>
-                                <color key="backgroundColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="267" id="OLy-uI-RPW"/>
-                                    <constraint firstAttribute="height" constant="42" id="oTq-pA-VNd"/>
-                                </constraints>
-                                <state key="normal" title="Fire the day before: No"/>
-                                <connections>
-                                    <action selector="dayBeforeButtonPressed:" destination="R4x-Eb-eOT" eventType="touchUpInside" id="xpN-Tm-P9m"/>
                                 </connections>
                             </button>
                             <view tag="618" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pJR-wp-Grq">
@@ -459,12 +459,24 @@
                                     <constraint firstAttribute="trailing" secondItem="fOy-YQ-x3b" secondAttribute="trailing" id="vrZ-Kb-Kfv"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" alpha="0.85000002384185791" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uv1-yS-4Yw">
+                                <rect key="frame" x="54" y="327" width="267" height="42"/>
+                                <color key="backgroundColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="267" id="OLy-uI-RPW"/>
+                                    <constraint firstAttribute="height" constant="42" id="oTq-pA-VNd"/>
+                                </constraints>
+                                <state key="normal" title="Fire the day before: No"/>
+                                <connections>
+                                    <action selector="dayBeforeButtonPressed:" destination="R4x-Eb-eOT" eventType="touchUpInside" id="xpN-Tm-P9m"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.97647064924240112" green="0.97647064924240112" blue="0.97647064924240112" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
+                            <constraint firstItem="Uv1-yS-4Yw" firstAttribute="top" secondItem="wSF-My-TUR" secondAttribute="bottom" constant="15" id="2E4-17-Zex"/>
                             <constraint firstItem="mJD-S4-m7u" firstAttribute="centerX" secondItem="uVV-wG-AUF" secondAttribute="centerX" id="2WI-H3-Qsi"/>
-                            <constraint firstItem="EDC-9Z-Pwc" firstAttribute="top" secondItem="FKM-tD-9yT" secondAttribute="bottom" constant="20" id="BNe-zq-DgJ"/>
-                            <constraint firstItem="mJD-S4-m7u" firstAttribute="top" secondItem="EDC-9Z-Pwc" secondAttribute="bottom" constant="20" id="DkE-Nr-JYl"/>
+                            <constraint firstItem="mJD-S4-m7u" firstAttribute="top" secondItem="EDC-9Z-Pwc" secondAttribute="bottom" constant="15" id="DkE-Nr-JYl"/>
                             <constraint firstItem="FKM-tD-9yT" firstAttribute="centerX" secondItem="uVV-wG-AUF" secondAttribute="centerX" id="Idr-AZ-mIF"/>
                             <constraint firstItem="Uv1-yS-4Yw" firstAttribute="centerX" secondItem="uVV-wG-AUF" secondAttribute="centerX" id="OfB-YY-EWo"/>
                             <constraint firstItem="EXj-g1-86e" firstAttribute="top" secondItem="rBb-Si-rkT" secondAttribute="top" id="S3D-ZU-nN7"/>
@@ -473,12 +485,14 @@
                             <constraint firstItem="rBb-Si-rkT" firstAttribute="bottom" secondItem="pJR-wp-Grq" secondAttribute="bottom" constant="20" id="Y2h-Np-JU4"/>
                             <constraint firstItem="EXj-g1-86e" firstAttribute="leading" secondItem="rBb-Si-rkT" secondAttribute="leading" id="bAs-ic-7n3"/>
                             <constraint firstItem="a3G-E0-PKs" firstAttribute="top" secondItem="EXj-g1-86e" secondAttribute="bottom" id="dyG-EG-FB8"/>
-                            <constraint firstItem="FKM-tD-9yT" firstAttribute="top" secondItem="EXj-g1-86e" secondAttribute="bottom" constant="44" id="e7F-NC-8V8"/>
+                            <constraint firstItem="FKM-tD-9yT" firstAttribute="top" secondItem="EXj-g1-86e" secondAttribute="bottom" constant="35" id="e7F-NC-8V8"/>
+                            <constraint firstItem="wSF-My-TUR" firstAttribute="top" secondItem="mJD-S4-m7u" secondAttribute="bottom" constant="15" id="hl5-Lz-qJk"/>
                             <constraint firstItem="a3G-E0-PKs" firstAttribute="leading" secondItem="rBb-Si-rkT" secondAttribute="leading" id="hr0-sh-FR2"/>
                             <constraint firstItem="rBb-Si-rkT" firstAttribute="bottom" secondItem="a3G-E0-PKs" secondAttribute="bottom" id="iDN-qH-nR1"/>
                             <constraint firstItem="EDC-9Z-Pwc" firstAttribute="centerX" secondItem="uVV-wG-AUF" secondAttribute="centerX" id="isU-QI-d3z"/>
+                            <constraint firstItem="wSF-My-TUR" firstAttribute="centerX" secondItem="uVV-wG-AUF" secondAttribute="centerX" id="pRB-u4-FYg"/>
+                            <constraint firstItem="EDC-9Z-Pwc" firstAttribute="top" secondItem="FKM-tD-9yT" secondAttribute="bottom" constant="15" id="wUo-Eg-unk"/>
                             <constraint firstItem="EXj-g1-86e" firstAttribute="trailing" secondItem="rBb-Si-rkT" secondAttribute="trailing" id="zDg-ae-iEu"/>
-                            <constraint firstItem="Uv1-yS-4Yw" firstAttribute="top" secondItem="mJD-S4-m7u" secondAttribute="bottom" constant="20" id="zge-mm-d3R"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rBb-Si-rkT"/>
                     </view>
@@ -488,6 +502,7 @@
                         <outlet property="editorViewBottomConstraint" destination="Y2h-Np-JU4" id="OW9-ZQ-D1M"/>
                         <outlet property="editorViewDoneButton" destination="yWB-47-zzX" id="wDc-kl-S70"/>
                         <outlet property="periodButton" destination="FKM-tD-9yT" id="Udf-ZN-wiH"/>
+                        <outlet property="schedulesButton" destination="wSF-My-TUR" id="Jhl-U8-1YK"/>
                         <outlet property="timeButton" destination="EDC-9Z-Pwc" id="PaM-Us-6eC"/>
                     </connections>
                 </viewController>
