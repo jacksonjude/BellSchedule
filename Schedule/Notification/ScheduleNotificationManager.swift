@@ -23,6 +23,10 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     
     func gatherNotificationData()
     {
+        tomorrowSchoolCodes = []
+        nextDayCounts = []
+        nextWeekCounts = []
+        
         Logger.println("SNM: Gathering notification data...")
         
         scheduleInfoManager = ScheduleInfoManager(delegate: self, downloadData: false, onlyFindOneDay: true)

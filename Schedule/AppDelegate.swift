@@ -15,7 +15,6 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var cloudManager: CloudManager?
     var justLaunched = true
     var firstLaunch = false
     var scheduleNotificationManager: ScheduleNotificationManager?
@@ -24,9 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
-        cloudManager = CloudManager()
-        
+                
         if UserDefaults.standard.object(forKey: "firstLaunch") == nil
         {
             firstLaunch = true

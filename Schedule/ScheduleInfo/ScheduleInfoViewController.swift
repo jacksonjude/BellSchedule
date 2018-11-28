@@ -686,6 +686,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     @IBAction func exitNotificationTableView(_ segue: UIStoryboardSegue)
     {
         Logger.println("Exiting NotificationTableView...")
+        appDelegate.scheduleNotificationManager?.gatherNotificationData()
     }
 }
 
