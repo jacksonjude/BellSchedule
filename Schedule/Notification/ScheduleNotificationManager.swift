@@ -99,8 +99,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
             
             if let tomorrowScheduleData = scheduleInfoManager!.queryTomorrowSchedule(weekSchedules: scheduleInfoManager!.nextWeekSchedules!, addDays: nextDayCount+1, loadedNextWeek: loadedNextWeek), let tomorrowSchedule = tomorrowScheduleData.schedule
             {
-                
-                self.printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule, nextWeekCount: nextWeekCount, nextDayCount: nextDayCount+1)
+                self.printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule, nextWeekCount: tomorrowScheduleData.nextWeekOn ?? 0, nextDayCount: (tomorrowScheduleData.nextDayOn ?? 0))
             }
         }
         else
