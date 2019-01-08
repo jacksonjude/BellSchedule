@@ -36,7 +36,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         {
             for notification in schoolNotifications
             {
-                if notification.isEnabled
+                if notification.isEnabled && notification.shouldFireDayBefore == false
                 {
                     setupScheduledNotification(notification: notification, periodTimes: periodTimes, periodNumbers: periodNumbers, nextDayCount: 0, nextWeekCount: 0, scheduleCode: todaySchedule.scheduleCode ?? "+")
                 }
@@ -179,6 +179,11 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
                     if let schoolPeriodTimeIndex = periodNumbers.firstIndex(of: Int(periodOn))
                     {
                         let schoolPeriodTime = periodTimes[schoolPeriodTimeIndex]
+                        
+                        if schoolPeriodTime.contains("10:20")
+                        {
+                            
+                        }
                         
                         let alertTime = notification.displayTimeAsOffset ?  (String(schoolPeriodTime.split(separator: "-")[(notification.shouldFireWhenPeriodStarts ? 0 : 1)])) : (String(notification.notificationTimeHour) + ":" + String(notification.notificationTimeMinute))
                         let triggerDateComponents = getDate(nextDay: nextDayCount, nextWeek: nextWeekCount, alertTime: alertTime, addingOffset: notification.displayTimeAsOffset ? Int(notification.notificationTimeOffset) : 0)
