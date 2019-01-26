@@ -14,7 +14,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     var uploadData = false
     @IBOutlet weak var tableView: UITableView!
     var justSetUserScheduleID = false
-    var freeMods: Array<Int> = []
+    var offBlocks: Array<Int> = []
     var selectedRow = -1
     
     override func viewDidLoad() {
@@ -144,15 +144,15 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
             }
             
             
-            if let freeModsFromRecord = periodNamesRecord.object(forKey: "freeMods") as? [Int]
+            if let offBlocksFromRecord = periodNamesRecord.object(forKey: "offBlocks") as? [Int]
             {
                 OperationQueue.main.addOperation {
-                    self.freeMods = freeModsFromRecord
+                    self.offBlocks = offBlocksFromRecord
                 }
             }
             else
             {
-                freeMods = [0, 0, 0, 0, 0, 0, 0, 0]
+                offBlocks = [0, 0, 0, 0, 0, 0, 0, 0]
             }
         }
         else
@@ -193,12 +193,12 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
             }
         }))
         
-        //userPeriodChangeAlert.view.addSubview(createSwitch(indexPath.row))
+        userPeriodChangeAlert.view.addSubview(createSwitch(indexPath.row))
         
-        /*let freeModLabel = UILabel(frame: CGRect(x: 15, y: 50, width: 200, height: 70))
-        freeModLabel.text = "Free Mod:"
-        freeModLabel.font = UIFont(name: "System", size: 15)
-        userPeriodChangeAlert.view.addSubview(freeModLabel)*/
+        let offBlockLabel = UILabel(frame: CGRect(x: 15, y: 50, width: 200, height: 70))
+        offBlockLabel.text = "Off Block:"
+        offBlockLabel.font = UIFont(name: "System", size: 15)
+        userPeriodChangeAlert.view.addSubview(offBlockLabel)
         
         self.present(userPeriodChangeAlert, animated: true) {
             
@@ -208,9 +208,9 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     func createSwitch(_ indexRow: Int) -> UISwitch
     {
         let newSwitch = UISwitch(frame: CGRect(x: 95, y: 70, width: 0, height: 0))
-        if freeMods.count - 1 >= indexRow
+        if offBlocks.count - 1 >= indexRow
         {
-            newSwitch.setOn(freeMods[indexRow] == 1, animated: false)
+            newSwitch.setOn(offBlocks[indexRow] == 1, animated: false)
         }
         else
         {
@@ -222,18 +222,11 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     
     @objc func switchValueDidChange(sender: Any)
     {
-        if freeMods.count - 1 >= selectedRow
+        if offBlocks.count - 1 >= selectedRow
         {
-            Logger.println(" USRSCH: Free Mod toggle for " + String(selectedRow))
+            Logger.println(" USRSCH: Off Block toggle for " + String(selectedRow))
             
-            if freeMods[selectedRow] == 0
-            {
-                freeMods[selectedRow] = 1
-            }
-            else if freeMods[selectedRow] == 1
-            {
-                freeMods[selectedRow] = 0
-            }
+            offBlocks[selectedRow] = offBlocks[selectedRow] == 0 ? 1 : 0
         }
     }
     

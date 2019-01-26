@@ -64,17 +64,17 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         return
     }
     
-    func printSchoolStartEndTime(periodTimes: Array<String>) {
+    func printSchoolStartEndTime(schoolStartTime: String, schoolEndTime: String) {
         return
     }
     
-    func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int) {
+    func printTomorrowStartTime(tomorrowSchoolStartTime: String, tomorrowSchedule: Schedule, nextWeekCount: Int, nextDayCount: Int) {
         /*if let tomorrowPeriodTimes = self.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
         {
             //let tomorrowSchoolStartTime = String(tomorrowPeriodTimes[0].split(separator: "-")[0])
         }*/
         
-        tomorrowSchoolCodes.append((tomorrowSchedule as! Schedule).scheduleCode ?? "H")
+        tomorrowSchoolCodes.append(tomorrowSchedule.scheduleCode ?? "H")
         nextDayCounts.append(nextDayCount)
         nextWeekCounts.append(nextWeekCount)
         
@@ -99,7 +99,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
             
             if let tomorrowScheduleData = scheduleInfoManager!.queryTomorrowSchedule(weekSchedules: scheduleInfoManager!.nextWeekSchedules!, addDays: nextDayCount+1, loadedNextWeek: loadedNextWeek), let tomorrowSchedule = tomorrowScheduleData.schedule
             {
-                self.printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule, nextWeekCount: tomorrowScheduleData.nextWeekOn ?? 0, nextDayCount: (tomorrowScheduleData.nextDayOn ?? 0))
+                self.printTomorrowStartTime(tomorrowSchoolStartTime: "", tomorrowSchedule: tomorrowSchedule, nextWeekCount: tomorrowScheduleData.nextWeekOn ?? 0, nextDayCount: (tomorrowScheduleData.nextDayOn ?? 0))
             }
         }
         else
@@ -119,7 +119,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         {
             if scheduleCode != "H", let scheduleObject = CoreDataStack.fetchLocalObjects(type: "Schedule", predicate: NSPredicate(format: "scheduleCode == %@", scheduleCode)) as? [Schedule], scheduleObject.count > 0, let periodTimes = CoreDataStack.decodeArrayFromJSON(object: scheduleObject[0], field: "periodTimes") as? Array<String>, let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: scheduleObject[0], field: "periodNumbers") as? Array<Int>
             {
-                setupStartTimeNotification(periodTimes: periodTimes, scheduleCodeOn: scheduleCodeOn)
+                setupStartTimeNotification(periodTimes: periodTimes, periodNumbers: periodNumbers, scheduleCodeOn: scheduleCodeOn)
                 
                 if let schoolNotifications = CoreDataStack.fetchLocalObjects(type: "SchoolNotification", predicate: NSPredicate(value: true)) as? [SchoolNotification]
                 {
@@ -148,9 +148,10 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         return hourString + ":" + minuteString + " " + AMPMString
     }
     
-    func setupStartTimeNotification(periodTimes: Array<String>, scheduleCodeOn: Int)
+    func setupStartTimeNotification(periodTimes: Array<String>, periodNumbers: Array<Int>, scheduleCodeOn: Int)
     {
-        let schoolStartTime = String(periodTimes[0].split(separator: "-")[0])
+        let startingPeriodIndex = scheduleInfoManager?.findNextClassBlock(currentPeriodIndex: 0, periodNumbers: periodNumbers) ?? 0
+        let schoolStartTime = String(periodTimes[startingPeriodIndex].split(separator: "-")[0])
         
         let schoolStartTimeNotificationContent = UNMutableNotificationContent()
         schoolStartTimeNotificationContent.title = "Tomorrow School Start Time"
@@ -179,11 +180,6 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
                     if let schoolPeriodTimeIndex = periodNumbers.firstIndex(of: Int(periodOn))
                     {
                         let schoolPeriodTime = periodTimes[schoolPeriodTimeIndex]
-                        
-                        if schoolPeriodTime.contains("10:20")
-                        {
-                            
-                        }
                         
                         let alertTime = notification.displayTimeAsOffset ?  (String(schoolPeriodTime.split(separator: "-")[(notification.shouldFireWhenPeriodStarts ? 0 : 1)])) : (String(notification.notificationTimeHour) + ":" + String(notification.notificationTimeMinute))
                         let triggerDateComponents = getDate(nextDay: nextDayCount, nextWeek: nextWeekCount, alertTime: alertTime, addingOffset: notification.displayTimeAsOffset ? Int(notification.notificationTimeOffset) : 0)

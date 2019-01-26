@@ -77,9 +77,9 @@ extension Date {
     
     func printSchoolStartEndMessage(message: String)
     
-    func printSchoolStartEndTime(periodTimes: Array<String>)
+    func printSchoolStartEndTime(schoolStartTime: String, schoolEndTime: String)
     
-    func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int)
+    func printTomorrowStartTime(tomorrowSchoolStartTime: String, tomorrowSchedule: Schedule, nextWeekCount: Int, nextDayCount: Int)
     
     @objc optional func setTimer(_ time: String)
     
@@ -102,8 +102,9 @@ class ScheduleInfoManager: NSObject {
     var periodNames: Array<String>?
     var periodPrinted = false
     var periodNamePrinted = false
-    var periodNumber: Int?
+    var periodIndex: Int?
     var freeMods: Array<Int>?
+    var offBlocks: Array<Int>?
     
     var todaySchedule: NSManagedObject?
     
@@ -218,8 +219,7 @@ class ScheduleInfoManager: NSObject {
         periodNamePrinted = false
         periodNames = nil
         freeMods = nil
-        
-        getUserID()
+        //offBlocks = nil
         
         if let weekSchedule = queryWeekSchedule()
         {
@@ -228,12 +228,19 @@ class ScheduleInfoManager: NSObject {
                 findCurrentPeriod(periodTimes: periodTimes)
             }
             
-            nextWeekOn = 0
-            nextDayOn = 0
-            if let tomorrowScheduleData = queryTomorrowSchedule(weekSchedules: weekSchedule, addDays: 0, loadedNextWeek: false), let tomorrowSchedule = tomorrowScheduleData.schedule, let nextDayOn = tomorrowScheduleData.nextDayOn, let nextWeekOn = tomorrowScheduleData.nextWeekOn
-            {
-                infoDelegate.printTomorrowStartTime(tomorrowSchedule: tomorrowSchedule, nextWeekCount: nextWeekOn, nextDayCount: nextDayOn)
-            }
+            refreshTomorrowScheduleInfo(weekSchedule: weekSchedule)
+        }
+        
+        getUserID()
+    }
+    
+    func refreshTomorrowScheduleInfo(weekSchedule: Array<String>)
+    {
+        nextWeekOn = 0
+        nextDayOn = 0
+        if let tomorrowScheduleData = queryTomorrowSchedule(weekSchedules: weekSchedule, addDays: 0, loadedNextWeek: false), let tomorrowSchedule = tomorrowScheduleData.schedule, let nextDayOn = tomorrowScheduleData.nextDayOn, let nextWeekOn = tomorrowScheduleData.nextWeekOn, let periodTimes = CoreDataStack.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>, let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodNumbers") as? Array<Int>
+        {
+            infoDelegate.printTomorrowStartTime(tomorrowSchoolStartTime: String(periodTimes[findNextClassBlock(currentPeriodIndex: 0, periodNumbers: periodNumbers) ?? 0].split(separator: "-")[0]), tomorrowSchedule: tomorrowSchedule, nextWeekCount: nextWeekOn, nextDayCount: nextDayOn)
         }
     }
     
@@ -275,8 +282,11 @@ class ScheduleInfoManager: NSObject {
             Logger.println(" USRSCH: Received periodNamesRecord")
             periodNames = periodNamesRecord.object(forKey: "periodNames") as? [String]
             freeMods = periodNamesRecord.object(forKey: "freeMods") as? [Int]
+            offBlocks = periodNamesRecord.object(forKey: "offBlocks") as? [Int]
             
             getPeriodName()
+
+            recalculateForOffBlocks()
         }
         else
         {
@@ -284,20 +294,64 @@ class ScheduleInfoManager: NSObject {
         }
     }
     
+    func recalculateForOffBlocks()
+    {
+        if todaySchedule != nil, let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int], let periodTimes = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodTimes") as? [String]
+        {
+            //let currentPeriodNumber = periodNumbers[periodIndex!-1]-1
+            let nextClassPeriodIndex = findNextClassBlock(currentPeriodIndex: ((periodIndex ?? 1)-1), periodNumbers: periodNumbers)
+            
+            if periodIndex != nil && nextClassPeriodIndex != nil && periodIndex!-1 != nextClassPeriodIndex!, let periodTimes = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodTimes") as? Array<String>
+            {
+                infoDelegate.printCurrentPeriod(periodRangeString: periodTimes[nextClassPeriodIndex!], periodNumber: periodNumbers[nextClassPeriodIndex!], todaySchedule: todaySchedule!)
+                getPeriodName()
+            }
+            else if periodIndex == nil && nextClassPeriodIndex != nil
+            {
+                if getDate(hourMinute: String(periodTimes[nextClassPeriodIndex!].split(separator: "-")[0]), day: Date()) > Date()
+                {
+                    infoDelegate.printCurrentMessage(message: "School has not started")
+                }
+                else
+                {
+                    infoDelegate.printCurrentMessage(message: "School has ended")
+                }
+            }
+            else if periodIndex != nil && nextClassPeriodIndex == nil
+            {
+                infoDelegate.printCurrentMessage(message: "School has ended")
+            }
+            
+            infoDelegate.printSchoolStartEndTime(schoolStartTime: String(periodTimes[findNextClassBlock(currentPeriodIndex: 0, periodNumbers: periodNumbers) ?? 0].split(separator: "-")[0]), schoolEndTime: String(periodTimes[findLastClassBlock(periodNumbers: periodNumbers)].split(separator: "-")[1]))
+        }
+        
+        if let weekSchedule = queryWeekSchedule()
+        {
+            refreshTomorrowScheduleInfo(weekSchedule: weekSchedule)
+        }
+    }
+    
     func getPeriodName()
     {
-        if periodPrinted && !periodNamePrinted && todaySchedule != nil && periodNumber != nil
+        if periodPrinted && !periodNamePrinted && todaySchedule != nil && periodIndex != nil
         {
-            if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
+            if (periodNames?.count ?? 0) > periodIndex!-1
             {
-                let freeModsAreLoaded = (freeMods?.count ?? 0) >= periodNumbers[periodNumber!-1]
-                Logger.println(" GPN: Free mods are loaded: " + String(freeModsAreLoaded))
+                Logger.println(" GPN: Printing period name")
+                infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
+                return
+            }
+            
+            //if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
+            //{
+                //let freeModsAreLoaded = (freeMods?.count ?? 0) >= periodNumbers[periodIndex!-1]
+                //Logger.println(" GPN: Free mods are loaded: " + String(freeModsAreLoaded))
                 /*if freeModsAreLoaded
                 {
-                    Logger.println(" GPN: Is a free mod: " + String(freeMods?[periodNumbers[periodNumber!-1]-1] == 1))
+                    Logger.println(" GPN: Is a free mod: " + String(freeMods?[periodNumbers[periodIndex!-1]-1] == 1))
                     Logger.println(" GPN: Today is a B or C code: " + String(((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")))
                     
-                    if freeMods?[periodNumbers[periodNumber!-1]-1] == 1 && ((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")
+                    if freeMods?[periodNumbers[periodIndex!-1]-1] == 1 && ((todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "B" || (todaySchedule!.value(forKey: "scheduleCode") as? String ?? "") == "C")
                     {
                         if let periodTimes = decodeArrayFromJSON(object: todaySchedule!, field: "periodTimes") as? Array<String>
                         {
@@ -306,15 +360,51 @@ class ScheduleInfoManager: NSObject {
                         }
                     }
                 }*/
-                
-                if (periodNames?.count ?? 0) > periodNumber!-1
-                {
-                    Logger.println(" GPN: Printing period name")
-                    infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
-                    return
-                }
+            //}
+        }
+    }
+    
+    func findNextClassBlock(currentPeriodIndex: Int, periodNumbers: Array<Int>) -> Int?
+    {
+        //var nextClassPeriodIndex = 0
+        for periodNumber in periodNumbers
+        {
+            let periodNumberIndex = periodNumbers.index(of: periodNumber)!
+//            if offBlocks != nil && offBlocks!.count > periodNumber-1
+//            {
+//                print(offBlocks![periodNumber-1])
+//                print(periodNumberIndex, currentPeriodIndex)
+//                print(periodNumberIndex >= currentPeriodIndex)
+//            }
+            if offBlocks != nil && offBlocks!.count > periodNumber-1 && offBlocks![periodNumber-1] == 0 && periodNumberIndex >= currentPeriodIndex
+            {
+                return periodNumberIndex
             }
         }
+        /*for isOffBlock in offBlocks ?? []
+        {
+            if periodNumbers[nextClassPeriodIndex] >= periodNumbers[currentPeriodIndex] && isOffBlock == 0
+            {
+                return nextClassPeriodIndex
+            }
+            nextClassPeriodIndex += 1
+        }*/
+        
+        return nil
+    }
+    
+    func findLastClassBlock(periodNumbers: Array<Int>) -> Int
+    {
+        var lastPeriodIndex = 0
+        for periodNumber in periodNumbers
+        {
+            if offBlocks != nil && offBlocks!.count > periodNumber-1 && offBlocks![periodNumber-1] == 0
+            {
+                lastPeriodIndex = periodNumbers.index(of: periodNumber)!
+            }
+        }
+        
+        return lastPeriodIndex
     }
     
     //MARK: Week Schedule
@@ -341,7 +431,7 @@ class ScheduleInfoManager: NSObject {
         if let weekScheduleRecord = CoreDataStack.fetchLocalObjects(type: "WeekSchedules", predicate: weekScheduleQueryPredicate)?.first as? NSManagedObject
         {
             Logger.println(" FWSCH: Received weekScheduleRecord")
-            infoDelegate.printCurrentMessage(message: "Loading...\nReceived weekScheduleRecord")
+            //infoDelegate.printCurrentMessage(message: "Loading...\nReceived weekScheduleRecord")
             
             if let schedules = CoreDataStack.decodeArrayFromJSON(object: weekScheduleRecord, field: "schedules") as? Array<String>
             {
@@ -558,7 +648,7 @@ class ScheduleInfoManager: NSObject {
         var nextPeriodStart: Substring?
         var nextPeriodNumber: Int?
         var schoolHasNotStarted = false
-        infoDelegate.printSchoolStartEndTime(periodTimes: periodTimes)
+        infoDelegate.printSchoolStartEndTime(schoolStartTime: String(periodTimes[0].split(separator: "-")[0]), schoolEndTime: String(periodTimes[periodTimes.count-1].split(separator: "-")[1]))
         
         for periodRangeString in periodTimes
         {
@@ -579,7 +669,7 @@ class ScheduleInfoManager: NSObject {
                 if periodRangeContainsDate
                 {
                     periodFound = true
-                    self.periodNumber = periodOn
+                    self.periodIndex = periodOn
                     periodPrinted = true
                     Logger.println(" FCURPER: Found current period!")
                     
@@ -639,7 +729,7 @@ class ScheduleInfoManager: NSObject {
                 
                 if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
                 {
-                    periodNumber = (periodNumbers.index(of: nextPeriodNumber!) ?? 0)+1
+                    periodIndex = (periodNumbers.index(of: nextPeriodNumber!) ?? 0)+1
                 }
                 
                 infoDelegate.printCurrentMessage(message: passingPeriodMessage1 + passingPeriodMessage2)
@@ -666,13 +756,13 @@ class ScheduleInfoManager: NSObject {
     {
         if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? Array<Int>
         {
-            let currentPeriodWithMod = periodNumbers[periodNumber!-1]
+            let currentPeriodWithMod = periodNumbers[periodIndex!-1]
         
-            let periodStart = periodTimes[periodNumber!-1].split(separator: "-")[0]
+            let periodStart = periodTimes[periodIndex!-1].split(separator: "-")[0]
             var periodStartHour = Int(periodStart.split(separator: ":")[0]) ?? 0
             var periodStartMinute = Int(periodStart.split(separator: ":")[1]) ?? 0
             
-            let periodEnd = periodTimes[periodNumber!-1].split(separator: "-")[1]
+            let periodEnd = periodTimes[periodIndex!-1].split(separator: "-")[1]
             var periodEndHour = Int(periodEnd.split(separator: ":")[0]) ?? 0
             var periodEndMinute = Int(periodEnd.split(separator: ":")[1]) ?? 0
             
@@ -839,6 +929,11 @@ class ScheduleInfoManager: NSObject {
                 infoDelegate.printPeriodName(todaySchedule: self.todaySchedule!, periodNames: periodNames!)
             }
         }
+    }
+    
+    func calculateStartTime(periodTimes: Array<String>, periodNumbers: Array<String>)
+    {
+        
     }
     
     func zeroPadding(_ int: Int) -> String

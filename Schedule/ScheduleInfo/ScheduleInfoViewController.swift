@@ -357,7 +357,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
         }
     }
         
-    func getDate(hourMinute: Substring, day: Date) -> Date
+    func getDate(hourMinute: String, day: Date) -> Date
     {
         let hourMinuteSplit = hourMinute.split(separator: ":")
         let gregorian = Calendar(identifier: .gregorian)
@@ -370,27 +370,24 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
         return periodStartDate
     }
     
-    func printSchoolStartEndTime(periodTimes: Array<String>)
+    func printSchoolStartEndTime(schoolStartTime: String, schoolEndTime: String)
     {
         let currentDate = Date()
         
-        let startTimeArray = periodTimes[0].split(separator: "-")
-        let startTimeStart = getDate(hourMinute: startTimeArray[0], day: currentDate)
-        
-        let endTimeArray = periodTimes[periodTimes.count-1].split(separator: "-")
-        let endTimeEnd = getDate(hourMinute: endTimeArray[1], day: currentDate)
+        let startTimeStart = getDate(hourMinute: schoolStartTime, day: currentDate)
+        let endTimeEnd = getDate(hourMinute: schoolEndTime, day: currentDate)
         
         let schoolStartToPastRange = Date.distantPast ... startTimeStart
         if schoolStartToPastRange.contains(currentDate)
         {
             OperationQueue.main.addOperation {
-                self.schoolStartEndLabel.text = "School starts today at " + Date().convertToStandardTime(date: String(startTimeArray[0]))
+                self.schoolStartEndLabel.text = "School starts today at " + Date().convertToStandardTime(date: String(schoolStartTime))
             }
         }
         else
         {
             OperationQueue.main.addOperation {
-                self.schoolStartEndLabel.text = "School started today at " + Date().convertToStandardTime(date: String(startTimeArray[0]))
+                self.schoolStartEndLabel.text = "School started today at " + Date().convertToStandardTime(date: String(schoolStartTime))
             }
         }
         
@@ -398,13 +395,13 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
         if schoolEndToPastRange.contains(currentDate)
         {
             OperationQueue.main.addOperation {
-                self.schoolStartEndLabel.text = self.schoolStartEndLabel.text! + "\nSchool ends today at " + Date().convertToStandardTime(date: String(endTimeArray[1]))
+                self.schoolStartEndLabel.text = self.schoolStartEndLabel.text! + "\nSchool ends today at " + Date().convertToStandardTime(date: String(schoolEndTime))
             }
         }
         else
         {
             OperationQueue.main.addOperation {
-                self.schoolStartEndLabel.text = self.schoolStartEndLabel.text! + "\nSchool ended today at " + Date().convertToStandardTime(date: String(endTimeArray[1]))
+                self.schoolStartEndLabel.text = self.schoolStartEndLabel.text! + "\nSchool ended today at " + Date().convertToStandardTime(date: String(schoolEndTime))
             }
         }
     }
@@ -444,70 +441,67 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     {
         if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
         {
-            if !scheduleManager!.periodNamePrinted && periodNames.count > periodNumbers[self.scheduleManager!.periodNumber!-1]-1
+            if !scheduleManager!.periodNamePrinted && periodNames.count > periodNumbers[self.scheduleManager!.periodIndex!-1]-1
             {
                 scheduleManager!.periodNamePrinted = true
                 OperationQueue.main.addOperation {
-                    self.currentPeriodLabel.text = self.currentPeriodLabel.text! + "\n" + periodNames[periodNumbers[self.scheduleManager!.periodNumber!-1]-1]
+                    self.currentPeriodLabel.text = self.currentPeriodLabel.text! + "\n" + periodNames[periodNumbers[self.scheduleManager!.periodIndex!-1]-1]
                 }
             }
         }
     }
     
-    func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int)
+    func printTomorrowStartTime(tomorrowSchoolStartTime: String, tomorrowSchedule: Schedule, nextWeekCount: Int, nextDayCount: Int)
     {
-        if let tomorrowPeriodTimes = CoreDataStack.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
+        //Determine the date when school starts next
+        var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
+        let gregorian = Calendar(identifier: .gregorian)
+        
+        //Find the current day of the week from 0-6
+        let todayComponents = gregorian.dateComponents([.weekday], from: Date())
+        let currentDayOfWeek = todayComponents.weekday! - 1
+        
+        let dayInSeconds = (60*60*24+3600)
+        
+        //Add currentDayOfWeek to the nextDayCount in seconds
+        var weekDaysToAdd = 0.0
+        if nextWeekCount > 0
         {
-            //Determine the date when school starts next
-            var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
-            let gregorian = Calendar(identifier: .gregorian)
-            
-            //Find the current day of the week from 0-6
-            let todayComponents = gregorian.dateComponents([.weekday], from: Date())
-            let currentDayOfWeek = todayComponents.weekday! - 1
-            
-            let dayInSeconds = (60*60*24+3600)
-            
-            //Add currentDayOfWeek to the nextDayCount in seconds
-            var weekDaysToAdd = 0.0
-            if nextWeekCount > 0
-            {
-                weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1))
-            }
-            else
-            {
-                weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1 + currentDayOfWeek))
-            }
-            startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
-            
-            //Set the hour correctly
-            var startOfNextSchoolDayComponents = gregorian.dateComponents([.month, .day, .weekday], from: startOfNextSchoolDayRaw)
-            startOfNextSchoolDayComponents.hour = 12
-            let startOfNextSchoolDayFormatted = gregorian.date(from: startOfNextSchoolDayComponents)!
-            
-            //Format as MM/dd
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MM/dd"
-            let startOfNextSchoolDayString = formatter.string(from: startOfNextSchoolDayFormatted)
-            
-            //Get the start time and the weekday name
-            let tomorrowSchoolStartTime = tomorrowPeriodTimes[0].split(separator: "-")[0]
-            
-            var weekDayOfSchoolStart = ""
-            if nextWeekCount > 0
-            {
-                weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1)
-            }
-            else
-            {
-                weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1 + currentDayOfWeek)
-            }
-            
-            OperationQueue.main.addOperation {
-                let schoolStart1 = "School starts " + weekDayOfSchoolStart + ",\n" + startOfNextSchoolDayString
-                let schoolStart2 = " at " + Date().convertToStandardTime(date: String(tomorrowSchoolStartTime))
-                self.tomorrowStartTimeLabel.text = schoolStart1 + schoolStart2
-            }
+            weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1))
+        }
+        else
+        {
+            weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1 + currentDayOfWeek))
+        }
+        startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
+        
+        //Set the hour correctly
+        var startOfNextSchoolDayComponents = gregorian.dateComponents([.month, .day, .weekday], from: startOfNextSchoolDayRaw)
+        startOfNextSchoolDayComponents.hour = 12
+        let startOfNextSchoolDayFormatted = gregorian.date(from: startOfNextSchoolDayComponents)!
+        
+        //Format as MM/dd
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd"
+        let startOfNextSchoolDayString = formatter.string(from: startOfNextSchoolDayFormatted)
+        
+        //Get the start time and the weekday name
+        //let tomorrowSchoolStartTime = tomorrowPeriodTimes[0].split(separator: "-")[0]
+        
+        var weekDayOfSchoolStart = ""
+        if nextWeekCount > 0
+        {
+            weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1)
+        }
+        else
+        {
+            weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1 + currentDayOfWeek)
+        }
+        
+        OperationQueue.main.addOperation {
+            let schoolStart1 = "School starts " + weekDayOfSchoolStart + ",\n" + startOfNextSchoolDayString
+            let schoolStart2 = " at " + Date().convertToStandardTime(date: String(tomorrowSchoolStartTime))
+            self.tomorrowStartTimeLabel.text = schoolStart1 + schoolStart2
         }
     }
     
@@ -647,7 +641,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
             {
                 if (source.periodNames.count > 0)
                 {
-                    let userScheduleDictionary = ["periodNames":source.periodNames, "userID":userID, "freeMods":source.freeMods] as [String : Any]
+                    let userScheduleDictionary = ["periodNames":source.periodNames, "userID":userID, "offBlocks":source.offBlocks] as [String : Any]
                     CloudManager.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
                 }
             }

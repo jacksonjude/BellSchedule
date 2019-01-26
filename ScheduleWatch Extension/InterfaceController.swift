@@ -94,59 +94,56 @@ class InterfaceController: WKInterfaceController, ScheduleInfoDelegate {
         }
     }
     
-    func printTomorrowStartTime(tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int) {
-        if let tomorrowPeriodTimes = CoreDataStack.decodeArrayFromJSON(object: tomorrowSchedule, field: "periodTimes") as? Array<String>
+    func printTomorrowStartTime(tomorrowSchoolStartTime: String, tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int) {
+        //Determine the date when school starts next
+        var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
+        let gregorian = Calendar(identifier: .gregorian)
+        
+        //Find the current day of the week from 0-6
+        let todayComponents = gregorian.dateComponents([.weekday], from: Date())
+        let currentDayOfWeek = todayComponents.weekday! - 1
+        
+        let dayInSeconds = (60*60*24+3600)
+        
+        //Add currentDayOfWeek to the nextDayCount in seconds
+        var weekDaysToAdd = 0.0
+        if nextWeekCount > 0
         {
-            //Determine the date when school starts next
-            var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
-            let gregorian = Calendar(identifier: .gregorian)
-            
-            //Find the current day of the week from 0-6
-            let todayComponents = gregorian.dateComponents([.weekday], from: Date())
-            let currentDayOfWeek = todayComponents.weekday! - 1
-            
-            let dayInSeconds = (60*60*24+3600)
-            
-            //Add currentDayOfWeek to the nextDayCount in seconds
-            var weekDaysToAdd = 0.0
-            if nextWeekCount > 0
-            {
-                weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1))
-            }
-            else
-            {
-                weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1 + currentDayOfWeek))
-            }
-            startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
-            
-            //Set the hour correctly
-            var startOfNextSchoolDayComponents = gregorian.dateComponents([.month, .day, .weekday], from: startOfNextSchoolDayRaw)
-            startOfNextSchoolDayComponents.hour = 12
-            let startOfNextSchoolDayFormatted = gregorian.date(from: startOfNextSchoolDayComponents)!
-            
-            //Format as MM/dd
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MM/dd"
-            let startOfNextSchoolDayString = formatter.string(from: startOfNextSchoolDayFormatted)
-            
-            //Get the start time and the weekday name
-            let tomorrowSchoolStartTime = tomorrowPeriodTimes[0].split(separator: "-")[0]
-            
-            var weekDayOfSchoolStart = ""
-            if nextWeekCount > 0
-            {
-                weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1)
-            }
-            else
-            {
-                weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1 + currentDayOfWeek)
-            }
-            
-            OperationQueue.main.addOperation {
-                let schoolStart1 = "School starts " + weekDayOfSchoolStart + ",\n" + startOfNextSchoolDayString
-                let schoolStart2 = " at " + Date().convertToStandardTime(date: String(tomorrowSchoolStartTime))
-                self.tomorrowStartTimeLabel.setText(schoolStart1 + schoolStart2)
-            }
+            weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1))
+        }
+        else
+        {
+            weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1 + currentDayOfWeek))
+        }
+        startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
+        
+        //Set the hour correctly
+        var startOfNextSchoolDayComponents = gregorian.dateComponents([.month, .day, .weekday], from: startOfNextSchoolDayRaw)
+        startOfNextSchoolDayComponents.hour = 12
+        let startOfNextSchoolDayFormatted = gregorian.date(from: startOfNextSchoolDayComponents)!
+        
+        //Format as MM/dd
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd"
+        let startOfNextSchoolDayString = formatter.string(from: startOfNextSchoolDayFormatted)
+        
+        //Get the start time and the weekday name
+        //let tomorrowSchoolStartTime = tomorrowPeriodTimes[0].split(separator: "-")[0]
+        
+        var weekDayOfSchoolStart = ""
+        if nextWeekCount > 0
+        {
+            weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1)
+        }
+        else
+        {
+            weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1 + currentDayOfWeek)
+        }
+        
+        OperationQueue.main.addOperation {
+            let schoolStart1 = "School starts " + weekDayOfSchoolStart + ",\n" + startOfNextSchoolDayString
+            let schoolStart2 = " at " + Date().convertToStandardTime(date: String(tomorrowSchoolStartTime))
+            self.tomorrowStartTimeLabel.setText(schoolStart1 + schoolStart2)
         }
     }
     
