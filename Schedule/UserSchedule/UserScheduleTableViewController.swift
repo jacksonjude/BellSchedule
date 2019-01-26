@@ -160,6 +160,7 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
             Logger.println(" USRSCH: Did not receive periodNamesRecord")
             
             periodNames = ["", "", "", "", "", "", "", "", "Registry"]
+            offBlocks = [0, 0, 0, 0, 0, 0, 0, 0]
         }
         
         OperationQueue.main.addOperation {

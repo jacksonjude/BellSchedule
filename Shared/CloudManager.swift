@@ -28,12 +28,17 @@ class CloudManager: NSObject
         
         objectQueryOperation.recordFetchedBlock = {(record) in
             NotificationCenter.default.post(name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + returnID), object: nil, userInfo: ["object":record])
+            currentCloudOperations.remove(at: currentCloudOperations.index(forKey: returnID)!)
         }
         
         objectQueryOperation.queryCompletionBlock = {(cursorThingy, error) in
             if error != nil
             {
                 Logger.println(error!)
+            }
+            
+            if currentCloudOperations[returnID] != nil
+            {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + returnID), object: nil)
             }
         }

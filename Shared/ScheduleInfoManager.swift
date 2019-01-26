@@ -303,8 +303,11 @@ class ScheduleInfoManager: NSObject {
             
             if periodIndex != nil && nextClassPeriodIndex != nil && periodIndex!-1 != nextClassPeriodIndex!, let periodTimes = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodTimes") as? Array<String>
             {
-                infoDelegate.printCurrentPeriod(periodRangeString: periodTimes[nextClassPeriodIndex!], periodNumber: periodNumbers[nextClassPeriodIndex!], todaySchedule: todaySchedule!)
-                getPeriodName()
+                let messagePart1BecauseTheCompilerSucks = "Off Block\nBlock " + String(nextClassPeriodIndex!) + " starts at " + String(periodTimes[nextClassPeriodIndex!].split(separator: "-")[0])
+                let messagePart2BecauseTheCompilerSucks = "\n" + ((periodNames?.count ?? 0 > nextClassPeriodIndex!) ? periodNames![nextClassPeriodIndex!] : "")
+                infoDelegate.printCurrentMessage(message: messagePart1BecauseTheCompilerSucks + messagePart2BecauseTheCompilerSucks)
+                //infoDelegate.printCurrentPeriod(periodRangeString: periodTimes[nextClassPeriodIndex!], periodNumber: nextClassPeriodIndex!, todaySchedule: todaySchedule!)
+                //getPeriodName()
             }
             else if periodIndex == nil && nextClassPeriodIndex != nil
             {
