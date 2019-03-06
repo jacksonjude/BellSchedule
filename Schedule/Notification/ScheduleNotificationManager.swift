@@ -29,6 +29,8 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
         nextDayCounts = []
         nextWeekCounts = []
         
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        
         Logger.println("SNM: Gathering notification data...")
         
         scheduleInfoManager = ScheduleInfoManager(delegate: self, downloadData: false, onlyFindOneDay: true)
@@ -116,9 +118,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     func setupNotifications()
     {
         Logger.println("SNM: Setting up notifications...")
-        
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        
+                
         var scheduleCodeOn = 0
         for scheduleCode in tomorrowSchoolCodes
         {
