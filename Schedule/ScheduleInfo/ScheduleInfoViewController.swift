@@ -209,7 +209,8 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
         let settingsAlert = UIAlertController(title: "Settings", message: "\n\n", preferredStyle: .alert)
         
         settingsAlert.addTextField { (textField) in
-            textField.placeholder = (UserDefaults.standard.object(forKey: "userID") as? String) ?? "UserID"
+            let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
+            textField.placeholder = (appGroupUserDefaults?.object(forKey: "userID") as? String) ?? "UserID"
         }
         
         settingsAlert.addTextField { (textField) in
@@ -265,7 +266,9 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
             let userID = settingsAlert.textFields![0].text
             if userID != nil && userID != ""
             {
-                UserDefaults.standard.set(userID, forKey: "userID")
+                let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
+                appGroupUserDefaults?.set(userID, forKey: "userID")
+                appGroupUserDefaults?.synchronize()
                 Logger.println(" USRID: Set userID: " + userID!)
             }
             
@@ -637,7 +640,8 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
         if source.uploadData
         {
             Logger.println("Exiting UserScheduleTableView and uploading...")
-            if let userID = UserDefaults.standard.object(forKey: "userID") as? String
+            let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
+            if let userID = appGroupUserDefaults?.object(forKey: "userID") as? String
             {
                 if (source.periodNames.count > 0)
                 {

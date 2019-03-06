@@ -29,7 +29,8 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if UserDefaults.standard.object(forKey: "userID") == nil
+        let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
+        if appGroupUserDefaults?.object(forKey: "userID") == nil
         {
             showUserIDAlert()
         }
@@ -40,7 +41,8 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
         let userIDAlert = UIAlertController(title: "Set UserID", message: "Enter a UserID to load or create a new user schedule", preferredStyle: .alert)
         
         userIDAlert.addTextField { (textField) in
-            textField.placeholder = (UserDefaults.standard.object(forKey: "userID") as? String) ?? "UserID"
+            let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
+            textField.placeholder = (appGroupUserDefaults?.object(forKey: "userID") as? String) ?? "UserID"
         }
         
         userIDAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (alert) in
@@ -51,7 +53,9 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
             let userID = userIDAlert.textFields![0].text
             if userID != nil && userID != ""
             {
-                UserDefaults.standard.set(userID, forKey: "userID")
+                let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
+                appGroupUserDefaults?.set(userID, forKey: "userID")
+                appGroupUserDefaults?.synchronize()
                 Logger.println(" USRID: Set userID: " + userID!)
                 
                 self.justSetUserScheduleID = true
@@ -89,7 +93,8 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
     func getUserID()
     {
         Logger.println(" USRID: Fetching userID")
-        if let userID = UserDefaults.standard.object(forKey: "userID") as? String
+        let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
+        if let userID = appGroupUserDefaults?.object(forKey: "userID") as? String
         {
             Logger.println(" USRID: userID: " + userID)
             queryUserSchedule(userID: userID)
@@ -123,7 +128,9 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
                         let confirmUserIDAlert = UIAlertController(title: "Confirm UserID", message: "This UserID is already linked to a schedule. Load existing schedule?", preferredStyle: .alert)
                         
                         confirmUserIDAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (alert) in
-                            UserDefaults.standard.set(nil, forKey: "userID")
+                            let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
+                            appGroupUserDefaults?.set(nil, forKey: "userID")
+                            appGroupUserDefaults?.synchronize()
                             self.performSegue(withIdentifier: "exitUserSchedule", sender: self)
                         }))
                         

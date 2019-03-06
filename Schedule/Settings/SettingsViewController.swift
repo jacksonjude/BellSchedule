@@ -102,7 +102,8 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         }
         alertTimeButton.setTitle(notificationHour + ":" + notificationMinute + " " + notificationAMPM, for: UIControl.State.normal)
         
-        userIDTextField.placeholder = (UserDefaults.standard.object(forKey: "userID") as? String ?? "")
+        let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
+        userIDTextField.placeholder = (appGroupUserDefaults?.object(forKey: "userID") as? String ?? "")
         
         syncButton.setTitle(String((UserDefaults.standard.object(forKey: "syncData") as? Bool) ?? true), for: UIControl.State.normal)
         
@@ -114,8 +115,10 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         if userIDTextField.text != nil && userIDTextField.text != ""
         {
+            let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
             Logger.println(" SETV: Set userID!")
-            UserDefaults.standard.set(userIDTextField.text, forKey: "userID")
+            appGroupUserDefaults?.set(userIDTextField.text, forKey: "userID")
+            appGroupUserDefaults?.synchronize()
             
             userIDTextField.placeholder = userIDTextField.text
             userIDTextField.text = ""

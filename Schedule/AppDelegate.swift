@@ -34,6 +34,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.set(nil, forKey: "lastUpdatedData")
         }
         
+        MTMigration.migrate(toBuild: "20190129.1") {
+            if let userID = UserDefaults.standard.object(forKey: "UserID")
+            {
+                let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
+                appGroupUserDefaults?.set(userID, forKey: "userID")
+                appGroupUserDefaults?.synchronize()
+            }
+        }
+        
         backgroundName = (UserDefaults.standard.object(forKey: "backgroundName") as? String) ?? "background1"
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in

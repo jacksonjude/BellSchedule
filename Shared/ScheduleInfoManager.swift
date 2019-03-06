@@ -231,7 +231,10 @@ class ScheduleInfoManager: NSObject {
             refreshTomorrowScheduleInfo(weekSchedule: weekSchedule)
         }
         
-        getUserID()
+        if let userID = getUserID()
+        {
+            queryUserSchedule(userID: userID)
+        }
     }
     
     func refreshTomorrowScheduleInfo(weekSchedule: Array<String>)
@@ -246,18 +249,17 @@ class ScheduleInfoManager: NSObject {
     
     //MARK: UserSchedule
     
-    func getUserID()
+    func getUserID() -> String?
     {
         Logger.println(" USRID: Fetching userID")
-        if let userID = UserDefaults.standard.object(forKey: "userID") as? String
+        let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
+        if let userID = appGroupUserDefaults?.object(forKey: "userID") as? String
         {
             Logger.println(" USRID: userID: " + userID)
-            queryUserSchedule(userID: userID)
+            return userID
         }
-        else
-        {
-            Logger.println(" USRID: No userID")
-        }
+        Logger.println(" USRID: No userID")
+        return nil
     }
     
     func queryUserSchedule(userID: String)

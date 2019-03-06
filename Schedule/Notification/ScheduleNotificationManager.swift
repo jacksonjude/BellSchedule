@@ -17,6 +17,8 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     var nextDayCounts = Array<Int>()
     var nextWeekCounts = Array<Int>()
     
+    let numberOfStartTimeNotifications = 5
+    
     override init() {
         super.init()
     }
@@ -74,11 +76,14 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
             //let tomorrowSchoolStartTime = String(tomorrowPeriodTimes[0].split(separator: "-")[0])
         }*/
         
-        tomorrowSchoolCodes.append(tomorrowSchedule.scheduleCode ?? "H")
-        nextDayCounts.append(nextDayCount)
-        nextWeekCounts.append(nextWeekCount)
-        
-        findNextSchoolStartTime(nextDayCount: nextDayCount, nextWeekCount: nextWeekCount)
+        if scheduleInfoManager?.offBlocks != nil || scheduleInfoManager?.getUserID() == nil
+        {
+            tomorrowSchoolCodes.append(tomorrowSchedule.scheduleCode ?? "H")
+            nextDayCounts.append(nextDayCount)
+            nextWeekCounts.append(nextWeekCount)
+            
+            findNextSchoolStartTime(nextDayCount: nextDayCount, nextWeekCount: nextWeekCount)
+        }
     }
     
     func noSchoolTomorrow(nextDayCount: Int, nextWeekCount: Int) {
@@ -91,8 +96,8 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     
     func findNextSchoolStartTime(nextDayCount: Int, nextWeekCount: Int)
     {
-        Logger.println("SNM: \(tomorrowSchoolCodes.count)/5")
-        if tomorrowSchoolCodes.count < 5 && scheduleInfoManager?.nextDayOn != nil
+        Logger.println("SNM: \(tomorrowSchoolCodes.count)/\(numberOfStartTimeNotifications)")
+        if tomorrowSchoolCodes.count < numberOfStartTimeNotifications && scheduleInfoManager?.nextDayOn != nil
         {
             let loadedNextWeek = nextWeekCount > 0
             scheduleInfoManager!.nextDayOn! += 1

@@ -46,7 +46,7 @@ class NotificationCheckboxViewController: UIViewController
             stackViewChecked = NotificationEditorState.notificationPeriodArray ?? stackViewChecked
         case .schedules:
             var scheduleCodes: Array<String> = ["N", "M", "R", "S", "+"]
-            if let scheduleCodesData = UserDefaults.standard.object(forKey: "") as? Data, let scheduleCodesTmp = try? JSONSerialization.jsonObject(with: scheduleCodesData, options: JSONSerialization.ReadingOptions.allowFragments) as? Array<String>
+            if let scheduleCodesData = UserDefaults.standard.object(forKey: "SOMETHIN") as? Data, let scheduleCodesTmp = try? JSONSerialization.jsonObject(with: scheduleCodesData, options: JSONSerialization.ReadingOptions.allowFragments) as? Array<String>
             {
                 scheduleCodes = scheduleCodesTmp ?? ["N", "M", "R", "S", "+"]
             }
