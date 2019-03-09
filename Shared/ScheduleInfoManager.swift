@@ -305,8 +305,10 @@ class ScheduleInfoManager: NSObject {
             
             if periodIndex != nil && nextClassPeriodIndex != nil && periodIndex!-1 != nextClassPeriodIndex!, let periodTimes = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodTimes") as? Array<String>
             {
-                let messagePart1BecauseTheCompilerSucks = "Off Block\nBlock " + String(nextClassPeriodIndex!) + " starts at " + String(periodTimes[nextClassPeriodIndex!].split(separator: "-")[0])
-                let messagePart2BecauseTheCompilerSucks = "\n" + ((periodNames?.count ?? 0 > nextClassPeriodIndex!) ? periodNames![nextClassPeriodIndex!] : "")
+                let nextClassPeriodNumber = periodNumbers[nextClassPeriodIndex!]
+                
+                let messagePart1BecauseTheCompilerSucks = "Off Block\nBlock " + String(nextClassPeriodNumber) + " starts at " + String(periodTimes[nextClassPeriodIndex!].split(separator: "-")[0])
+                let messagePart2BecauseTheCompilerSucks = "\n" + ((periodNames?.count ?? 0 > nextClassPeriodIndex!) ? periodNames![nextClassPeriodNumber-1] : "")
                 infoDelegate.printCurrentMessage(message: messagePart1BecauseTheCompilerSucks + messagePart2BecauseTheCompilerSucks)
                 //infoDelegate.printCurrentPeriod(periodRangeString: periodTimes[nextClassPeriodIndex!], periodNumber: nextClassPeriodIndex!, todaySchedule: todaySchedule!)
                 //getPeriodName()
@@ -371,29 +373,15 @@ class ScheduleInfoManager: NSObject {
     
     func findNextClassBlock(currentPeriodIndex: Int, periodNumbers: Array<Int>) -> Int?
     {
-        //var nextClassPeriodIndex = 0
         for periodNumber in periodNumbers
         {
             let periodNumberIndex = periodNumbers.index(of: periodNumber)!
-//            if offBlocks != nil && offBlocks!.count > periodNumber-1
-//            {
-//                print(offBlocks![periodNumber-1])
-//                print(periodNumberIndex, currentPeriodIndex)
-//                print(periodNumberIndex >= currentPeriodIndex)
-//            }
-            if offBlocks != nil && offBlocks!.count > periodNumber-1 && offBlocks![periodNumber-1] == 0 && periodNumberIndex >= currentPeriodIndex
+            //Hardcode reg#
+            if ((offBlocks != nil && offBlocks!.count > periodNumber-1 && offBlocks![periodNumber-1] == 0) || periodNumber == 9) && periodNumberIndex >= currentPeriodIndex
             {
                 return periodNumberIndex
             }
         }
-        /*for isOffBlock in offBlocks ?? []
-        {
-            if periodNumbers[nextClassPeriodIndex] >= periodNumbers[currentPeriodIndex] && isOffBlock == 0
-            {
-                return nextClassPeriodIndex
-            }
-            nextClassPeriodIndex += 1
-        }*/
         
         return nil
     }
