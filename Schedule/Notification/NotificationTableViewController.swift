@@ -101,7 +101,7 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
         return hourString + ":" + minuteString + " " + AMPMString
     }
     
-    var selectedNotificationRowIndex: IndexPath?
+    var selectedNotificationIndex: IndexPath?
     var schoolNotificationUUID: String?
     
     @IBAction func addSchoolNotification(_ sender: Any)
@@ -117,12 +117,15 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
         schoolNotification.schedulesToFireOn = try? JSONSerialization.data(withJSONObject: ["N":true, "M":true, "R":true, "S":true, "+":true], options: JSONSerialization.WritingOptions.prettyPrinted)
         schoolNotification.uuid = UUID().uuidString
         
+        
         schoolNotificationUUID = schoolNotification.uuid
         
         CoreDataStack.saveContext()
         
         schoolNotifications![0].append(schoolNotification)
-        schoolNotificationsTableView.insertRows(at: [IndexPath(row: (schoolNotifications?[0].count ?? 0)-1, section: 0)], with: .fade)
+        let newNotificationIndexPath = IndexPath(row: (schoolNotifications?[0].count ?? 0)-1, section: 0)
+        selectedNotificationIndex = newNotificationIndexPath
+        schoolNotificationsTableView.insertRows(at: [newNotificationIndexPath], with: .fade)
         
         self.performSegue(withIdentifier: "openNotificationEditor", sender: self)
     }
@@ -138,7 +141,7 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         schoolNotificationUUID = schoolNotifications![indexPath.section][indexPath.row].uuid
-        selectedNotificationRowIndex = indexPath
+        selectedNotificationIndex = indexPath
         
         return indexPath
     }
@@ -153,6 +156,7 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
         
         let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             CoreDataStack.persistentContainer.viewContext.delete(schoolNotification)
+            CoreDataStack.saveContext()
             self.schoolNotifications?[indexPath.section].remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
@@ -190,7 +194,7 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
         
         NotificationCenter.default.addObserver(self, selector: #selector(coreDataSaved(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
         
-        indexPathToReload = selectedNotificationRowIndex
+        indexPathToReload = selectedNotificationIndex
         
         CoreDataStack.saveContext()
     }
