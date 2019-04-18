@@ -126,10 +126,9 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
             Logger.println(" SIC: Opening ScheduleTimesViewController...")
             
             let scheduleTimesViewController = segue.destination as! ScheduleTimesViewController
-            scheduleTimesViewController.scheduleRecord = scheduleManager?.todaySchedule!
+            scheduleTimesViewController.scheduleRecord = scheduleRecordToOpenForScheduleInfoView
             
-            var currentTimeComponents = Date.Gregorian.calendar.dateComponents([.year, .day, .month, .hour, .minute, .second], from: Date())
-            scheduleTimesViewController.scheduleDateString = zeroPadding(int: currentTimeComponents.month!) + "/" + zeroPadding(int: currentTimeComponents.day!) + "/" + zeroPadding(int: currentTimeComponents.year!)
+            scheduleTimesViewController.scheduleDateString = zeroPadding(int: scheduleDateComponentsForScheduleInfoView!.month!) + "/" + zeroPadding(int: scheduleDateComponentsForScheduleInfoView!.day!) + "/" + zeroPadding(int: scheduleDateComponentsForScheduleInfoView!.year!)
             scheduleTimesViewController.parentViewControllerString = "ScheduleInfoViewController"
         }
     }
@@ -456,6 +455,27 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     
     func printTomorrowStartTime(tomorrowSchoolStartTime: String, tomorrowSchedule: Schedule, nextWeekCount: Int, nextDayCount: Int)
     {
+        let gregorian = Calendar(identifier: .gregorian)
+
+        let formattedTimeInfo = formatTomorrowSchoolTime(nextWeekCount: nextWeekCount, nextDayCount: nextDayCount)
+        let startOfNextSchoolDayComponents = formattedTimeInfo.dateComponents
+        let weekDayOfSchoolStart = formattedTimeInfo.weekdayString
+        
+        //Format as MM/dd
+        let startOfNextSchoolDayFormatted = gregorian.date(from: startOfNextSchoolDayComponents)!
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd"
+        let startOfNextSchoolDayString = formatter.string(from: startOfNextSchoolDayFormatted)
+        
+        OperationQueue.main.addOperation {
+            let schoolStart1 = "School starts " + weekDayOfSchoolStart + ",\n" + startOfNextSchoolDayString
+            let schoolStart2 = " at " + Date().convertToStandardTime(date: String(tomorrowSchoolStartTime))
+            self.tomorrowStartTimeLabel.text = schoolStart1 + schoolStart2
+        }
+    }
+    
+    func formatTomorrowSchoolTime(nextWeekCount: Int, nextDayCount: Int) -> (dateComponents: DateComponents, weekdayString: String)
+    {
         //Determine the date when school starts next
         var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
         let gregorian = Calendar(identifier: .gregorian)
@@ -479,18 +499,10 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
         startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
         
         //Set the hour correctly
-        var startOfNextSchoolDayComponents = gregorian.dateComponents([.month, .day, .weekday], from: startOfNextSchoolDayRaw)
+        var startOfNextSchoolDayComponents = gregorian.dateComponents([.month, .day, .weekday, .year], from: startOfNextSchoolDayRaw)
         startOfNextSchoolDayComponents.hour = 12
-        let startOfNextSchoolDayFormatted = gregorian.date(from: startOfNextSchoolDayComponents)!
-        
-        //Format as MM/dd
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd"
-        let startOfNextSchoolDayString = formatter.string(from: startOfNextSchoolDayFormatted)
         
         //Get the start time and the weekday name
-        //let tomorrowSchoolStartTime = tomorrowPeriodTimes[0].split(separator: "-")[0]
-        
         var weekDayOfSchoolStart = ""
         if nextWeekCount > 0
         {
@@ -501,11 +513,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
             weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1 + currentDayOfWeek)
         }
         
-        OperationQueue.main.addOperation {
-            let schoolStart1 = "School starts " + weekDayOfSchoolStart + ",\n" + startOfNextSchoolDayString
-            let schoolStart2 = " at " + Date().convertToStandardTime(date: String(tomorrowSchoolStartTime))
-            self.tomorrowStartTimeLabel.text = schoolStart1 + schoolStart2
-        }
+        return (startOfNextSchoolDayComponents, weekDayOfSchoolStart)
     }
     
     func printSchoolStartEndMessage(message: String)
@@ -626,9 +634,23 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     @IBAction func openNotificationTableViewController(_ sender: Any) {
     }
     
+    var scheduleRecordToOpenForScheduleInfoView: Schedule?
+    var scheduleDateComponentsForScheduleInfoView: DateComponents?
+    
     @IBAction func openPeriodTimesViewControllerForCurrentDay(_ sender: Any) {
         if scheduleManager?.infoDelegate != nil && scheduleManager?.todaySchedule != nil && scheduleManager?.todaySchedule?.value(forKey: "scheduleCode") as? String != "H"
         {
+            scheduleRecordToOpenForScheduleInfoView = scheduleManager?.todaySchedule as? Schedule
+            scheduleDateComponentsForScheduleInfoView = Date.Gregorian.calendar.dateComponents([.year, .day, .month, .hour, .minute, .second], from: Date())
+            self.performSegue(withIdentifier: "openPeriodTimesViewFromScheduleInfo", sender: self)
+        }
+    }
+    
+    @IBAction func openPeriodTimesViewControllerForNextDay(_ sender: Any) {
+        if scheduleManager?.infoDelegate != nil, let weekSchedule = scheduleManager?.queryWeekSchedule(), let tomorrowScheduleInfo = scheduleManager?.queryTomorrowSchedule(weekSchedules: weekSchedule, addDays: 0, loadedNextWeek: false), tomorrowScheduleInfo.schedule != nil && tomorrowScheduleInfo.nextWeekOn != nil && tomorrowScheduleInfo.nextDayOn != nil
+        {
+            scheduleRecordToOpenForScheduleInfoView = tomorrowScheduleInfo.schedule!
+            scheduleDateComponentsForScheduleInfoView = formatTomorrowSchoolTime(nextWeekCount: tomorrowScheduleInfo.nextWeekOn!, nextDayCount: tomorrowScheduleInfo.nextDayOn!).dateComponents
             self.performSegue(withIdentifier: "openPeriodTimesViewFromScheduleInfo", sender: self)
         }
     }

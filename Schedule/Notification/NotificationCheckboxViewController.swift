@@ -90,19 +90,24 @@ class NotificationCheckboxViewController: UIViewController
     {
         let button = sender as! UIButton
         
+        stackViewChecked[button.tag - 200] = !stackViewChecked[button.tag - 200]
+        button.backgroundColor = UIColor(white: stackViewChecked[button.tag - 200] ? 0.7: 0.9, alpha: 1)
+        
         var trueAmount = 0
         for checkbox in stackViewChecked
         {
             trueAmount += checkbox ? 1 : 0
         }
         
-        if trueAmount <= 1 && stackViewChecked[button.tag - 200]
+        if trueAmount == 0
         {
-            return
+            NotificationCenter.default.post(name: NSNotification.Name("DisableEditorDoneButton"), object: nil)
         }
         
-        stackViewChecked[button.tag - 200] = !stackViewChecked[button.tag - 200]
-        button.backgroundColor = UIColor(white: stackViewChecked[button.tag - 200] ? 0.7: 0.9, alpha: 1)
+        if trueAmount == 1
+        {
+            NotificationCenter.default.post(name: NSNotification.Name("EnableEditorDoneButton"), object: nil)
+        }
         
         switch NotificationEditorState.editorViewType
         {

@@ -18,6 +18,7 @@ class NotificationEditorViewController: UIViewController
     @IBOutlet weak var editorViewDoneButton: UIButton!
     @IBOutlet weak var editorViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var schedulesButton: UIButton!
+    @IBOutlet weak var barDoneButton: UIBarButtonItem!
     
     var schoolNotificationUUID: String?
     
@@ -51,6 +52,8 @@ class NotificationEditorViewController: UIViewController
         NotificationCenter.default.addObserver(self, selector: #selector(setFireDayBeforeButtonTitle), name: NSNotification.Name("SetFireDayBeforeButtonTitle"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setBeforeAfterStartEndButtonTitle), name: NSNotification.Name("SetBeforeAfterStartEndButtonTitle"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setScheduleButtonTitle), name: NSNotification.Name("SetScheduleButtonTitle"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(disableEditorDoneButton), name: NSNotification.Name("DisableEditorDoneButton"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(enableEditorDoneButton), name: NSNotification.Name("EnableEditorDoneButton"), object: nil)
     }
     
     func loadNotificationEditorState()
@@ -291,6 +294,18 @@ class NotificationEditorViewController: UIViewController
     {
         beforeAfterStartEndPeriodButton.isEnabled = (NotificationEditorState.displayTimeAsOffset ?? true)
         dayBeforeButton.isEnabled = !(NotificationEditorState.displayTimeAsOffset ?? true)
+    }
+    
+    @objc func disableEditorDoneButton()
+    {
+        editorViewDoneButton.isEnabled = false
+        barDoneButton.isEnabled = false
+    }
+    
+    @objc func enableEditorDoneButton()
+    {
+        editorViewDoneButton.isEnabled = true
+        barDoneButton.isEnabled = true
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
