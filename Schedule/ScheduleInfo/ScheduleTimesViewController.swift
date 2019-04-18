@@ -75,8 +75,8 @@ class ScheduleTimesViewController: UIViewController
                 let periodEndHour = Int(periodEnd.split(separator: ":")[0]) ?? 0
                 let periodEndMinute = Int(periodEnd.split(separator: ":")[1]) ?? 0
                 
-                let periodStartFormatted = String(periodStartHour) + ":" + zeroPadding(periodStartMinute)
-                let periodEndFormatted = String(periodEndHour) + ":" + zeroPadding(periodEndMinute)
+                let periodStartFormatted = zeroPadding(periodStartHour) + ":" + zeroPadding(periodStartMinute)
+                let periodEndFormatted = zeroPadding(periodEndHour) + ":" + zeroPadding(periodEndMinute)
                 
                 let periodStartEndFormatted = convertToStandardTime(date: periodStartFormatted) + "-" + convertToStandardTime(date: periodEndFormatted)
                 
@@ -140,7 +140,7 @@ class ScheduleTimesViewController: UIViewController
         var newDate = date
         if Int(hourMin[0])! > 12
         {
-            newDate = String(Int(hourMin[0])!-12) + ":" + hourMin[1]
+            newDate = zeroPadding(Int(hourMin[0])!-12) + ":" + hourMin[1]
         }
         return newDate
     }
