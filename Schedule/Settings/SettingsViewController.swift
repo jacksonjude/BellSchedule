@@ -231,12 +231,12 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
                 notificationAMPM = "PM"
             }
                         
-            settingsPickerView.selectRow(currentPickerArray[0].index(of: notificationHour) ?? 0, inComponent: 0, animated: false)
-            settingsPickerView.selectRow(currentPickerArray[1].index(of: notificationMinute) ?? 0, inComponent: 1, animated: false)
-            settingsPickerView.selectRow(currentPickerArray[2].index(of: notificationAMPM) ?? 0, inComponent: 2, animated: false)
+            settingsPickerView.selectRow(currentPickerArray[0].firstIndex(of: notificationHour) ?? 0, inComponent: 0, animated: false)
+            settingsPickerView.selectRow(currentPickerArray[1].firstIndex(of: notificationMinute) ?? 0, inComponent: 1, animated: false)
+            settingsPickerView.selectRow(currentPickerArray[2].firstIndex(of: notificationAMPM) ?? 0, inComponent: 2, animated: false)
         case kBackgroundValue:
             let backgroundName = "Background " + (String(describing: (UserDefaults.standard.object(forKey: "backgroundName") as? String ?? "background1").last!))
-            settingsPickerView.selectRow(currentPickerArray[0].index(of: backgroundName) ?? 0, inComponent: 0, animated: false)
+            settingsPickerView.selectRow(currentPickerArray[0].firstIndex(of: backgroundName) ?? 0, inComponent: 0, animated: false)
         default:
             break
         }

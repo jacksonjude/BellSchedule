@@ -88,8 +88,8 @@ class NotificationEditorPickerViewController: UIViewController, UIPickerViewDele
             if NotificationEditorState.displayTimeAsOffset ?? true
             {
                 let notificationOffset = String(abs(NotificationEditorState.notificationTimeOffset ?? 0))
-                notificationPickerView.selectRow(pickerViewData![0].index(of: notificationOffset) ?? 0, inComponent: 0, animated: true)
-                notificationPickerView.selectRow(pickerViewData![1].index(of: "Offset") ?? 0, inComponent: 1, animated: false)
+                notificationPickerView.selectRow(pickerViewData![0].firstIndex(of: notificationOffset) ?? 0, inComponent: 0, animated: true)
+                notificationPickerView.selectRow(pickerViewData![1].firstIndex(of: "Offset") ?? 0, inComponent: 1, animated: false)
             }
             else
             {
@@ -109,14 +109,14 @@ class NotificationEditorPickerViewController: UIViewController, UIPickerViewDele
                     notificationMinute = "0" + notificationMinute
                 }
                 
-                notificationPickerView.selectRow(pickerViewData![0].index(of: notificationHour) ?? 0, inComponent: 0, animated: true)
-                notificationPickerView.selectRow(pickerViewData![1].index(of: notificationMinute) ?? 0, inComponent: 1, animated: true)
-                notificationPickerView.selectRow(pickerViewData![2].index(of: notificationAMPM) ?? 0, inComponent: 2, animated: true)
-                notificationPickerView.selectRow(pickerViewData![3].index(of: "Time") ?? 0, inComponent: 3, animated: false)
+                notificationPickerView.selectRow(pickerViewData![0].firstIndex(of: notificationHour) ?? 0, inComponent: 0, animated: true)
+                notificationPickerView.selectRow(pickerViewData![1].firstIndex(of: notificationMinute) ?? 0, inComponent: 1, animated: true)
+                notificationPickerView.selectRow(pickerViewData![2].firstIndex(of: notificationAMPM) ?? 0, inComponent: 2, animated: true)
+                notificationPickerView.selectRow(pickerViewData![3].firstIndex(of: "Time") ?? 0, inComponent: 3, animated: false)
             }
         case .beforeAfterStartEnd:
-            notificationPickerView.selectRow(pickerViewData![0].index(of: (NotificationEditorState.notificationTimeOffset ?? 0 < 0) ? "Before" : "After") ?? 0, inComponent: 0, animated: true)
-            notificationPickerView.selectRow(pickerViewData![1].index(of: NotificationEditorState.shouldFireWhenPeriodStarts ?? true ? "Start" : "End") ?? 0, inComponent: 1, animated: true)
+            notificationPickerView.selectRow(pickerViewData![0].firstIndex(of: (NotificationEditorState.notificationTimeOffset ?? 0 < 0) ? "Before" : "After") ?? 0, inComponent: 0, animated: true)
+            notificationPickerView.selectRow(pickerViewData![1].firstIndex(of: NotificationEditorState.shouldFireWhenPeriodStarts ?? true ? "Start" : "End") ?? 0, inComponent: 1, animated: true)
         case .schedules:
             break
         }

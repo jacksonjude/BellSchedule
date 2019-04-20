@@ -46,9 +46,9 @@ class NotificationCheckboxViewController: UIViewController
             stackViewChecked = NotificationEditorState.notificationPeriodArray ?? stackViewChecked
         case .schedules:
             var scheduleCodes: Array<String> = ["N", "M", "R", "S", "+"]
-            if let scheduleCodesData = UserDefaults.standard.object(forKey: "SOMETHIN") as? Data, let scheduleCodesTmp = try? JSONSerialization.jsonObject(with: scheduleCodesData, options: JSONSerialization.ReadingOptions.allowFragments) as? Array<String>
+            if let scheduleCodesData = UserDefaults.standard.object(forKey: "SOMETHIN") as? Data, let scheduleCodesTmp = (try? JSONSerialization.jsonObject(with: scheduleCodesData, options: JSONSerialization.ReadingOptions.allowFragments) as? Array<String>)
             {
-                scheduleCodes = scheduleCodesTmp ?? ["N", "M", "R", "S", "+"]
+                scheduleCodes = scheduleCodesTmp 
             }
             stackViewTitles = scheduleCodes
             
@@ -77,10 +77,10 @@ class NotificationCheckboxViewController: UIViewController
         {
             let newButton = UIButton(type: .system)
             newButton.setTitle(stackViewTitle, for: .normal)
-            newButton.backgroundColor = UIColor(white: stackViewChecked[stackViewTitles.index(of: stackViewTitle) ?? 0] ? 0.7 : 0.9, alpha: 1)
+            newButton.backgroundColor = UIColor(white: stackViewChecked[stackViewTitles.firstIndex(of: stackViewTitle) ?? 0] ? 0.7 : 0.9, alpha: 1)
             newButton.addCorners()
             newButton.addConstraint(NSLayoutConstraint(item: newButton, attribute: .height, relatedBy: .equal, toItem: newButton, attribute: .width, multiplier: 1, constant: 0))
-            newButton.tag = 200 + (stackViewTitles.index(of: stackViewTitle) ?? 0)
+            newButton.tag = 200 + (stackViewTitles.firstIndex(of: stackViewTitle) ?? 0)
             newButton.addTarget(self, action: #selector(checkboxButtonPressed(_:)), for: UIControl.Event.touchUpInside)
             checkboxStackView.addArrangedSubview(newButton)
         }

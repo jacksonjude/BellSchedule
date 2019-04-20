@@ -175,12 +175,12 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
     
     func setupScheduledNotification(notification: SchoolNotification, periodTimes: Array<String>, periodNumbers: Array<Int>, nextDayCount: Int, nextWeekCount: Int, scheduleCode: String)
     {
-        if let notificationPeriodArray = CoreDataStack.decodeArrayFromJSON(object: notification, field: "notificationPeriodArray") as? Array<Bool>, notification.schedulesToFireOn != nil, let notificationScheduleCodes = try? JSONSerialization.jsonObject(with: notification.schedulesToFireOn!, options: JSONSerialization.ReadingOptions.allowFragments) as? Dictionary<String,Bool>
+        if let notificationPeriodArray = CoreDataStack.decodeArrayFromJSON(object: notification, field: "notificationPeriodArray") as? Array<Bool>, notification.schedulesToFireOn != nil, let notificationScheduleCodes = (try? JSONSerialization.jsonObject(with: notification.schedulesToFireOn!, options: JSONSerialization.ReadingOptions.allowFragments) as? Dictionary<String,Bool>)
         {
             var periodOn = 1
             for period in notificationPeriodArray
             {
-                if period && (notificationScheduleCodes?.keys.contains(scheduleCode) ?? false ? notificationScheduleCodes?[scheduleCode] : notificationScheduleCodes?["+"]) ?? true
+                if period && (notificationScheduleCodes.keys.contains(scheduleCode) ? notificationScheduleCodes[scheduleCode] : notificationScheduleCodes["+"]) ?? true
                 {
                     if let schoolPeriodTimeIndex = periodNumbers.firstIndex(of: Int(periodOn))
                     {

@@ -64,7 +64,7 @@ class ScheduleTimesViewController: UIViewController
             
             for periodNumber in periodNumbers
             {
-                let periodIndex = periodNumbers.index(of: periodNumber) ?? 0
+                let periodIndex = periodNumbers.firstIndex(of: periodNumber) ?? 0
                 let periodMinutes = String(calculateMinutes(periodRangeString: periodTimes[periodIndex]))
                 
                 let periodStart = periodTimes[periodIndex].split(separator: "-")[0]

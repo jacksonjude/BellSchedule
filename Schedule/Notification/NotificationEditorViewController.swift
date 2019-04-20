@@ -70,7 +70,7 @@ class NotificationEditorViewController: UIViewController
             NotificationEditorState.notificationTimeOffset = Int(schoolNotification.notificationTimeOffset)
             NotificationEditorState.shouldFireDayBefore = schoolNotification.shouldFireDayBefore
             NotificationEditorState.shouldFireWhenPeriodStarts = schoolNotification.shouldFireWhenPeriodStarts
-            if schoolNotification.schedulesToFireOn != nil, let schedulesToFireOn = try? JSONSerialization.jsonObject(with: schoolNotification.schedulesToFireOn!, options: JSONSerialization.ReadingOptions.allowFragments) as? Dictionary<String,Bool>
+            if schoolNotification.schedulesToFireOn != nil, let schedulesToFireOn = (try? JSONSerialization.jsonObject(with: schoolNotification.schedulesToFireOn!, options: JSONSerialization.ReadingOptions.allowFragments) as? Dictionary<String, Bool>)
             {
                 NotificationEditorState.schedulesToFireOn = schedulesToFireOn
             }

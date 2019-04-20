@@ -166,9 +166,9 @@ class ScheduleInfoManager: NSObject {
         }
         else
         {
-            if let wsIndex = CloudManager.fetchAllDataQueue.index(of: "WeekSchedules") {CloudManager.fetchAllDataQueue.remove(at: wsIndex)}
-            if let sIndex = CloudManager.fetchAllDataQueue.index(of: "Schedule") {CloudManager.fetchAllDataQueue.remove(at: sIndex)}
-            if let aIndex = CloudManager.fetchAllDataQueue.index(of: "Announcement") {CloudManager.fetchAllDataQueue.remove(at: aIndex)}
+            if let wsIndex = CloudManager.fetchAllDataQueue.firstIndex(of: "WeekSchedules") {CloudManager.fetchAllDataQueue.remove(at: wsIndex)}
+            if let sIndex = CloudManager.fetchAllDataQueue.firstIndex(of: "Schedule") {CloudManager.fetchAllDataQueue.remove(at: sIndex)}
+            if let aIndex = CloudManager.fetchAllDataQueue.firstIndex(of: "Announcement") {CloudManager.fetchAllDataQueue.remove(at: aIndex)}
             
             if let currentFetchAllDataQueryOperation = CloudManager.currentCloudOperations["fetchAllData"]
             {
@@ -375,7 +375,7 @@ class ScheduleInfoManager: NSObject {
     {
         for periodNumber in periodNumbers
         {
-            let periodNumberIndex = periodNumbers.index(of: periodNumber)!
+            let periodNumberIndex = periodNumbers.firstIndex(of: periodNumber)!
             //Hardcode reg#
             if ((offBlocks != nil && offBlocks!.count > periodNumber-1 && offBlocks![periodNumber-1] == 0) || periodNumber == 9) && periodNumberIndex >= currentPeriodIndex
             {
@@ -393,7 +393,7 @@ class ScheduleInfoManager: NSObject {
         {
             if offBlocks != nil && offBlocks!.count > periodNumber-1 && offBlocks![periodNumber-1] == 0
             {
-                lastPeriodIndex = periodNumbers.index(of: periodNumber)!
+                lastPeriodIndex = periodNumbers.firstIndex(of: periodNumber)!
             }
         }
         
@@ -722,7 +722,7 @@ class ScheduleInfoManager: NSObject {
                 
                 if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule!, field: "periodNumbers") as? [Int]
                 {
-                    periodIndex = (periodNumbers.index(of: nextPeriodNumber!) ?? 0)+1
+                    periodIndex = (periodNumbers.firstIndex(of: nextPeriodNumber!) ?? 0)+1
                 }
                 
                 infoDelegate.printCurrentMessage(message: passingPeriodMessage1 + passingPeriodMessage2)
