@@ -33,12 +33,13 @@
 		7A61F5AC1FCD3B600060580A /* ScheduleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */; };
 		7A61F5AD1FCD3CA10060580A /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796FA41F87250600D9658D /* CloudManager.swift */; };
 		7A61F5AF1FCD3DC40060580A /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A796FA21F871D3300D9658D /* CloudKit.framework */; };
-		7A61F5B01FCD3E660060580A /* Schedule.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */; };
 		7A6C37472191638F004EACDA /* NotificationEditorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6C37462191638F004EACDA /* NotificationEditorPickerViewController.swift */; };
+		7A71602F2306003A0018F5AB /* Schedule.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A71602B2306003A0018F5AB /* Schedule.xcdatamodeld */; };
+		7A7160302306003A0018F5AB /* Schedule.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A71602B2306003A0018F5AB /* Schedule.xcdatamodeld */; };
+		7A7160312306003A0018F5AB /* Schedule.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A71602B2306003A0018F5AB /* Schedule.xcdatamodeld */; };
 		7A796F8C1F871D1400D9658D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F8B1F871D1400D9658D /* AppDelegate.swift */; };
 		7A796F8E1F871D1400D9658D /* ScheduleInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F8D1F871D1400D9658D /* ScheduleInfoViewController.swift */; };
 		7A796F911F871D1400D9658D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A796F8F1F871D1400D9658D /* Main.storyboard */; };
-		7A796F941F871D1400D9658D /* Schedule.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */; };
 		7A796F961F871D1400D9658D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A796F951F871D1400D9658D /* Assets.xcassets */; };
 		7A796F991F871D1400D9658D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A796F971F871D1400D9658D /* LaunchScreen.storyboard */; };
 		7A796FA31F871D3300D9658D /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A796FA21F871D3300D9658D /* CloudKit.framework */; };
@@ -60,7 +61,6 @@
 		7ADFEDA31FDDC98300BFD0E1 /* ScheduleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */; };
 		7ADFEDA41FDDC98800BFD0E1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D98911F95837900288665 /* Logger.swift */; };
 		7ADFEDA71FDDCB6700BFD0E1 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61F5A91FCD3A600060580A /* CoreDataStack.swift */; };
-		7ADFEDA81FDDCB6A00BFD0E1 /* Schedule.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */; };
 		7ADFEDAA1FDDD00400BFD0E1 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ADFEDA91FDDD00400BFD0E1 /* CloudKit.framework */; };
 		7AE495E21FE6F2C500AE2EB3 /* ScheduleTimesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE495E11FE6F2C500AE2EB3 /* ScheduleTimesViewController.swift */; };
 		7AF3A2501F8DC01B00C509AC /* UserScheduleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF3A24F1F8DC01B00C509AC /* UserScheduleTableViewController.swift */; };
@@ -131,7 +131,6 @@
 		7A15FC921FDDC7CD0012A883 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		7A15FC941FDDC7CD0012A883 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A15FC961FDDC7CD0012A883 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7A1D3239201585F10062989E /* Schedule2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Schedule2.xcdatamodel; sourceTree = "<group>"; };
 		7A2418991FC7E883000407B8 /* ScheduleWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ScheduleWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A24189A1FC7E883000407B8 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		7A24189D1FC7E883000407B8 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -147,11 +146,13 @@
 		7A61F5A91FCD3A600060580A /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		7A61F5AE1FCD3DC20060580A /* ScheduleWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScheduleWidget.entitlements; sourceTree = "<group>"; };
 		7A6C37462191638F004EACDA /* NotificationEditorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorPickerViewController.swift; sourceTree = "<group>"; };
+		7A71602C2306003A0018F5AB /* Schedule2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Schedule2.xcdatamodel; sourceTree = "<group>"; };
+		7A71602D2306003A0018F5AB /* Schedule.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Schedule.xcdatamodel; sourceTree = "<group>"; };
+		7A71602E2306003A0018F5AB /* Schedule3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Schedule3.xcdatamodel; sourceTree = "<group>"; };
 		7A796F881F871D1400D9658D /* Schedule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedule.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A796F8B1F871D1400D9658D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A796F8D1F871D1400D9658D /* ScheduleInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoViewController.swift; sourceTree = "<group>"; };
 		7A796F901F871D1400D9658D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		7A796F931F871D1400D9658D /* Schedule.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Schedule.xcdatamodel; sourceTree = "<group>"; };
 		7A796F951F871D1400D9658D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A796F981F871D1400D9658D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7A796F9A1F871D1400D9658D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -159,7 +160,6 @@
 		7A796FA21F871D3300D9658D /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		7A796FA41F87250600D9658D /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
 		7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewController.swift; sourceTree = "<group>"; };
-		7A9A5467218A0D1D00F45B85 /* Schedule3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Schedule3.xcdatamodel; sourceTree = "<group>"; };
 		7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorViewController.swift; sourceTree = "<group>"; };
 		7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorState.swift; sourceTree = "<group>"; };
 		7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consola.ttf; sourceTree = "<group>"; };
@@ -342,7 +342,7 @@
 			isa = PBXGroup;
 			children = (
 				7A61F5A91FCD3A600060580A /* CoreDataStack.swift */,
-				7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */,
+				7A71602B2306003A0018F5AB /* Schedule.xcdatamodeld */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -659,7 +659,7 @@
 			files = (
 				7ADFEDA71FDDCB6700BFD0E1 /* CoreDataStack.swift in Sources */,
 				7A15FC911FDDC7CD0012A883 /* ExtensionDelegate.swift in Sources */,
-				7ADFEDA81FDDCB6A00BFD0E1 /* Schedule.xcdatamodeld in Sources */,
+				7A7160312306003A0018F5AB /* Schedule.xcdatamodeld in Sources */,
 				7ADFEDA41FDDC98800BFD0E1 /* Logger.swift in Sources */,
 				7ADFEDA31FDDC98300BFD0E1 /* ScheduleInfoManager.swift in Sources */,
 				7A15FC8F1FDDC7CD0012A883 /* InterfaceController.swift in Sources */,
@@ -674,9 +674,9 @@
 			files = (
 				7A61F5AC1FCD3B600060580A /* ScheduleInfoManager.swift in Sources */,
 				7A61F5A31FCD2FA70060580A /* Logger.swift in Sources */,
-				7A61F5B01FCD3E660060580A /* Schedule.xcdatamodeld in Sources */,
 				7A61F5AD1FCD3CA10060580A /* CloudManager.swift in Sources */,
 				7A24189E1FC7E883000407B8 /* TodayViewController.swift in Sources */,
+				7A7160302306003A0018F5AB /* Schedule.xcdatamodeld in Sources */,
 				7A61F5AB1FCD3AA80060580A /* CoreDataStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -690,12 +690,12 @@
 				7A796F8E1F871D1400D9658D /* ScheduleInfoViewController.swift in Sources */,
 				7AC0A3381F8C3EE0005E5FA3 /* ScheduleInfoManager.swift in Sources */,
 				7A9A5466218A0CD500F45B85 /* NotificationTableViewController.swift in Sources */,
-				7A796F941F871D1400D9658D /* Schedule.xcdatamodeld in Sources */,
 				7A796FA51F87250600D9658D /* CloudManager.swift in Sources */,
 				7A61F5AA1FCD3A600060580A /* CoreDataStack.swift in Sources */,
 				7AA4B7872022A4AC00BC0A2C /* SettingsViewController.swift in Sources */,
 				7A5687341FEC889800744A30 /* AnnouncementsTableViewController.swift in Sources */,
 				7A796F8C1F871D1400D9658D /* AppDelegate.swift in Sources */,
+				7A71602F2306003A0018F5AB /* Schedule.xcdatamodeld in Sources */,
 				7A5687361FEC8DF600744A30 /* AnnouncementManager.swift in Sources */,
 				7A9A546B218A1CA500F45B85 /* NotificationEditorState.swift in Sources */,
 				7AE495E21FE6F2C500AE2EB3 /* ScheduleTimesViewController.swift in Sources */,
@@ -766,6 +766,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20190817;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				IBSC_MODULE = ScheduleWatch_Extension;
 				INFOPLIST_FILE = ScheduleWatch/Info.plist;
@@ -785,6 +786,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20190817;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				IBSC_MODULE = ScheduleWatch_Extension;
 				INFOPLIST_FILE = ScheduleWatch/Info.plist;
@@ -804,6 +806,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "ScheduleWatch Extension/ScheduleWatch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20190817;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = "ScheduleWatch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -823,6 +826,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "ScheduleWatch Extension/ScheduleWatch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20190817;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = "ScheduleWatch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -841,6 +845,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ScheduleWidget/ScheduleWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20190817;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = ScheduleWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
@@ -858,6 +863,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ScheduleWidget/ScheduleWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20190817;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = ScheduleWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
@@ -995,6 +1001,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Schedule/Schedule.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20190817;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = Schedule/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1014,6 +1021,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Schedule/Schedule.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20190817;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = Schedule/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1076,14 +1084,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		7A796F921F871D1400D9658D /* Schedule.xcdatamodeld */ = {
+		7A71602B2306003A0018F5AB /* Schedule.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				7A9A5467218A0D1D00F45B85 /* Schedule3.xcdatamodel */,
-				7A1D3239201585F10062989E /* Schedule2.xcdatamodel */,
-				7A796F931F871D1400D9658D /* Schedule.xcdatamodel */,
+				7A71602C2306003A0018F5AB /* Schedule2.xcdatamodel */,
+				7A71602D2306003A0018F5AB /* Schedule.xcdatamodel */,
+				7A71602E2306003A0018F5AB /* Schedule3.xcdatamodel */,
 			);
-			currentVersion = 7A9A5467218A0D1D00F45B85 /* Schedule3.xcdatamodel */;
+			currentVersion = 7A71602E2306003A0018F5AB /* Schedule3.xcdatamodel */;
 			path = Schedule.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

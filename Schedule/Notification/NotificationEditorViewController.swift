@@ -192,7 +192,7 @@ class NotificationEditorViewController: UIViewController
     
     @objc func setPeriodButtonTitle()
     {
-        if var notificationPeriodArray = NotificationEditorState.notificationPeriodArray
+        if let notificationPeriodArray = NotificationEditorState.notificationPeriodArray
         {
             var notificationPeriodIntArray = Array<Int>()
             

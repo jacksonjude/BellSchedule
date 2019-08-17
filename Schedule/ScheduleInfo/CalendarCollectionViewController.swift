@@ -102,7 +102,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
             }
             else
             {
-                cell.backgroundColor = UIColor.white
+                cell.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
             }
             
             (cell.viewWithTag(618) as! UILabel).textColor = UIColor.black

@@ -11,7 +11,7 @@ import NotificationCenter
 import CoreData
 import CloudKit
 
-class TodayViewController: UIViewController, NCWidgetProviding, ScheduleInfoDelegate {
+class TodayViewController: UITableViewController, NCWidgetProviding, ScheduleInfoDelegate {
     @IBOutlet weak var schoolStartEndLabel: UILabel!
     @IBOutlet weak var tomorrowStartTimeLabel: UILabel!
     

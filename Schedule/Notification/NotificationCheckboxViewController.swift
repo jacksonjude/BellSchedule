@@ -76,11 +76,11 @@ class NotificationCheckboxViewController: UIViewController
         for stackViewTitle in stackViewTitles
         {
             let newButton = UIButton(type: .system)
+            newButton.tag = 200 + (stackViewTitles.firstIndex(of: stackViewTitle) ?? 0)
             newButton.setTitle(stackViewTitle, for: .normal)
-            newButton.backgroundColor = UIColor(white: stackViewChecked[stackViewTitles.firstIndex(of: stackViewTitle) ?? 0] ? 0.7 : 0.9, alpha: 1)
+            setCheckButtonBackgroundColor(button: newButton)
             newButton.addCorners()
             newButton.addConstraint(NSLayoutConstraint(item: newButton, attribute: .height, relatedBy: .equal, toItem: newButton, attribute: .width, multiplier: 1, constant: 0))
-            newButton.tag = 200 + (stackViewTitles.firstIndex(of: stackViewTitle) ?? 0)
             newButton.addTarget(self, action: #selector(checkboxButtonPressed(_:)), for: UIControl.Event.touchUpInside)
             checkboxStackView.addArrangedSubview(newButton)
         }
@@ -91,7 +91,7 @@ class NotificationCheckboxViewController: UIViewController
         let button = sender as! UIButton
         
         stackViewChecked[button.tag - 200] = !stackViewChecked[button.tag - 200]
-        button.backgroundColor = UIColor(white: stackViewChecked[button.tag - 200] ? 0.7: 0.9, alpha: 1)
+        setCheckButtonBackgroundColor(button: button)
         
         var trueAmount = 0
         for checkbox in stackViewChecked
@@ -126,5 +126,14 @@ class NotificationCheckboxViewController: UIViewController
             break
         }
         
+    }
+    
+    func setCheckButtonBackgroundColor(button: UIButton)
+    {
+        if #available(iOS 13.0, *) {
+            button.backgroundColor = stackViewChecked[button.tag - 200] ? UIColor.systemGray2 : UIColor.systemFill
+        } else {
+            button.backgroundColor = UIColor(white: stackViewChecked[button.tag - 200] ? 0.7 : 0.9, alpha: 1)
+        }
     }
 }

@@ -136,7 +136,7 @@ class ScheduleTimesViewController: UIViewController
     
     func convertToStandardTime(date: String) -> String!
     {
-        var hourMin = date.split(separator: ":")
+        let hourMin = date.split(separator: ":")
         var newDate = date
         if Int(hourMin[0])! > 12
         {

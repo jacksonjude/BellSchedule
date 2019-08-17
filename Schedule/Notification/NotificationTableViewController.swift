@@ -56,7 +56,7 @@ class NotificationTableViewController: UIViewController, UITableViewDelegate, UI
     {
         let schoolNotification = schoolNotifications![indexPath.section][indexPath.row]
         
-        if var notificationPeriodArray = CoreDataStack.decodeArrayFromJSON(object: schoolNotification, field: "notificationPeriodArray") as? Array<Bool>
+        if let notificationPeriodArray = CoreDataStack.decodeArrayFromJSON(object: schoolNotification, field: "notificationPeriodArray") as? Array<Bool>
         {
             var notificationPeriodIntArray = Array<Int>()
             

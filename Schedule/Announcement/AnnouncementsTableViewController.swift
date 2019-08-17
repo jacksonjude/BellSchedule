@@ -57,9 +57,7 @@ class AnnouncementsTableViewController: UIViewController, UITableViewDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         Logger.println("Loading AnnouncementsTableView...")
-        
-        tableView.addCorners()
-        
+                
         announcementManager = AnnouncementManager(viewController: self)
         announcementManager?.fetchAnnouncementTitles()
         

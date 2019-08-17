@@ -19,15 +19,6 @@ extension UIView
 {
     func addCorners(_ radius: Int? = 8)
     {
-        /*if radius.count > 0
-        {
-            self.layer.cornerRadius = CGFloat(radius[0])
-        }
-        else
-        {
-            self.layer.cornerRadius = 8
-        }*/
-        
         self.layer.cornerRadius = CGFloat(radius ?? 8)
         self.layer.masksToBounds = true
     }
@@ -179,7 +170,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     }
     
     func setTimer(_ time: String) {
-        var currentTimeComponents = Date.Gregorian.calendar.dateComponents([.year, .day, .month, .hour, .minute, .second], from: Date())
+        let currentTimeComponents = Date.Gregorian.calendar.dateComponents([.year, .day, .month, .hour, .minute, .second], from: Date())
         
         var timeOfNextPeriodString = String(describing: currentTimeComponents.year!) + "-" + String(describing: currentTimeComponents.month!) + "-" + String(describing: currentTimeComponents.day!)
         
@@ -198,144 +189,6 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
         OperationQueue.main.addOperation {
             self.refreshTimer = Timer.scheduledTimer(timeInterval: timeUntilNextPeriodInterval, target: self, selector: #selector(self.refreshPeriodInfo(_:)), userInfo: nil, repeats: false)
         }
-    }
-    
-    //MARK: Settings
-    
-    @IBAction func openSettings(_ sender: Any) {
-        Logger.println("SET: Opening settings...")
-        
-        let settingsAlert = UIAlertController(title: "Settings", message: "\n\n", preferredStyle: .alert)
-        
-        settingsAlert.addTextField { (textField) in
-            let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
-            textField.placeholder = (appGroupUserDefaults?.object(forKey: "userID") as? String) ?? "UserID"
-        }
-        
-        settingsAlert.addTextField { (textField) in
-            let backgroundNumber = String(describing: backgroundName.last ?? Character(""))
-            textField.text = String(describing: backgroundNumber)
-        }
-        
-        settingsAlert.addTextField{ (textField) in
-            var notificationAlertTime = (UserDefaults.standard.object(forKey: "notificationAlertTime") as? String) ?? "21:00"
-            var formattedNotificationAlertTime = ""
-            
-            if Int(notificationAlertTime.split(separator: ":")[1]) ?? 0 < 10
-            {
-                notificationAlertTime = notificationAlertTime.split(separator: ":")[0] + ":0" + notificationAlertTime.split(separator: ":")[1]
-            }
-            
-            if (Int(notificationAlertTime.split(separator: ":")[0]) ?? 0) > 12 || (Int(notificationAlertTime.split(separator: ":")[0]) ?? 0) == 0
-            {
-                let formattedNotificationAlertTime1 = String((Int(notificationAlertTime.split(separator: ":")[0]) ?? 0) - 12)
-                let formattedNotificationAlertTime2 = ":" + String(notificationAlertTime.split(separator: ":")[1]) + " PM"
-                formattedNotificationAlertTime = formattedNotificationAlertTime1 + formattedNotificationAlertTime2
-            }
-            else if (Int(notificationAlertTime.split(separator: ":")[0]) ?? 0) == 12
-            {
-                formattedNotificationAlertTime = notificationAlertTime + " PM"
-            }
-            else if (Int(notificationAlertTime.split(separator: ":")[0]) ?? 0) == 0
-            {
-                formattedNotificationAlertTime = "12:" + String(notificationAlertTime.split(separator: ":")[1]) + " AM"
-            }
-            else
-            {
-                formattedNotificationAlertTime = notificationAlertTime + " AM"
-            }
-            
-            textField.text = formattedNotificationAlertTime
-        }
-        
-        settingsAlert.view.addSubview(createSwitch())
-        
-        let syncLabel = UILabel(frame: CGRect(x: 15, y: 40, width: 200, height: 70))
-        syncLabel.text = "Sync:"
-        syncLabel.font = UIFont(name: "System", size: 15)
-        settingsAlert.view.addSubview(syncLabel)
-        
-        settingsAlert.addAction(UIAlertAction(title: "Dev", style: .default, handler: { (alert) in
-            self.performSegue(withIdentifier: "openDeveloperView", sender: self)
-        }))
-        
-        settingsAlert.addAction(UIAlertAction(title: "Set", style: .default, handler: { (alert) in
-            Logger.println("SET: Updating settings...")
-            
-            let userID = settingsAlert.textFields![0].text
-            if userID != nil && userID != ""
-            {
-                let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
-                appGroupUserDefaults?.set(userID, forKey: "userID")
-                appGroupUserDefaults?.synchronize()
-                Logger.println(" USRID: Set userID: " + userID!)
-            }
-            
-            let backgroundFileNumber = settingsAlert.textFields![1].text ?? "1"
-            if UIImage(named: "background" + backgroundFileNumber) != nil
-            {
-                backgroundName = "background" + backgroundFileNumber
-                self.view.setBackground()
-                
-                UserDefaults.standard.set(backgroundName, forKey: "backgroundName")
-            }
-            
-            /*var dateRegex: NSRegularExpression? = nil
-             do
-             {
-             dateRegex =  try NSRegularExpression(pattern: "^\\s*\\d+:\\d\\d\\s*[apAP]?[mM]?$", options: NSRegularExpression.Options.caseInsensitive)
-             }
-             catch
-             {
-             print(error.localizedDescription)
-             }
-             
-             let range = NSMakeRange(0, notificationAlertTimeString.count)
-             let matches = dateRegex?.matches(in: notificationAlertTimeString, options: NSRegularExpression.MatchingOptions.anchored, range: range)
-             if matches != nil && matches!.count > 0*/
-            
-            let notificationAlertTimeString = settingsAlert.textFields![2].text ?? ((UserDefaults.standard.object(forKey: "notificationAlertTime") as? String) ?? "21:00")
-            if notificationAlertTimeString.range(of: "^\\s*\\d+:\\d\\d\\s*[apAP]?[mM]?$", options: .regularExpression, range: nil, locale: nil) != nil
-            {
-                Logger.println("NAT: Formatting notification alert time: " + notificationAlertTimeString)
-                
-                var notificationAlertTimeHour = Int(notificationAlertTimeString.split(separator: ":")[0]) ?? 21
-                let notificationAlertTimeMinute = Int(notificationAlertTimeString.split(separator: ":")[1]) ?? 0
-                
-                if notificationAlertTimeString.lowercased().range(of: "pm") != nil && notificationAlertTimeHour != 12
-                {
-                    notificationAlertTimeHour += 12
-                }
-                
-                let formattedNotificationAlertTime = String(notificationAlertTimeHour) + ":" + String(notificationAlertTimeMinute)
-                
-                Logger.println("NAT: Setting notification alert time: " + formattedNotificationAlertTime)
-                
-                UserDefaults.standard.set(formattedNotificationAlertTime, forKey: "notificationAlertTime")
-                
-                appDelegate.scheduleNotificationManager?.setupNotifications()
-            }
-            
-            UserDefaults.standard.set(self.syncButtonValue, forKey: "syncData")
-        }))
-        
-        self.present(settingsAlert, animated: true) {
-            
-        }
-    }
-    
-    func createSwitch() -> UISwitch
-    {
-        let switchControl = UISwitch(frame: CGRect(x: 65, y: 60, width: 0, height: 0))
-        switchControl.isOn = UserDefaults.standard.object(forKey: "syncData") as? Bool ?? true
-        switchControl.setOn(UserDefaults.standard.object(forKey: "syncData") as? Bool ?? true, animated: false)
-        switchControl.addTarget(self, action: #selector(switchValueDidChange(sender:)), for: .valueChanged)
-        return switchControl
-    }
-    
-    @objc func switchValueDidChange(sender: UISwitch!)
-    {
-        syncButtonValue = sender.isOn
     }
     
     //MARK: Refresh Info
@@ -647,6 +500,9 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     }
     
     @IBAction func openPeriodTimesViewControllerForNextDay(_ sender: Any) {
+        scheduleManager?.nextWeekOn = 0
+        scheduleManager?.nextDayOn = 0
+        
         if scheduleManager?.infoDelegate != nil, let weekSchedule = scheduleManager?.queryWeekSchedule(), let tomorrowScheduleInfo = scheduleManager?.queryTomorrowSchedule(weekSchedules: weekSchedule, addDays: 0, loadedNextWeek: false), tomorrowScheduleInfo.schedule != nil && tomorrowScheduleInfo.nextWeekOn != nil && tomorrowScheduleInfo.nextDayOn != nil
         {
             scheduleRecordToOpenForScheduleInfoView = tomorrowScheduleInfo.schedule!
@@ -671,6 +527,8 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
                     CloudManager.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: userScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
                 }
             }
+            
+            appDelegate.scheduleNotificationManager?.gatherNotificationData()
         }
         else
         {
@@ -696,6 +554,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     @IBAction func exitSettingsView(_ segue: UIStoryboardSegue)
     {
         Logger.println("Exiting SettingsView...")
+        self.view.setBackground()
     }
     
     @IBAction func exitPeriodTimesViewToScheduleInfoView(_ segue: UIStoryboardSegue)

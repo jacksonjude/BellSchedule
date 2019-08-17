@@ -55,7 +55,7 @@ extension Date {
     }
     func convertToStandardTime(date: String) -> String!
     {
-        var hourMin = date.split(separator: ":")
+        let hourMin = date.split(separator: ":")
         var newDate = date
         if Int(hourMin[0])! > 12
         {
@@ -285,6 +285,11 @@ class ScheduleInfoManager: NSObject {
             periodNames = periodNamesRecord.object(forKey: "periodNames") as? [String]
             freeMods = periodNamesRecord.object(forKey: "freeMods") as? [Int]
             offBlocks = periodNamesRecord.object(forKey: "offBlocks") as? [Int]
+            
+            if offBlocks == nil || offBlocks?.count == 0
+            {
+                offBlocks = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+            }
             
             getPeriodName()
 
