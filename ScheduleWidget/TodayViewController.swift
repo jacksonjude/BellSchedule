@@ -50,7 +50,15 @@ class TodayViewController: UITableViewController, NCWidgetProviding, ScheduleInf
     }
     
     func printCurrentMessage(message: String) {
-        self.currentPeriodInfoString = message
+        let linesplit = message.split(separator: "\n")
+        if linesplit.count > 2
+        {
+            self.currentPeriodInfoString = String(linesplit[0]) + "\n" + String(linesplit[1])
+        }
+        else
+        {
+            self.currentPeriodInfoString = message
+        }
     }
     
     func printInternalError(message: String, labelNumber: Int) {
