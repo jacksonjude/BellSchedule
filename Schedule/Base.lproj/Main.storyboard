@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14854.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14806.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -70,7 +70,6 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="110" id="DJi-Vn-M6h"/>
                                 </constraints>
-                                <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -1123,6 +1122,7 @@
                         <outlet property="codeToggleBarButton" destination="sZb-E6-ahm" id="hVV-sC-z7K"/>
                         <outlet property="codeToggleButton" destination="ab9-bP-PcH" id="3NR-PT-tcd"/>
                         <outlet property="collectionView" destination="z1g-sy-CiZ" id="aWX-Iu-XDV"/>
+                        <outlet property="collectionViewHeight" destination="zKM-by-UIX" id="Zyy-Cc-w5I"/>
                         <segue destination="Iwd-hS-Dn7" kind="show" identifier="openPeriodTimesViewFromCalendar" id="afJ-AA-hCV"/>
                     </connections>
                 </viewController>

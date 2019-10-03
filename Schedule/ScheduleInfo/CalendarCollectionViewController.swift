@@ -21,6 +21,7 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var codeToggleBarButton: UIBarButtonItem!
     @IBOutlet weak var codeToggleButton: UIButton!
+    @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
     
     var currentDateString: String?
     var weekScheduleCodes: Array<String> = []
@@ -40,7 +41,10 @@ class CalendarCollectionViewController: UIViewController, UICollectionViewDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        collectionView.frame.size.height = CGFloat(loadedWeeks+1)*(sectionInsets.top+sectionInsets.bottom) + CGFloat(loadedWeeks+1)*(collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: IndexPath(row: 0, section: 1)).frame.size.height) + 10
+        //collectionView.frame = CGRect(x: collectionView.frame.origin.x, y: collectionView.frame.origin.y, width: collectionView.frame.size.width, height: )
+        //collectionView.frame.size.height = CGFloat(loadedWeeks+1)*(sectionInsets.top+sectionInsets.bottom) + CGFloat(loadedWeeks+1)*(collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: IndexPath(row: 0, section: 1)).frame.size.height) + 10
+        collectionViewHeight.constant = CGFloat(loadedWeeks+1)*(sectionInsets.top+sectionInsets.bottom) + CGFloat(loadedWeeks+1)*(collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: IndexPath(row: 0, section: 1)).frame.size.height) + 10
+        self.view.layoutIfNeeded()
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
