@@ -119,7 +119,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.85000002384185791" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sync" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cSn-fr-Wpo">
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.85000002384185791" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App Icon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cSn-fr-Wpo">
                                 <rect key="frame" x="25" y="536" width="90" height="30"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
@@ -137,9 +137,9 @@
                                     <constraint firstAttribute="height" constant="30" id="1Hr-5B-J8C"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="110" id="QGV-9z-Rzy"/>
                                 </constraints>
-                                <state key="normal" title="On"/>
+                                <state key="normal" title="Light"/>
                                 <connections>
-                                    <action selector="toggleSync:" destination="f7M-YG-8c0" eventType="touchUpInside" id="aSA-e4-PsP"/>
+                                    <action selector="toggleAppIcon:" destination="f7M-YG-8c0" eventType="touchUpInside" id="0ku-ni-60f"/>
                                 </connections>
                             </button>
                             <button opaque="NO" alpha="0.8399999737739563" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6NP-Xy-mgb">
@@ -197,12 +197,12 @@
                     <connections>
                         <outlet property="alertTimeButton" destination="6NP-Xy-mgb" id="uP8-hJ-l5n"/>
                         <outlet property="alertTimeLabel" destination="F2n-CD-MEZ" id="MYn-vz-dg5"/>
+                        <outlet property="appIconButton" destination="vyv-L7-KXp" id="Kt9-99-CGT"/>
+                        <outlet property="appIconLabel" destination="cSn-fr-Wpo" id="nwz-FH-v2g"/>
                         <outlet property="backgroundButton" destination="yY2-8T-XYK" id="hTw-XH-TCL"/>
                         <outlet property="backgroundLabel" destination="ssD-xc-X39" id="hdZ-dG-JIk"/>
                         <outlet property="settingsPickerView" destination="7Dm-a7-wsQ" id="hw3-kb-bNG"/>
                         <outlet property="settingsPickerViewDoneButton" destination="eqr-Gd-KQu" id="WZU-dt-ECS"/>
-                        <outlet property="syncButton" destination="vyv-L7-KXp" id="OP0-TY-YHf"/>
-                        <outlet property="syncLabel" destination="cSn-fr-Wpo" id="b9m-y0-E80"/>
                         <outlet property="userIDLabel" destination="Jvl-UK-yIQ" id="0P9-O9-rs0"/>
                         <outlet property="userIDTextField" destination="wng-07-JUb" id="mwa-oS-Ucq"/>
                     </connections>

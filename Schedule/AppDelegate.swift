@@ -93,5 +93,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         scheduleNotificationManager = ScheduleNotificationManager()
         scheduleNotificationManager?.gatherNotificationData()
     }
+    
+    func updateAppIcon()
+    {
+        switch UserDefaults.standard.object(forKey: "AppIcon") as? Int ?? 1
+        {
+        case 1:
+            UIApplication.shared.setAlternateIconName(nil) { (error) in
+                if error != nil
+                {
+                    print(error!.localizedDescription)
+                }
+            }
+        case 2:
+            UIApplication.shared.setAlternateIconName("AppIcon-Dark") { (error) in
+                if error != nil
+                {
+                    print(error!.localizedDescription)
+                }
+            }
+        default:
+            break
+        }
+    }
 }
 

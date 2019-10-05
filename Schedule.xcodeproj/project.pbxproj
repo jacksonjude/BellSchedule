@@ -50,6 +50,8 @@
 		7AA09CDF1F9C4B4D006B5F08 /* Consola.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */; };
 		7AA4B7872022A4AC00BC0A2C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA4B7862022A4AC00BC0A2C /* SettingsViewController.swift */; };
 		7AC0A3381F8C3EE0005E5FA3 /* ScheduleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */; };
+		7ACAF21423491562000C60A6 /* AppIcon-Dark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ACAF21223491562000C60A6 /* AppIcon-Dark@2x.png */; };
+		7ACAF21523491562000C60A6 /* AppIcon-Dark@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ACAF21323491562000C60A6 /* AppIcon-Dark@3x.png */; };
 		7ACF12C21FEF929B007D1320 /* ScheduleNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */; };
 		7ADFED9C1FDDC97300BFD0E1 /* CooleyCasual.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A0A74631F8C277700249FAB /* CooleyCasual.ttf */; };
 		7ADFED9D1FDDC97400BFD0E1 /* CooleyCasual.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A0A74631F8C277700249FAB /* CooleyCasual.ttf */; };
@@ -165,6 +167,8 @@
 		7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consola.ttf; sourceTree = "<group>"; };
 		7AA4B7862022A4AC00BC0A2C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoManager.swift; sourceTree = "<group>"; };
+		7ACAF21223491562000C60A6 /* AppIcon-Dark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-Dark@2x.png"; sourceTree = "<group>"; };
+		7ACAF21323491562000C60A6 /* AppIcon-Dark@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-Dark@3x.png"; sourceTree = "<group>"; };
 		7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotificationManager.swift; sourceTree = "<group>"; };
 		7ADFEDA51FDDCA0700BFD0E1 /* ScheduleWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScheduleWatch.entitlements; sourceTree = "<group>"; };
 		7ADFEDA61FDDCA1000BFD0E1 /* ScheduleWatch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ScheduleWatch Extension.entitlements"; sourceTree = "<group>"; };
@@ -299,6 +303,7 @@
 		7A796F8A1F871D1400D9658D /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				7ACAF20D234914A5000C60A6 /* AppIcons */,
 				7A9A5464218A0CC200F45B85 /* Notification */,
 				7A5687321FEC78FD00744A30 /* Announcement */,
 				7A2D98951F9587AC00288665 /* Settings */,
@@ -345,6 +350,15 @@
 				7A71602B2306003A0018F5AB /* Schedule.xcdatamodeld */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		7ACAF20D234914A5000C60A6 /* AppIcons */ = {
+			isa = PBXGroup;
+			children = (
+				7ACAF21223491562000C60A6 /* AppIcon-Dark@2x.png */,
+				7ACAF21323491562000C60A6 /* AppIcon-Dark@3x.png */,
+			);
+			path = AppIcons;
 			sourceTree = "<group>";
 		};
 		7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */ = {
@@ -590,9 +604,11 @@
 			files = (
 				7AA09CDF1F9C4B4D006B5F08 /* Consola.ttf in Resources */,
 				7A0A74641F8C281400249FAB /* CooleyCasual.ttf in Resources */,
+				7ACAF21423491562000C60A6 /* AppIcon-Dark@2x.png in Resources */,
 				7A796F991F871D1400D9658D /* LaunchScreen.storyboard in Resources */,
 				7A796F961F871D1400D9658D /* Assets.xcassets in Resources */,
 				7A796F911F871D1400D9658D /* Main.storyboard in Resources */,
+				7ACAF21523491562000C60A6 /* AppIcon-Dark@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -766,7 +782,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191003;
+				CURRENT_PROJECT_VERSION = 20191005;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				IBSC_MODULE = ScheduleWatch_Extension;
 				INFOPLIST_FILE = ScheduleWatch/Info.plist;
@@ -786,7 +802,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191003;
+				CURRENT_PROJECT_VERSION = 20191005;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				IBSC_MODULE = ScheduleWatch_Extension;
 				INFOPLIST_FILE = ScheduleWatch/Info.plist;
@@ -806,7 +822,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "ScheduleWatch Extension/ScheduleWatch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191003;
+				CURRENT_PROJECT_VERSION = 20191005;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = "ScheduleWatch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -826,7 +842,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "ScheduleWatch Extension/ScheduleWatch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191003;
+				CURRENT_PROJECT_VERSION = 20191005;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = "ScheduleWatch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -845,7 +861,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ScheduleWidget/ScheduleWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191003;
+				CURRENT_PROJECT_VERSION = 20191005;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = ScheduleWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
@@ -863,7 +879,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ScheduleWidget/ScheduleWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191003;
+				CURRENT_PROJECT_VERSION = 20191005;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = ScheduleWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
@@ -998,13 +1014,13 @@
 			baseConfigurationReference = 9A304A4F351FF74274D9454E /* Pods-Schedule.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Light";
 				CODE_SIGN_ENTITLEMENTS = Schedule/Schedule.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191003;
+				CURRENT_PROJECT_VERSION = 20191005;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = Schedule/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1018,13 +1034,13 @@
 			baseConfigurationReference = 0B352371E52BCB6E1CD82F84 /* Pods-Schedule.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Light";
 				CODE_SIGN_ENTITLEMENTS = Schedule/Schedule.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191003;
+				CURRENT_PROJECT_VERSION = 20191005;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = Schedule/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule;
 				PRODUCT_NAME = "$(TARGET_NAME)";

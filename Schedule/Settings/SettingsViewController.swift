@@ -12,12 +12,12 @@ import UIKit
 class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate
 {
     @IBOutlet weak var userIDLabel: UILabel!
-    @IBOutlet weak var syncLabel: UILabel!
+    @IBOutlet weak var appIconLabel: UILabel!
     @IBOutlet weak var backgroundLabel: UILabel!
     @IBOutlet weak var alertTimeLabel: UILabel!
     
     @IBOutlet weak var userIDTextField: UITextField!
-    @IBOutlet weak var syncButton: UIButton!
+    @IBOutlet weak var appIconButton: UIButton!
     @IBOutlet weak var backgroundButton: UIButton!
     @IBOutlet weak var alertTimeButton: UIButton!
     
@@ -67,11 +67,11 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         super.viewDidLoad()
         
         userIDLabel.addCorners(5)
-        syncLabel.addCorners(5)
+        appIconLabel.addCorners(5)
         backgroundLabel.addCorners(5)
         alertTimeLabel.addCorners(5)
         
-        syncButton.addCorners()
+        appIconButton.addCorners()
         backgroundButton.addCorners()
         alertTimeButton.addCorners()
         
@@ -105,7 +105,8 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
         userIDTextField.placeholder = (appGroupUserDefaults?.object(forKey: "userID") as? String ?? "")
         
-        syncButton.setTitle(String((UserDefaults.standard.object(forKey: "syncData") as? Bool) ?? true), for: UIControl.State.normal)
+        let appIcon = UserDefaults.standard.object(forKey: "AppIcon") as? Int ?? 1
+        setAppIconButtonTitle(appIcon: appIcon)
         
         Logger.println(" SETV: Opening SettingsViewController...")
     }
@@ -242,8 +243,33 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         }
     }
     
-    @IBAction func toggleSync(_ sender: Any) {
-        UserDefaults.standard.set(!((UserDefaults.standard.object(forKey: "syncData") as? Bool) ?? true), forKey: "syncData")
-        syncButton.setTitle(String((UserDefaults.standard.object(forKey: "syncData") as? Bool) ?? true), for: UIControl.State.normal)
+    @IBAction func toggleAppIcon(_ sender: Any) {
+        let appIcon = UserDefaults.standard.object(forKey: "AppIcon") as? Int ?? 1
+        
+        switch appIcon
+        {
+        case 1:
+            UserDefaults.standard.set(2, forKey: "AppIcon")
+            setAppIconButtonTitle(appIcon: 2)
+        case 2:
+            UserDefaults.standard.set(1, forKey: "AppIcon")
+            setAppIconButtonTitle(appIcon: 1)
+        default:
+            break
+        }
+        appDelegate.updateAppIcon()
+    }
+    
+    func setAppIconButtonTitle(appIcon: Int)
+    {
+        switch appIcon
+        {
+        case 1:
+            appIconButton.setTitle("Light", for: UIControl.State.normal)
+        case 2:
+            appIconButton.setTitle("Dark", for: UIControl.State.normal)
+        default:
+            break
+        }
     }
 }
