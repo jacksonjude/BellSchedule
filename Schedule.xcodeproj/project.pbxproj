@@ -44,14 +44,14 @@
 		7A796F991F871D1400D9658D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A796F971F871D1400D9658D /* LaunchScreen.storyboard */; };
 		7A796FA31F871D3300D9658D /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A796FA21F871D3300D9658D /* CloudKit.framework */; };
 		7A796FA51F87250600D9658D /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796FA41F87250600D9658D /* CloudManager.swift */; };
+		7A8B505F23492CAA00BF4E10 /* AppIcon-Dark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8B505D23492CAA00BF4E10 /* AppIcon-Dark@2x.png */; };
+		7A8B506023492CAA00BF4E10 /* AppIcon-Dark@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8B505E23492CAA00BF4E10 /* AppIcon-Dark@3x.png */; };
 		7A9A5466218A0CD500F45B85 /* NotificationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */; };
 		7A9A5469218A1B9700F45B85 /* NotificationEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */; };
 		7A9A546B218A1CA500F45B85 /* NotificationEditorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */; };
 		7AA09CDF1F9C4B4D006B5F08 /* Consola.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */; };
 		7AA4B7872022A4AC00BC0A2C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA4B7862022A4AC00BC0A2C /* SettingsViewController.swift */; };
 		7AC0A3381F8C3EE0005E5FA3 /* ScheduleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */; };
-		7ACAF21423491562000C60A6 /* AppIcon-Dark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ACAF21223491562000C60A6 /* AppIcon-Dark@2x.png */; };
-		7ACAF21523491562000C60A6 /* AppIcon-Dark@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ACAF21323491562000C60A6 /* AppIcon-Dark@3x.png */; };
 		7ACF12C21FEF929B007D1320 /* ScheduleNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */; };
 		7ADFED9C1FDDC97300BFD0E1 /* CooleyCasual.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A0A74631F8C277700249FAB /* CooleyCasual.ttf */; };
 		7ADFED9D1FDDC97400BFD0E1 /* CooleyCasual.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A0A74631F8C277700249FAB /* CooleyCasual.ttf */; };
@@ -161,14 +161,14 @@
 		7A796FA01F871D2F00D9658D /* Schedule.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Schedule.entitlements; sourceTree = "<group>"; };
 		7A796FA21F871D3300D9658D /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		7A796FA41F87250600D9658D /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
+		7A8B505D23492CAA00BF4E10 /* AppIcon-Dark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-Dark@2x.png"; sourceTree = "<group>"; };
+		7A8B505E23492CAA00BF4E10 /* AppIcon-Dark@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-Dark@3x.png"; sourceTree = "<group>"; };
 		7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewController.swift; sourceTree = "<group>"; };
 		7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorViewController.swift; sourceTree = "<group>"; };
 		7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorState.swift; sourceTree = "<group>"; };
 		7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consola.ttf; sourceTree = "<group>"; };
 		7AA4B7862022A4AC00BC0A2C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoManager.swift; sourceTree = "<group>"; };
-		7ACAF21223491562000C60A6 /* AppIcon-Dark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-Dark@2x.png"; sourceTree = "<group>"; };
-		7ACAF21323491562000C60A6 /* AppIcon-Dark@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-Dark@3x.png"; sourceTree = "<group>"; };
 		7ACF12C11FEF929B007D1320 /* ScheduleNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleNotificationManager.swift; sourceTree = "<group>"; };
 		7ADFEDA51FDDCA0700BFD0E1 /* ScheduleWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScheduleWatch.entitlements; sourceTree = "<group>"; };
 		7ADFEDA61FDDCA1000BFD0E1 /* ScheduleWatch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ScheduleWatch Extension.entitlements"; sourceTree = "<group>"; };
@@ -355,8 +355,8 @@
 		7ACAF20D234914A5000C60A6 /* AppIcons */ = {
 			isa = PBXGroup;
 			children = (
-				7ACAF21223491562000C60A6 /* AppIcon-Dark@2x.png */,
-				7ACAF21323491562000C60A6 /* AppIcon-Dark@3x.png */,
+				7A8B505D23492CAA00BF4E10 /* AppIcon-Dark@2x.png */,
+				7A8B505E23492CAA00BF4E10 /* AppIcon-Dark@3x.png */,
 			);
 			path = AppIcons;
 			sourceTree = "<group>";
@@ -604,11 +604,11 @@
 			files = (
 				7AA09CDF1F9C4B4D006B5F08 /* Consola.ttf in Resources */,
 				7A0A74641F8C281400249FAB /* CooleyCasual.ttf in Resources */,
-				7ACAF21423491562000C60A6 /* AppIcon-Dark@2x.png in Resources */,
+				7A8B505F23492CAA00BF4E10 /* AppIcon-Dark@2x.png in Resources */,
 				7A796F991F871D1400D9658D /* LaunchScreen.storyboard in Resources */,
 				7A796F961F871D1400D9658D /* Assets.xcassets in Resources */,
 				7A796F911F871D1400D9658D /* Main.storyboard in Resources */,
-				7ACAF21523491562000C60A6 /* AppIcon-Dark@3x.png in Resources */,
+				7A8B506023492CAA00BF4E10 /* AppIcon-Dark@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
