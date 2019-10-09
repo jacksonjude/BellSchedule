@@ -534,6 +534,8 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
         {
             Logger.println("Exiting UserScheduleTableView...")
         }
+        
+        viewDidAppear(true)
     }
     
     @IBAction func exitCalendar(_ segue: UIStoryboardSegue)
