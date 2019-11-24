@@ -22,6 +22,7 @@
 		7A2D98921F95837900288665 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D98911F95837900288665 /* Logger.swift */; };
 		7A2D98941F95879B00288665 /* DeveloperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D98931F95879B00288665 /* DeveloperViewController.swift */; };
 		7A3A148F2191F4F600C26347 /* NotificationCheckboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3A148E2191F4F600C26347 /* NotificationCheckboxViewController.swift */; };
+		7A3BA879238A3ECA00F9859B /* ScheduleWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7A15FC7D1FDDC7CD0012A883 /* ScheduleWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7A4374631F8F252400E4BDB2 /* CalendarCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4374621F8F252400E4BDB2 /* CalendarCollectionViewController.swift */; };
 		7A5687341FEC889800744A30 /* AnnouncementsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5687331FEC889800744A30 /* AnnouncementsTableViewController.swift */; };
 		7A5687361FEC8DF600744A30 /* AnnouncementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5687351FEC8DF600744A30 /* AnnouncementManager.swift */; };
@@ -67,6 +68,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		7A0BBC54238A41A300FEB976 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7A796F801F871D1400D9658D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7A15FC7C1FDDC7CD0012A883;
+			remoteInfo = ScheduleWatch;
+		};
 		7A15FC8B1FDDC7CD0012A883 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7A796F801F871D1400D9658D /* Project object */;
@@ -101,6 +109,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
+				7A3BA879238A3ECA00F9859B /* ScheduleWatch.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -453,6 +462,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				7A0BBC55238A41A300FEB976 /* PBXTargetDependency */,
 				7A61F5A01FCD0CC40060580A /* PBXTargetDependency */,
 			);
 			name = Schedule;
@@ -481,6 +491,7 @@
 					};
 					7A15FC881FDDC7CD0012A883 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -712,6 +723,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		7A0BBC55238A41A300FEB976 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7A15FC7C1FDDC7CD0012A883 /* ScheduleWatch */;
+			targetProxy = 7A0BBC54238A41A300FEB976 /* PBXContainerItemProxy */;
+		};
 		7A15FC8C1FDDC7CD0012A883 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 7A15FC881FDDC7CD0012A883 /* ScheduleWatch Extension */;
@@ -766,7 +782,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20190817;
+				CURRENT_PROJECT_VERSION = 20191123;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				IBSC_MODULE = ScheduleWatch_Extension;
 				INFOPLIST_FILE = ScheduleWatch/Info.plist;
@@ -786,7 +802,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20190817;
+				CURRENT_PROJECT_VERSION = 20191123;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				IBSC_MODULE = ScheduleWatch_Extension;
 				INFOPLIST_FILE = ScheduleWatch/Info.plist;
@@ -806,7 +822,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "ScheduleWatch Extension/ScheduleWatch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20190817;
+				CURRENT_PROJECT_VERSION = 20191123;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = "ScheduleWatch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -814,7 +830,7 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 4.2;
 			};
@@ -826,7 +842,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "ScheduleWatch Extension/ScheduleWatch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20190817;
+				CURRENT_PROJECT_VERSION = 20191123;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = "ScheduleWatch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -834,7 +850,7 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 4.2;
 			};
@@ -845,7 +861,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ScheduleWidget/ScheduleWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20190817;
+				CURRENT_PROJECT_VERSION = 20191123;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = ScheduleWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
@@ -863,7 +879,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ScheduleWidget/ScheduleWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20190817;
+				CURRENT_PROJECT_VERSION = 20191123;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = ScheduleWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
@@ -1001,7 +1017,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Schedule/Schedule.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20190817;
+				CURRENT_PROJECT_VERSION = 20191123;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = Schedule/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1021,7 +1037,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Schedule/Schedule.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20190817;
+				CURRENT_PROJECT_VERSION = 20191123;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = Schedule/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

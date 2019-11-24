@@ -11,172 +11,224 @@ import Foundation
 import CoreData
 
 
-class InterfaceController: WKInterfaceController, ScheduleInfoDelegate {
-    
-    var periodNumber = 0
-    
-    func printCurrentPeriod(periodRangeString: String, periodNumber: Int, todaySchedule: NSManagedObject) {
-        if let periodNumbers = CoreDataStack.decodeArrayFromJSON(object: todaySchedule, field: "periodNumbers") as? Array<Int>
-        {
-            let periodRangeSplit = periodRangeString.split(separator: "-")
-            let periodStartString = Date().convertToStandardTime(date: String(periodRangeSplit[0]))
-            let periodEndString = Date().convertToStandardTime(date: String(periodRangeSplit[1]))
-            
-            let periodInfo1 = "The current period is " + String(periodNumbers[periodNumber-1]) + "\n"
-            let periodInfo2 = periodStartString! + "-" + periodEndString!
-            OperationQueue.main.addOperation {
-                self.currentPeriodLabel.setText(periodInfo1 + periodInfo2)
-            }
-            
-            self.periodNumber = periodNumber
-            
-            if self.scheduleInfoManager?.periodNames != nil
-            {
-                printPeriodName(todaySchedule: todaySchedule, periodNames: self.scheduleInfoManager!.periodNames!)
-            }
-        }
-    }
-    
-    func printPeriodName(todaySchedule: NSManagedObject, periodNames: Array<String>) {
-        return
-    }
-    
-    func printCurrentMessage(message: String) {
-        OperationQueue.main.addOperation {
-            self.currentPeriodLabel.setText(message)
-        }
-    }
-    
-    func printInternalError(message: String, labelNumber: Int) {
-        return
-    }
-    
-    func printSchoolStartEndMessage(message: String) {
-        OperationQueue.main.addOperation {
-            self.schoolStartEndLabel.setText(message)
-        }
-    }
-    
-    func printSchoolStartEndTime(periodTimes: Array<String>) {
-        let currentDate = Date()
-        
-        let startTimeArray = periodTimes[0].split(separator: "-")
-        let startTimeStart = getDate(hourMinute: startTimeArray[0], day: currentDate)
-        
-        let endTimeArray = periodTimes[periodTimes.count-1].split(separator: "-")
-        let endTimeEnd = getDate(hourMinute: endTimeArray[1], day: currentDate)
-        
-        var schoolStartMessage = ""
-        var schoolEndMessage = ""
-        
-        let schoolStartToPastRange = Date.distantPast ... startTimeStart
-        if schoolStartToPastRange.contains(currentDate)
-        {
-            schoolStartMessage = "School starts today at " + Date().convertToStandardTime(date: String(startTimeArray[0]))
-        }
-        else
-        {
-            schoolStartMessage = "School started today at " + Date().convertToStandardTime(date: String(startTimeArray[0]))
-        }
-        
-        let schoolEndToPastRange = Date.distantPast ... endTimeEnd
-        if schoolEndToPastRange.contains(currentDate)
-        {
-            schoolEndMessage = "\nSchool ends today at " + Date().convertToStandardTime(date: String(endTimeArray[1]))
-        }
-        else
-        {
-            schoolEndMessage = "\nSchool ended today at " + Date().convertToStandardTime(date: String(endTimeArray[1]))
-        }
-        
-        OperationQueue.main.addOperation {
-            self.schoolStartEndLabel.setText(schoolStartMessage + schoolEndMessage)
-        }
-    }
-    
-    func printTomorrowStartTime(tomorrowSchoolStartTime: String, tomorrowSchedule: NSManagedObject, nextWeekCount: Int, nextDayCount: Int) {
-        //Determine the date when school starts next
-        var startOfNextSchoolDayRaw = Date().getStartOfNextWeek(nextWeek: nextWeekCount)
-        let gregorian = Calendar(identifier: .gregorian)
-        
-        //Find the current day of the week from 0-6
-        let todayComponents = gregorian.dateComponents([.weekday], from: Date())
-        let currentDayOfWeek = todayComponents.weekday! - 1
-        
-        let dayInSeconds = (60*60*24+3600)
-        
-        //Add currentDayOfWeek to the nextDayCount in seconds
-        var weekDaysToAdd = 0.0
-        if nextWeekCount > 0
-        {
-            weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1))
-        }
-        else
-        {
-            weekDaysToAdd = Double(dayInSeconds * (nextDayCount + 1 + currentDayOfWeek))
-        }
-        startOfNextSchoolDayRaw.addTimeInterval(weekDaysToAdd)
-        
-        //Set the hour correctly
-        var startOfNextSchoolDayComponents = gregorian.dateComponents([.month, .day, .weekday], from: startOfNextSchoolDayRaw)
-        startOfNextSchoolDayComponents.hour = 12
-        let startOfNextSchoolDayFormatted = gregorian.date(from: startOfNextSchoolDayComponents)!
-        
-        //Format as MM/dd
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd"
-        let startOfNextSchoolDayString = formatter.string(from: startOfNextSchoolDayFormatted)
-        
-        //Get the start time and the weekday name
-        //let tomorrowSchoolStartTime = tomorrowPeriodTimes[0].split(separator: "-")[0]
-        
-        var weekDayOfSchoolStart = ""
-        if nextWeekCount > 0
-        {
-            weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1)
-        }
-        else
-        {
-            weekDayOfSchoolStart = Date().getStringDayOfWeek(day: nextDayCount + 1 + currentDayOfWeek)
-        }
-        
-        OperationQueue.main.addOperation {
-            let schoolStart1 = "School starts " + weekDayOfSchoolStart + ",\n" + startOfNextSchoolDayString
-            let schoolStart2 = " at " + Date().convertToStandardTime(date: String(tomorrowSchoolStartTime))
-            self.tomorrowStartTimeLabel.setText(schoolStart1 + schoolStart2)
-        }
-    }
-    
-    func getDate(hourMinute: Substring, day: Date) -> Date
-    {
-        let hourMinuteSplit = hourMinute.split(separator: ":")
-        let gregorian = Calendar(identifier: .gregorian)
-        var dateComponents = gregorian.dateComponents([.year, .month, .day, .hour, .minute, .second], from: day)
-        dateComponents.hour = Int(hourMinuteSplit[0])
-        dateComponents.minute = Int(hourMinuteSplit[1])
-        dateComponents.second = 0
-        let periodStartDate = gregorian.date(from: dateComponents)!
-        
-        return periodStartDate
-    }
+class InterfaceController: WKInterfaceController {
+    let todaySource = URL(string: "https://lowellschedule.herokuapp.com/today")!
+    let tomorrowSource = URL(string: "https://lowellschedule.herokuapp.com/tomorrow")!
     
     @IBOutlet var currentPeriodLabel: WKInterfaceLabel!
     @IBOutlet var schoolStartEndLabel: WKInterfaceLabel!
     @IBOutlet var tomorrowStartTimeLabel: WKInterfaceLabel!
     
     let extentionDelegate = WKExtension.shared().delegate as! ExtensionDelegate
-    
-    var scheduleInfoManager: ScheduleInfoManager?
-    
+        
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
         // Configure interface objects here.
         
-        scheduleInfoManager = ScheduleInfoManager(delegate: self, downloadData: true, onlyFindOneDay: false)
-        scheduleInfoManager?.startInfoManager()
+        updateScheduleInfo()
+    }
+    
+    func getTodayData()
+    {
+        let todayTask = URLSession.shared.dataTask(with: todaySource) { (data, response, error) in
+            guard let data = data else { return }
+            if let todayDictionary = self.decodeJSONFromData(data: data)
+            {
+                if let errorString = todayDictionary["error"] as? String
+                {
+                    OperationQueue.main.addOperation {
+                        self.currentPeriodLabel.setText("Error: " + errorString)
+                        self.schoolStartEndLabel.setText("Error: " + errorString)
+                    }
+                    
+                    return
+                }
+                
+                if let messageString = todayDictionary["message"] as? String
+                {
+                    OperationQueue.main.addOperation {
+                        self.currentPeriodLabel.setText(messageString)
+                        self.schoolStartEndLabel.setText(messageString)
+                    }
+                    return
+                }
+                
+                let periodNumbers = todayDictionary["periodNumbers"] as! Array<Int>
+                let periodTimes = todayDictionary["periodTimes"] as! Array<String>
+                
+                OperationQueue.main.addOperation {
+                    self.displayTodayData(periodTimes: periodTimes, periodNumbers: periodNumbers)
+                }
+            }
+        }
+
+        todayTask.resume()
+    }
+    
+    func displayTodayData(periodTimes: Array<String>, periodNumbers: Array<Int>)
+    {
+        let nowHour = Calendar.current.component(.hour, from: Date())
+        let nowMinute = Calendar.current.component(.minute, from: Date())
+        var currentPeriodNumber = -1
+        var periodOn = 0
+        var lastEndHour: Int?
+        var lastEndMinute: Int?
+        var isPassingPeriod = false
+        for periodTime in periodTimes
+        {
+            let startTime = periodTime.split(separator: "-")[0]
+            let endTime = periodTime.split(separator: "-")[1]
+
+            let startHour = Int(startTime.split(separator: ":")[0])!
+            let startMinute = Int(startTime.split(separator: ":")[1])!
+            let endHour = Int(endTime.split(separator: ":")[0])!
+            let endMinute = Int(endTime.split(separator: ":")[1])!
+
+            if (nowHour > startHour || (nowHour == startHour && nowMinute >= startMinute)) && (nowHour < endHour || (nowHour == endHour && nowMinute < endMinute))
+            {
+                currentPeriodNumber = periodOn
+                break
+            }
+            else if lastEndHour != nil && lastEndMinute != nil && (lastEndHour! < nowHour || (lastEndHour == nowHour && lastEndMinute! <= nowMinute)) && (startHour > nowHour || (startHour == nowHour && startMinute > nowMinute))
+            {
+                isPassingPeriod = true
+                currentPeriodNumber = periodOn
+                break
+            }
+
+            lastEndHour = endHour
+            lastEndMinute = endMinute
+            
+            periodOn += 1
+        }
+
+        var schoolStarted = false
+        var schoolEnded = false
+
+        if currentPeriodNumber != -1 && !isPassingPeriod
+        {
+            let periodEndTime = periodTimes[currentPeriodNumber].split(separator: "-")[1]
+            let periodEndHour = Int(periodEndTime.split(separator: ":")[0])!
+            let periodEndMinute = Int(periodEndTime.split(separator: ":")[1])!
+            
+            let currentPeriodMessage = "Period " + String(periodNumbers[currentPeriodNumber]) + "\n" + String(convertRangeTo12Hour(periodTimes[currentPeriodNumber]))
+            let timeLeftMessage = " (" + String((periodEndHour-nowHour)*60+(periodEndMinute-nowMinute)) + " left)"
+            currentPeriodLabel.setText(currentPeriodMessage + timeLeftMessage)
+
+            schoolStarted = true
+            schoolEnded = false
+        }
+        else if isPassingPeriod
+        {
+            let passingPeriodMessage = "Passing period\n"
+            let nextBlockMessage = "Block " + String(periodNumbers[currentPeriodNumber]) + " starts " + periodTimes[currentPeriodNumber].split(separator: "-")[0]
+            currentPeriodLabel.setText(passingPeriodMessage + nextBlockMessage)
+
+            schoolStarted = true
+            schoolEnded = false
+        }
+        else
+        {
+            let schoolStartHour = Int(periodTimes[0].split(separator: "-")[0].split(separator: ":")[0])!
+            let schoolStartMinute = Int(periodTimes[0].split(separator: "-")[0].split(separator: ":")[1])!
+            let schoolEndHour = Int(periodTimes[periodTimes.count-1].split(separator: "-")[1].split(separator: ":")[0])!
+            let schoolEndMinute = Int(periodTimes[periodTimes.count-1].split(separator: "-")[1].split(separator: ":")[1])!
+
+            if nowHour < schoolStartHour || (nowHour == schoolStartHour && nowMinute < schoolStartMinute)
+            {
+                currentPeriodLabel.setText("School not started")
+
+                schoolStarted = false
+                schoolEnded = false
+            }
+            else if nowHour > schoolEndHour || (nowHour == schoolEndHour && nowMinute >= schoolEndMinute)
+            {
+                currentPeriodLabel.setText("School ended")
+
+                schoolStarted = true
+                schoolEnded = true
+            }
+        }
+
+        schoolStartEndLabel.setText("School " + (schoolStarted ? " started " : " starts ") + " " + convertTimeTo12Hour(String(periodTimes[0].split(separator: "-")[0])) + "\nSchool " + (schoolEnded ? " ended " : " ends ") + " " + convertTimeTo12Hour(String(periodTimes[periodTimes.count-1].split(separator: "-")[1])))
+    }
+    
+    func convertRangeTo12Hour(_ range: String) -> String
+    {
+        let rangeStart = convertTimeTo12Hour(String(range.split(separator: "-")[0]))
+        let rangeEnd = convertTimeTo12Hour(String(range.split(separator: "-")[1]))
+
+        return rangeStart + "-" + rangeEnd
+    }
+
+    func convertTimeTo12Hour(_ time: String) -> String
+    {
+        let rangeStartHour = convertTo12Hour(Int(String(time.split(separator: ":")[0]))!)
+        let rangeStartMinute = time.split(separator: ":")[1]
+
+        return String(rangeStartHour) + ":" + String(rangeStartMinute)
+    }
+
+    func convertTo12Hour(_ hour: Int) -> Int
+    {
+        if hour > 12 { return hour-12 }
+        if hour == 0 { return 12 }
+        return hour
+    }
+    
+    func decodeJSONFromData(data: Data) -> Dictionary<String,Any>?
+    {
+        do
+        {
+            if let jsonObject = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? Dictionary<String,Any>
+            {
+                return jsonObject
+            }
+        }
+        catch
+        {
+            print(error)
+        }
+        return nil
+    }
+    
+    func getTomorrowData()
+    {
+        let tomorrowTask = URLSession.shared.dataTask(with: tomorrowSource) { (data, response, error) in
+            guard let data = data else { return }
+            if let tomorrowDictionary = self.decodeJSONFromData(data: data)
+            {
+                if let errorString = tomorrowDictionary["error"] as? String
+                {
+                    OperationQueue.main.addOperation {
+                        self.tomorrowStartTimeLabel.setText("Error: " + errorString)
+                    }
+                    
+                    return
+                }
+                
+                let startMillis = tomorrowDictionary["date"] as! Double
+                let periodTimes = tomorrowDictionary["periodTimes"] as! Array<String>
+                
+                OperationQueue.main.addOperation {
+                    self.displayTomorrowData(startMillis: startMillis, periodTimes: periodTimes)
+                }
+            }
+        }
+
+        tomorrowTask.resume()
+    }
+    
+    func displayTomorrowData(startMillis: Double, periodTimes: Array<String>)
+    {
+        let startDate = Date(timeIntervalSince1970: startMillis/1000)
+        let month = String(Calendar.current.component(.month, from: startDate))
+        let date = String(Calendar.current.component(.day, from: startDate))
+        let weekday = String(Date().getStringDayOfWeek(day: Calendar.current.component(.weekday, from: startDate)-1).prefix(3))
+        let startTime = String(periodTimes[0].split(separator: "-")[0])
         
-        //updateScheduleInfo()
+        tomorrowStartTimeLabel.setText("School on " + weekday + "\n" + month + "/" + date + " at " + startTime)
     }
     
     override func willActivate() {
@@ -195,7 +247,8 @@ class InterfaceController: WKInterfaceController, ScheduleInfoDelegate {
         schoolStartEndLabel.setText("Loading...")
         tomorrowStartTimeLabel.setText("Loading...")
         
-        scheduleInfoManager?.refreshScheduleInfo()
+        getTodayData()
+        getTomorrowData()
     }
     
     @IBAction func refreshInfo(_ sender: Any) {

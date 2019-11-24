@@ -1,30 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13771" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
-    <device id="watch38" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="15505" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch40"/>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13756"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="15501"/>
     </dependencies>
     <scenes>
-        <!--Interface Controller-->
+        <!--Schedule-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="ScheduleWatch" customModuleProvider="target">
+                <controller title="Schedule" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="ScheduleWatch" customModuleProvider="target">
                     <items>
-                        <label width="136" height="65" alignment="left" text="Loading..." textAlignment="center" numberOfLines="3" id="N2e-aB-cVw"/>
-                        <separator alignment="left" id="hq3-Zl-Ozx"/>
-                        <label width="136" height="65" alignment="left" text="Loading..." textAlignment="center" numberOfLines="3" id="8U2-C4-nqM"/>
-                        <separator alignment="left" id="AWX-Pf-CDI"/>
-                        <label width="136" height="65" alignment="left" text="Loading..." textAlignment="center" numberOfLines="3" id="XmT-6W-Ces"/>
-                        <separator alignment="left" id="v5x-Ma-27x"/>
-                        <button width="1" alignment="left" title="Refresh" id="X9q-Kp-eta">
-                            <connections>
-                                <action selector="refreshInfo:" destination="AgC-eL-Hgc" id="7zF-PJ-uts"/>
-                            </connections>
-                        </button>
+                        <label width="160" height="50" alignment="center" text="Loading..." textAlignment="center" numberOfLines="2" id="N2e-aB-cVw">
+                            <gestureRecognizers>
+                                <tapGestureRecognizer id="5ol-AH-HMY">
+                                    <connections>
+                                        <action selector="refreshInfo:" destination="AgC-eL-Hgc" id="hpR-KM-j0q"/>
+                                    </connections>
+                                </tapGestureRecognizer>
+                            </gestureRecognizers>
+                            <fontDescription key="font" style="UICTFontTextStyleBody"/>
+                        </label>
+                        <separator alignment="center" id="hq3-Zl-Ozx"/>
+                        <label width="160" height="50" alignment="center" text="Loading..." textAlignment="center" numberOfLines="3" id="8U2-C4-nqM">
+                            <gestureRecognizers>
+                                <tapGestureRecognizer id="EEf-7x-dCi">
+                                    <connections>
+                                        <action selector="refreshInfo:" destination="AgC-eL-Hgc" id="6hc-jZ-oZQ"/>
+                                    </connections>
+                                </tapGestureRecognizer>
+                            </gestureRecognizers>
+                        </label>
+                        <separator alignment="center" id="AWX-Pf-CDI"/>
+                        <label width="160" height="50" alignment="center" text="Loading..." textAlignment="center" numberOfLines="3" id="XmT-6W-Ces">
+                            <gestureRecognizers>
+                                <tapGestureRecognizer id="g9c-25-FZQ">
+                                    <connections>
+                                        <action selector="refreshInfo:" destination="AgC-eL-Hgc" id="JsG-Sm-KsT"/>
+                                    </connections>
+                                </tapGestureRecognizer>
+                            </gestureRecognizers>
+                        </label>
                     </items>
                     <connections>
                         <outlet property="currentPeriodLabel" destination="N2e-aB-cVw" id="zBd-gn-Ne8"/>
@@ -33,7 +50,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="34" y="61.5"/>
+            <point key="canvasLocation" x="34" y="61.09375"/>
         </scene>
     </scenes>
 </document>
