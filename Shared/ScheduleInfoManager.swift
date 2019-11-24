@@ -104,7 +104,7 @@ class ScheduleInfoManager: NSObject {
     var periodNamePrinted = false
     var periodIndex: Int?
     var freeMods: Array<Int>?
-    var offBlocks: Array<Int>?
+    var offBlocks: Array<Int> = [0,0,0,0,0,0,0,0]
     
     var todaySchedule: NSManagedObject?
     
@@ -284,12 +284,7 @@ class ScheduleInfoManager: NSObject {
             Logger.println(" USRSCH: Received periodNamesRecord")
             periodNames = periodNamesRecord.object(forKey: "periodNames") as? [String]
             freeMods = periodNamesRecord.object(forKey: "freeMods") as? [Int]
-            offBlocks = periodNamesRecord.object(forKey: "offBlocks") as? [Int]
-            
-            if offBlocks == nil || offBlocks?.count == 0
-            {
-                offBlocks = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-            }
+            offBlocks = periodNamesRecord.object(forKey: "offBlocks") as? [Int] ?? [0,0,0,0,0,0,0,0]
             
             getPeriodName()
 
@@ -382,7 +377,7 @@ class ScheduleInfoManager: NSObject {
         {
             let periodNumberIndex = periodNumbers.firstIndex(of: periodNumber)!
             //Hardcode reg#
-            if ((offBlocks != nil && offBlocks!.count > periodNumber-1 && offBlocks![periodNumber-1] == 0) || periodNumber == 9) && periodNumberIndex >= currentPeriodIndex
+            if ((offBlocks.count > periodNumber-1 && offBlocks[periodNumber-1] == 0) || periodNumber == 9) && periodNumberIndex >= currentPeriodIndex
             {
                 return periodNumberIndex
             }
@@ -396,7 +391,7 @@ class ScheduleInfoManager: NSObject {
         var lastPeriodIndex = 0
         for periodNumber in periodNumbers
         {
-            if offBlocks != nil && offBlocks!.count > periodNumber-1 && offBlocks![periodNumber-1] == 0
+            if offBlocks.count > periodNumber-1 && offBlocks[periodNumber-1] == 0
             {
                 lastPeriodIndex = periodNumbers.firstIndex(of: periodNumber)!
             }

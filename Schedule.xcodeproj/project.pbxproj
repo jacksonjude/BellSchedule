@@ -45,6 +45,8 @@
 		7A796F991F871D1400D9658D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A796F971F871D1400D9658D /* LaunchScreen.storyboard */; };
 		7A796FA31F871D3300D9658D /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A796FA21F871D3300D9658D /* CloudKit.framework */; };
 		7A796FA51F87250600D9658D /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A796FA41F87250600D9658D /* CloudManager.swift */; };
+		7A8FCBAF234EEA3200437391 /* AppIcon-Dark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8FCBAD234EEA3200437391 /* AppIcon-Dark@2x.png */; };
+		7A8FCBB0234EEA3200437391 /* AppIcon-Dark@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A8FCBAE234EEA3200437391 /* AppIcon-Dark@3x.png */; };
 		7A9A5466218A0CD500F45B85 /* NotificationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */; };
 		7A9A5469218A1B9700F45B85 /* NotificationEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */; };
 		7A9A546B218A1CA500F45B85 /* NotificationEditorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */; };
@@ -168,6 +170,8 @@
 		7A796FA01F871D2F00D9658D /* Schedule.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Schedule.entitlements; sourceTree = "<group>"; };
 		7A796FA21F871D3300D9658D /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		7A796FA41F87250600D9658D /* CloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
+		7A8FCBAD234EEA3200437391 /* AppIcon-Dark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-Dark@2x.png"; sourceTree = "<group>"; };
+		7A8FCBAE234EEA3200437391 /* AppIcon-Dark@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon-Dark@3x.png"; sourceTree = "<group>"; };
 		7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewController.swift; sourceTree = "<group>"; };
 		7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorViewController.swift; sourceTree = "<group>"; };
 		7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorState.swift; sourceTree = "<group>"; };
@@ -308,6 +312,7 @@
 		7A796F8A1F871D1400D9658D /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				7ACAF20D234914A5000C60A6 /* AppIcons */,
 				7A9A5464218A0CC200F45B85 /* Notification */,
 				7A5687321FEC78FD00744A30 /* Announcement */,
 				7A2D98951F9587AC00288665 /* Settings */,
@@ -354,6 +359,15 @@
 				7A71602B2306003A0018F5AB /* Schedule.xcdatamodeld */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		7ACAF20D234914A5000C60A6 /* AppIcons */ = {
+			isa = PBXGroup;
+			children = (
+				7A8FCBAD234EEA3200437391 /* AppIcon-Dark@2x.png */,
+				7A8FCBAE234EEA3200437391 /* AppIcon-Dark@3x.png */,
+			);
+			path = AppIcons;
 			sourceTree = "<group>";
 		};
 		7AF3A24B1F8DBDDC00C509AC /* ScheduleInfo */ = {
@@ -453,6 +467,7 @@
 				2E2AF9B9BDA260446DBF4F34 /* [CP] Check Pods Manifest.lock */,
 				7A796F841F871D1400D9658D /* Sources */,
 				7A796F851F871D1400D9658D /* Frameworks */,
+				7A8FCBB4234EF86100437391 /* ShellScript */,
 				7A796F861F871D1400D9658D /* Resources */,
 				7A2418A91FC7E883000407B8 /* Embed App Extensions */,
 				C25D63DE2E0D747580CE08E1 /* [CP] Embed Pods Frameworks */,
@@ -601,9 +616,11 @@
 			files = (
 				7AA09CDF1F9C4B4D006B5F08 /* Consola.ttf in Resources */,
 				7A0A74641F8C281400249FAB /* CooleyCasual.ttf in Resources */,
+				7A8FCBAF234EEA3200437391 /* AppIcon-Dark@2x.png in Resources */,
 				7A796F991F871D1400D9658D /* LaunchScreen.storyboard in Resources */,
 				7A796F961F871D1400D9658D /* Assets.xcassets in Resources */,
 				7A796F911F871D1400D9658D /* Main.storyboard in Resources */,
+				7A8FCBB0234EEA3200437391 /* AppIcon-Dark@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -627,6 +644,23 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		7A8FCBB4234EF86100437391 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#   ON/OFF Script Toggle (script ON with #, script OFF without #)\n#exit 0\n\n#   Output version & build numbers into a label on LaunchScreen.storyboard\nsed -i .bak -e \"/userLabel=\\\"APP_VERSION\\\"/s/text=\\\"[^\\\"]*\\\"/text=\\\"Version: $MARKETING_VERSION Build: $CURRENT_PROJECT_VERSION\\\"/\" \"$PROJECT_DIR/$PROJECT_NAME/Base.lproj/LaunchScreen.storyboard\"\n";
 		};
 		C25D63DE2E0D747580CE08E1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -786,6 +820,7 @@
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				IBSC_MODULE = ScheduleWatch_Extension;
 				INFOPLIST_FILE = ScheduleWatch/Info.plist;
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -806,6 +841,7 @@
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				IBSC_MODULE = ScheduleWatch_Extension;
 				INFOPLIST_FILE = ScheduleWatch/Info.plist;
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -826,6 +862,7 @@
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = "ScheduleWatch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -846,6 +883,7 @@
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = "ScheduleWatch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -866,6 +904,7 @@
 				INFOPLIST_FILE = ScheduleWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule.ScheduleWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -884,6 +923,7 @@
 				INFOPLIST_FILE = ScheduleWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule.ScheduleWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1014,14 +1054,15 @@
 			baseConfigurationReference = 9A304A4F351FF74274D9454E /* Pods-Schedule.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Light";
 				CODE_SIGN_ENTITLEMENTS = Schedule/Schedule.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20191123;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = Schedule/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1034,14 +1075,15 @@
 			baseConfigurationReference = 0B352371E52BCB6E1CD82F84 /* Pods-Schedule.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Light";
 				CODE_SIGN_ENTITLEMENTS = Schedule/Schedule.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20191123;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = Schedule/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 3.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacksonjude.BellSchedule;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
