@@ -8,13 +8,9 @@
 
 import WatchKit
 import Foundation
-import CoreData
 
-
-class InterfaceController: WKInterfaceController {
-    let todaySource = URL(string: "https://lowellschedule.herokuapp.com/today")!
-    let tomorrowSource = URL(string: "https://lowellschedule.herokuapp.com/tomorrow")!
-    
+class ScheduleInfoController: WKInterfaceController
+{
     @IBOutlet var currentPeriodLabel: WKInterfaceLabel!
     @IBOutlet var schoolStartEndLabel: WKInterfaceLabel!
     @IBOutlet var tomorrowStartTimeLabel: WKInterfaceLabel!
@@ -26,44 +22,52 @@ class InterfaceController: WKInterfaceController {
         
         // Configure interface objects here.
         
-        updateScheduleInfo()
+        self.setTitle("Schedule")
+        
+        if ScheduleDataManager.todayScheduleData == nil || ScheduleDataManager.tomorrowScheduleData == nil
+        {
+            updateScheduleInfo()
+        }
     }
     
     func getTodayData()
     {
-        let todayTask = URLSession.shared.dataTask(with: todaySource) { (data, response, error) in
-            guard let data = data else { return }
-            if let todayDictionary = self.decodeJSONFromData(data: data)
+        ScheduleDataManager.fetchTodayData(completion: { (todayDictionary) in
+            if let errorString = todayDictionary["error"] as? String
             {
-                if let errorString = todayDictionary["error"] as? String
-                {
-                    OperationQueue.main.addOperation {
-                        self.currentPeriodLabel.setText("Error: " + errorString)
-                        self.schoolStartEndLabel.setText("Error: " + errorString)
-                    }
-                    
-                    return
-                }
-                
-                if let messageString = todayDictionary["message"] as? String
-                {
-                    OperationQueue.main.addOperation {
-                        self.currentPeriodLabel.setText(messageString)
-                        self.schoolStartEndLabel.setText(messageString)
-                    }
-                    return
-                }
-                
-                let periodNumbers = todayDictionary["periodNumbers"] as! Array<Int>
-                let periodTimes = todayDictionary["periodTimes"] as! Array<String>
-                
                 OperationQueue.main.addOperation {
-                    self.displayTodayData(periodTimes: periodTimes, periodNumbers: periodNumbers)
+                    self.currentPeriodLabel.setText("Error: " + errorString)
+                    self.schoolStartEndLabel.setText("Error: " + errorString)
                 }
+                
+                return
             }
-        }
-
-        todayTask.resume()
+            
+            if let messageString = todayDictionary["message"] as? String
+            {
+                OperationQueue.main.addOperation {
+                    self.currentPeriodLabel.setText(messageString)
+                    self.schoolStartEndLabel.setText(messageString)
+                }
+                return
+            }
+            
+            if let scheduleCode = todayDictionary["scheduleCode"] as? String, scheduleCode == "H"
+            {
+                OperationQueue.main.addOperation {
+                    self.currentPeriodLabel.setText("No school today")
+                    self.schoolStartEndLabel.setText("No school today")
+                }
+                return
+            }
+            
+            let periodNumbers = todayDictionary["periodNumbers"] as! Array<Int>
+            let periodTimes = todayDictionary["periodTimes"] as! Array<String>
+            
+            OperationQueue.main.addOperation {
+                self.displayTodayData(periodTimes: periodTimes, periodNumbers: periodNumbers)
+            }
+        })
     }
     
     func displayTodayData(periodTimes: Array<String>, periodNumbers: Array<Int>)
@@ -112,7 +116,7 @@ class InterfaceController: WKInterfaceController {
             let periodEndHour = Int(periodEndTime.split(separator: ":")[0])!
             let periodEndMinute = Int(periodEndTime.split(separator: ":")[1])!
             
-            let currentPeriodMessage = "Period " + String(periodNumbers[currentPeriodNumber]) + "\n" + String(convertRangeTo12Hour(periodTimes[currentPeriodNumber]))
+            let currentPeriodMessage = "Period " + String(periodNumbers[currentPeriodNumber]) + "\n" + String(ScheduleDataManager.convertRangeTo12Hour(periodTimes[currentPeriodNumber]))
             let timeLeftMessage = " (" + String((periodEndHour-nowHour)*60+(periodEndMinute-nowMinute)) + " left)"
             currentPeriodLabel.setText(currentPeriodMessage + timeLeftMessage)
 
@@ -151,73 +155,28 @@ class InterfaceController: WKInterfaceController {
             }
         }
 
-        schoolStartEndLabel.setText("School " + (schoolStarted ? " started " : " starts ") + " " + convertTimeTo12Hour(String(periodTimes[0].split(separator: "-")[0])) + "\nSchool " + (schoolEnded ? " ended " : " ends ") + " " + convertTimeTo12Hour(String(periodTimes[periodTimes.count-1].split(separator: "-")[1])))
-    }
-    
-    func convertRangeTo12Hour(_ range: String) -> String
-    {
-        let rangeStart = convertTimeTo12Hour(String(range.split(separator: "-")[0]))
-        let rangeEnd = convertTimeTo12Hour(String(range.split(separator: "-")[1]))
-
-        return rangeStart + "-" + rangeEnd
-    }
-
-    func convertTimeTo12Hour(_ time: String) -> String
-    {
-        let rangeStartHour = convertTo12Hour(Int(String(time.split(separator: ":")[0]))!)
-        let rangeStartMinute = time.split(separator: ":")[1]
-
-        return String(rangeStartHour) + ":" + String(rangeStartMinute)
-    }
-
-    func convertTo12Hour(_ hour: Int) -> Int
-    {
-        if hour > 12 { return hour-12 }
-        if hour == 0 { return 12 }
-        return hour
-    }
-    
-    func decodeJSONFromData(data: Data) -> Dictionary<String,Any>?
-    {
-        do
-        {
-            if let jsonObject = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? Dictionary<String,Any>
-            {
-                return jsonObject
-            }
-        }
-        catch
-        {
-            print(error)
-        }
-        return nil
+        schoolStartEndLabel.setText("School " + (schoolStarted ? " started " : " starts ") + " " + ScheduleDataManager.convertTimeTo12Hour(String(periodTimes[0].split(separator: "-")[0])) + "\nSchool " + (schoolEnded ? " ended " : " ends ") + " " + ScheduleDataManager.convertTimeTo12Hour(String(periodTimes[periodTimes.count-1].split(separator: "-")[1])))
     }
     
     func getTomorrowData()
     {
-        let tomorrowTask = URLSession.shared.dataTask(with: tomorrowSource) { (data, response, error) in
-            guard let data = data else { return }
-            if let tomorrowDictionary = self.decodeJSONFromData(data: data)
+        ScheduleDataManager.fetchTomorrowData(completion: { (tomorrowDictionary) in
+            if let errorString = tomorrowDictionary["error"] as? String
             {
-                if let errorString = tomorrowDictionary["error"] as? String
-                {
-                    OperationQueue.main.addOperation {
-                        self.tomorrowStartTimeLabel.setText("Error: " + errorString)
-                    }
-                    
-                    return
-                }
-                
-                let startMillis = tomorrowDictionary["date"] as! Double
-                let periodTimes = tomorrowDictionary["periodTimes"] as! Array<String>
-                
                 OperationQueue.main.addOperation {
-                    self.displayTomorrowData(startMillis: startMillis, periodTimes: periodTimes)
+                    self.tomorrowStartTimeLabel.setText("Error: " + errorString)
                 }
+                
+                return
             }
-        }
-
-        tomorrowTask.resume()
+            
+            let startMillis = tomorrowDictionary["date"] as! Double
+            let periodTimes = tomorrowDictionary["periodTimes"] as! Array<String>
+            
+            OperationQueue.main.addOperation {
+                self.displayTomorrowData(startMillis: startMillis, periodTimes: periodTimes)
+            }
+        })
     }
     
     func displayTomorrowData(startMillis: Double, periodTimes: Array<String>)

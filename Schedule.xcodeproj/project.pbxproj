@@ -12,7 +12,7 @@
 		7A15FC811FDDC7CD0012A883 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A15FC7F1FDDC7CD0012A883 /* Interface.storyboard */; };
 		7A15FC831FDDC7CD0012A883 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A15FC821FDDC7CD0012A883 /* Assets.xcassets */; };
 		7A15FC8A1FDDC7CD0012A883 /* ScheduleWatch Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7A15FC891FDDC7CD0012A883 /* ScheduleWatch Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		7A15FC8F1FDDC7CD0012A883 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A15FC8E1FDDC7CD0012A883 /* InterfaceController.swift */; };
+		7A15FC8F1FDDC7CD0012A883 /* ScheduleInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A15FC8E1FDDC7CD0012A883 /* ScheduleInfoController.swift */; };
 		7A15FC911FDDC7CD0012A883 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A15FC901FDDC7CD0012A883 /* ExtensionDelegate.swift */; };
 		7A15FC931FDDC7CD0012A883 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A15FC921FDDC7CD0012A883 /* ComplicationController.swift */; };
 		7A15FC951FDDC7CD0012A883 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A15FC941FDDC7CD0012A883 /* Assets.xcassets */; };
@@ -50,6 +50,8 @@
 		7A9A5466218A0CD500F45B85 /* NotificationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */; };
 		7A9A5469218A1B9700F45B85 /* NotificationEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */; };
 		7A9A546B218A1CA500F45B85 /* NotificationEditorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */; };
+		7A9B83A8238D15B700B25A6A /* PeriodTimesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9B83A7238D15B700B25A6A /* PeriodTimesViewController.swift */; };
+		7A9B83AA238D169F00B25A6A /* ScheduleDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9B83A9238D169F00B25A6A /* ScheduleDataManager.swift */; };
 		7AA09CDF1F9C4B4D006B5F08 /* Consola.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */; };
 		7AA4B7872022A4AC00BC0A2C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA4B7862022A4AC00BC0A2C /* SettingsViewController.swift */; };
 		7AC0A3381F8C3EE0005E5FA3 /* ScheduleInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */; };
@@ -137,7 +139,7 @@
 		7A15FC821FDDC7CD0012A883 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A15FC841FDDC7CD0012A883 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A15FC891FDDC7CD0012A883 /* ScheduleWatch Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "ScheduleWatch Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7A15FC8E1FDDC7CD0012A883 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		7A15FC8E1FDDC7CD0012A883 /* ScheduleInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoController.swift; sourceTree = "<group>"; };
 		7A15FC901FDDC7CD0012A883 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		7A15FC921FDDC7CD0012A883 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		7A15FC941FDDC7CD0012A883 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -175,6 +177,8 @@
 		7A9A5465218A0CD500F45B85 /* NotificationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewController.swift; sourceTree = "<group>"; };
 		7A9A5468218A1B9700F45B85 /* NotificationEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorViewController.swift; sourceTree = "<group>"; };
 		7A9A546A218A1CA500F45B85 /* NotificationEditorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorState.swift; sourceTree = "<group>"; };
+		7A9B83A7238D15B700B25A6A /* PeriodTimesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodTimesViewController.swift; sourceTree = "<group>"; };
+		7A9B83A9238D169F00B25A6A /* ScheduleDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDataManager.swift; sourceTree = "<group>"; };
 		7AA09CDE1F9C4B4D006B5F08 /* Consola.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consola.ttf; sourceTree = "<group>"; };
 		7AA4B7862022A4AC00BC0A2C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7AC0A3371F8C3EE0005E5FA3 /* ScheduleInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleInfoManager.swift; sourceTree = "<group>"; };
@@ -233,7 +237,9 @@
 			isa = PBXGroup;
 			children = (
 				7ADFEDA61FDDCA1000BFD0E1 /* ScheduleWatch Extension.entitlements */,
-				7A15FC8E1FDDC7CD0012A883 /* InterfaceController.swift */,
+				7A15FC8E1FDDC7CD0012A883 /* ScheduleInfoController.swift */,
+				7A9B83A7238D15B700B25A6A /* PeriodTimesViewController.swift */,
+				7A9B83A9238D169F00B25A6A /* ScheduleDataManager.swift */,
 				7A15FC901FDDC7CD0012A883 /* ExtensionDelegate.swift */,
 				7A15FC921FDDC7CD0012A883 /* ComplicationController.swift */,
 				7A15FC941FDDC7CD0012A883 /* Assets.xcassets */,
@@ -703,11 +709,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7ADFEDA71FDDCB6700BFD0E1 /* CoreDataStack.swift in Sources */,
+				7A9B83A8238D15B700B25A6A /* PeriodTimesViewController.swift in Sources */,
 				7A15FC911FDDC7CD0012A883 /* ExtensionDelegate.swift in Sources */,
 				7A7160312306003A0018F5AB /* Schedule.xcdatamodeld in Sources */,
+				7A9B83AA238D169F00B25A6A /* ScheduleDataManager.swift in Sources */,
 				7ADFEDA41FDDC98800BFD0E1 /* Logger.swift in Sources */,
 				7ADFEDA31FDDC98300BFD0E1 /* ScheduleInfoManager.swift in Sources */,
-				7A15FC8F1FDDC7CD0012A883 /* InterfaceController.swift in Sources */,
+				7A15FC8F1FDDC7CD0012A883 /* ScheduleInfoController.swift in Sources */,
 				7A15FC931FDDC7CD0012A883 /* ComplicationController.swift in Sources */,
 				7ADFEDA21FDDC97E00BFD0E1 /* CloudManager.swift in Sources */,
 			);
@@ -814,9 +822,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "WatchIcon-Dark";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191123;
+				CURRENT_PROJECT_VERSION = 20191126;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				IBSC_MODULE = ScheduleWatch_Extension;
 				INFOPLIST_FILE = ScheduleWatch/Info.plist;
@@ -835,9 +843,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "WatchIcon-Dark";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191123;
+				CURRENT_PROJECT_VERSION = 20191126;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				IBSC_MODULE = ScheduleWatch_Extension;
 				INFOPLIST_FILE = ScheduleWatch/Info.plist;
@@ -858,7 +866,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "ScheduleWatch Extension/ScheduleWatch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191123;
+				CURRENT_PROJECT_VERSION = 20191126;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = "ScheduleWatch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -879,7 +887,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "ScheduleWatch Extension/ScheduleWatch Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191123;
+				CURRENT_PROJECT_VERSION = 20191126;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = "ScheduleWatch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -899,7 +907,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ScheduleWidget/ScheduleWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191123;
+				CURRENT_PROJECT_VERSION = 20191126;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = ScheduleWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
@@ -918,7 +926,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ScheduleWidget/ScheduleWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191123;
+				CURRENT_PROJECT_VERSION = 20191126;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = ScheduleWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
@@ -1057,7 +1065,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Light";
 				CODE_SIGN_ENTITLEMENTS = Schedule/Schedule.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191123;
+				CURRENT_PROJECT_VERSION = 20191126;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = Schedule/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1078,7 +1086,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Light";
 				CODE_SIGN_ENTITLEMENTS = Schedule/Schedule.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20191123;
+				CURRENT_PROJECT_VERSION = 20191126;
 				DEVELOPMENT_TEAM = 26Y8AQV29F;
 				INFOPLIST_FILE = Schedule/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

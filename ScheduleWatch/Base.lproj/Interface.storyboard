@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="15505" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
-    <device id="watch40"/>
+    <device id="watch38"/>
     <dependencies>
         <deployment identifier="watchOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
@@ -10,7 +10,7 @@
         <!--Schedule-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller title="Schedule" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="ScheduleWatch" customModuleProvider="target">
+                <controller title="Schedule" id="AgC-eL-Hgc" customClass="ScheduleInfoController" customModule="ScheduleWatch_Extension">
                     <items>
                         <label width="160" height="50" alignment="center" text="Loading..." textAlignment="center" numberOfLines="2" id="N2e-aB-cVw">
                             <gestureRecognizers>
@@ -47,10 +47,28 @@
                         <outlet property="currentPeriodLabel" destination="N2e-aB-cVw" id="zBd-gn-Ne8"/>
                         <outlet property="schoolStartEndLabel" destination="8U2-C4-nqM" id="Pnq-va-6c1"/>
                         <outlet property="tomorrowStartTimeLabel" destination="XmT-6W-Ces" id="x74-zx-xw9"/>
+                        <segue destination="cOc-qx-T6g" kind="relationship" relationship="nextPage" id="Pfw-Iv-hk2"/>
                     </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="34" y="61.09375"/>
+        </scene>
+        <!--Period Times View Controller-->
+        <scene sceneID="2Gb-fP-Kc1">
+            <objects>
+                <controller id="cOc-qx-T6g" customClass="PeriodTimesViewController" customModule="ScheduleWatch_Extension">
+                    <items>
+                        <label alignment="left" text="Code" id="rTv-ZG-Pb9"/>
+                        <separator alignment="left" id="Gpq-ob-VnA"/>
+                        <label width="134" alignment="center" text="Loading..." textAlignment="center" numberOfLines="9" id="dqp-ME-rVu"/>
+                    </items>
+                    <connections>
+                        <outlet property="codeLabel" destination="rTv-ZG-Pb9" id="hxJ-dm-EL2"/>
+                        <outlet property="periodTimesLabel" destination="dqp-ME-rVu" id="3Qp-3I-vUj"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="288" y="60"/>
         </scene>
     </scenes>
 </document>
