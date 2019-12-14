@@ -58,7 +58,7 @@
             <objects>
                 <controller id="cOc-qx-T6g" customClass="PeriodTimesViewController" customModule="ScheduleWatch_Extension">
                     <items>
-                        <label alignment="left" text="Code" id="rTv-ZG-Pb9"/>
+                        <label alignment="center" text="Code" textAlignment="center" id="rTv-ZG-Pb9"/>
                         <separator alignment="left" id="Gpq-ob-VnA"/>
                         <label width="134" alignment="center" text="Loading..." textAlignment="center" numberOfLines="9" id="dqp-ME-rVu"/>
                     </items>

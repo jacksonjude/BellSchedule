@@ -107,8 +107,8 @@ class ScheduleInfoController: WKInterfaceController
             periodOn += 1
         }
 
-        var schoolStarted = false
-        var schoolEnded = false
+        //var schoolStarted = false
+        //var schoolEnded = false
 
         if currentPeriodNumber != -1 && !isPassingPeriod
         {
@@ -117,11 +117,11 @@ class ScheduleInfoController: WKInterfaceController
             let periodEndMinute = Int(periodEndTime.split(separator: ":")[1])!
             
             let currentPeriodMessage = "Period " + String(periodNumbers[currentPeriodNumber]) + "\n" + String(ScheduleDataManager.convertRangeTo12Hour(periodTimes[currentPeriodNumber]))
-            let timeLeftMessage = " (" + String((periodEndHour-nowHour)*60+(periodEndMinute-nowMinute)) + " left)"
+            let timeLeftMessage = " (" + String((periodEndHour-nowHour)*60+(periodEndMinute-nowMinute)) + " min)"
             currentPeriodLabel.setText(currentPeriodMessage + timeLeftMessage)
 
-            schoolStarted = true
-            schoolEnded = false
+            //schoolStarted = true
+            //schoolEnded = false
         }
         else if isPassingPeriod
         {
@@ -129,8 +129,8 @@ class ScheduleInfoController: WKInterfaceController
             let nextBlockMessage = "Block " + String(periodNumbers[currentPeriodNumber]) + " starts " + periodTimes[currentPeriodNumber].split(separator: "-")[0]
             currentPeriodLabel.setText(passingPeriodMessage + nextBlockMessage)
 
-            schoolStarted = true
-            schoolEnded = false
+            //schoolStarted = true
+            //schoolEnded = false
         }
         else
         {
@@ -143,19 +143,19 @@ class ScheduleInfoController: WKInterfaceController
             {
                 currentPeriodLabel.setText("School not started")
 
-                schoolStarted = false
-                schoolEnded = false
+                //schoolStarted = false
+                //schoolEnded = false
             }
             else if nowHour > schoolEndHour || (nowHour == schoolEndHour && nowMinute >= schoolEndMinute)
             {
                 currentPeriodLabel.setText("School ended")
 
-                schoolStarted = true
-                schoolEnded = true
+                //schoolStarted = true
+                //schoolEnded = true
             }
         }
 
-        schoolStartEndLabel.setText("School " + (schoolStarted ? " started " : " starts ") + " " + ScheduleDataManager.convertTimeTo12Hour(String(periodTimes[0].split(separator: "-")[0])) + "\nSchool " + (schoolEnded ? " ended " : " ends ") + " " + ScheduleDataManager.convertTimeTo12Hour(String(periodTimes[periodTimes.count-1].split(separator: "-")[1])))
+        schoolStartEndLabel.setText("School starts " + ScheduleDataManager.convertTimeTo12Hour(String(periodTimes[0].split(separator: "-")[0])) + "\nSchool ends " + ScheduleDataManager.convertTimeTo12Hour(String(periodTimes[periodTimes.count-1].split(separator: "-")[1])))
     }
     
     func getTomorrowData()
