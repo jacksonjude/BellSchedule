@@ -168,6 +168,11 @@ class UserScheduleTableViewController: UIViewController, UITableViewDelegate, UI
             offBlocks = [0, 0, 0, 0, 0, 0, 0, 0]
         }
         
+        if let returnID = notification.userInfo?["returnID"] as? String
+        {
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name("fetchedPublicDatabaseObject:" + returnID), object: nil)
+        }
+        
         OperationQueue.main.addOperation {
             self.tableView.reloadData()
         }

@@ -231,7 +231,7 @@ class ScheduleInfoManager: NSObject {
             refreshTomorrowScheduleInfo(weekSchedule: weekSchedule)
         }
         
-        if let userID = getUserID()
+        if let userID = ScheduleInfoManager.getUserID()
         {
             queryUserSchedule(userID: userID)
         }
@@ -249,7 +249,7 @@ class ScheduleInfoManager: NSObject {
     
     //MARK: UserSchedule
     
-    func getUserID() -> String?
+    static func getUserID() -> String?
     {
         Logger.println(" USRID: Fetching userID")
         let appGroupUserDefaults = UserDefaults(suiteName: "group.com.jacksonjude.BellSchedule")
@@ -293,6 +293,11 @@ class ScheduleInfoManager: NSObject {
         else
         {
             Logger.println(" USRSCH: Did not receive periodNamesRecord")
+        }
+        
+        if let returnID = notification.userInfo?["returnID"] as? String
+        {
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name("fetchedPublicDatabaseObject:" + returnID), object: nil)
         }
     }
     

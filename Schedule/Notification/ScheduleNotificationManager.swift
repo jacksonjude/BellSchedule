@@ -78,7 +78,7 @@ class ScheduleNotificationManager: NSObject, ScheduleInfoDelegate
             //let tomorrowSchoolStartTime = String(tomorrowPeriodTimes[0].split(separator: "-")[0])
         }*/
         
-        if scheduleInfoManager?.offBlocks != nil || scheduleInfoManager?.getUserID() == nil
+        if scheduleInfoManager?.offBlocks != nil || ScheduleInfoManager.getUserID() == nil
         {
             tomorrowSchoolCodes.append(tomorrowSchedule.scheduleCode ?? "H")
             nextDayCounts.append(nextDayCount)

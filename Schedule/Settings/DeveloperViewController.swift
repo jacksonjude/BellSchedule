@@ -16,6 +16,8 @@ class DeveloperViewController: UIViewController
     @IBOutlet weak var logTextView: UITextView!
     @IBOutlet weak var clearLogButton: UIButton!
     @IBOutlet weak var clearCoreDataButton: UIButton!
+    @IBOutlet weak var clearUserScheduleButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -26,6 +28,7 @@ class DeveloperViewController: UIViewController
         logTextView.addCorners()
         clearCoreDataButton.addCorners()
         clearLogButton.addCorners()
+        clearUserScheduleButton.addCorners()
         
         setLogText()
         
@@ -79,5 +82,12 @@ class DeveloperViewController: UIViewController
     @IBAction func clearConsole(_ sender: Any) {
         Logger.printedData = ""
         setLogText()
+    }
+    
+    @IBAction func clearUserSchedule(_ sender: Any) {
+        guard let userID = ScheduleInfoManager.getUserID() else { return }
+        let defaultUserScheduleDictionary = ["periodNames":["Period 1", "Period 2", "Period 3", "Period 4", "Period 5", "Period 6", "Period 7", "Period 8", "Registry"], "userID":userID, "offBlocks":[0, 0, 0, 0, 0, 0, 0, 0]] as [String : Any]
+        
+        CloudManager.setPublicDatabaseObject(type: "UserSchedule", dataDictionary: defaultUserScheduleDictionary, predicate: NSPredicate(format: "userID == %@", userID))
     }
 }

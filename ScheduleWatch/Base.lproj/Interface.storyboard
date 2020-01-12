@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="15505" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="15702" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <device id="watch38"/>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="15501"/>
     </dependencies>
     <scenes>
         <!--Schedule-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller title="Schedule" id="AgC-eL-Hgc" customClass="ScheduleInfoController" customModule="ScheduleWatch_Extension">
+                <controller title="Schedule" fullBounds="YES" id="AgC-eL-Hgc" customClass="ScheduleInfoController" customModule="ScheduleWatch_Extension">
                     <items>
                         <label width="160" height="50" alignment="center" text="Loading..." textAlignment="center" numberOfLines="2" id="N2e-aB-cVw">
                             <gestureRecognizers>

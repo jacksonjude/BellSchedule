@@ -25,10 +25,10 @@ class CloudManager: NSObject
         let objectQuery = CKQuery(recordType: type, predicate: predicate)
         
         let objectQueryOperation = CKQueryOperation(query: objectQuery)
+        self.currentCloudOperations[returnID] = objectQueryOperation
         
         objectQueryOperation.recordFetchedBlock = {(record) in
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + returnID), object: nil, userInfo: ["object":record])
-            currentCloudOperations.remove(at: currentCloudOperations.index(forKey: returnID)!)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + returnID), object: nil, userInfo: ["object":record,"returnID":returnID])
         }
         
         objectQueryOperation.queryCompletionBlock = {(cursorThingy, error) in
@@ -41,10 +41,11 @@ class CloudManager: NSObject
             {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "fetchedPublicDatabaseObject:" + returnID), object: nil)
             }
+            
+            currentCloudOperations.remove(at: currentCloudOperations.index(forKey: returnID)!)
         }
         
         publicDatabase.add(objectQueryOperation)
-        self.currentCloudOperations[returnID] = objectQueryOperation
     }
     
     static func setPublicDatabaseObject(type: String, dataDictionary: Dictionary<String,Any>, predicate: NSPredicate)
@@ -94,6 +95,7 @@ class CloudManager: NSObject
         let cloudEntityQuery = CKQuery(recordType: entityType, predicate: NSPredicate(format: "modificationDate >= %@", lastUpdatedDate))
         
         let cloudEntityQueryOperation = CKQueryOperation(query: cloudEntityQuery)
+        self.currentCloudOperations["fetchAllCloudData"] = cloudEntityQueryOperation
         
         cloudEntityQueryOperation.recordFetchedBlock = {(record) in
             OperationQueue.main.addOperation {
@@ -135,7 +137,6 @@ class CloudManager: NSObject
         }
         
         publicDatabase.add(cloudEntityQueryOperation)
-        self.currentCloudOperations["fetchAllCloudData"] = cloudEntityQueryOperation
     }
     
     @objc static func contextSaved()

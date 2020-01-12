@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -942,16 +942,16 @@
                                 </items>
                             </navigationBar>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.84999999999999998" contentMode="scaleToFill" editable="NO" text="Loading log..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="QJX-hD-RMY">
-                                <rect key="frame" x="16" y="76" width="343" height="291"/>
+                                <rect key="frame" x="16" y="76" width="343" height="177"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="291" id="9fS-ld-Wce"/>
+                                    <constraint firstAttribute="height" constant="177" id="9fS-ld-Wce"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Consolas" family="Consolas" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="Consolas" family="Consolas" pointSize="12"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51q-RI-lmd">
-                                <rect key="frame" x="122.5" y="387" width="130" height="57"/>
+                                <rect key="frame" x="122.5" y="278" width="130" height="57"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="57" id="HKJ-OL-2pv"/>
@@ -964,7 +964,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" alpha="0.84999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xlB-1d-YpT">
-                                <rect key="frame" x="122.5" y="471" width="130" height="57"/>
+                                <rect key="frame" x="122.5" y="362" width="130" height="57"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="57" id="0TT-ng-i84"/>
@@ -976,12 +976,26 @@
                                     <action selector="clearCoreData:" destination="Sf9-3T-Ivb" eventType="touchUpInside" id="BaX-xM-6pC"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" alpha="0.85000002384185791" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIr-dp-tcg">
+                                <rect key="frame" x="122.5" y="427" width="130" height="57"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="57" id="KNG-zX-3DZ"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="WOf-px-EYW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Clear Schedule"/>
+                                <connections>
+                                    <action selector="clearUserSchedule:" destination="Sf9-3T-Ivb" eventType="touchUpInside" id="r39-E0-3Xm"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="51q-RI-lmd" firstAttribute="centerX" secondItem="IKv-S7-Vaw" secondAttribute="centerX" id="1q2-oZ-apM"/>
                             <constraint firstItem="jfz-gB-adq" firstAttribute="centerX" secondItem="IKv-S7-Vaw" secondAttribute="centerX" id="3ig-R4-moq"/>
                             <constraint firstItem="8MH-EH-lqJ" firstAttribute="trailing" secondItem="bkH-Nc-guQ" secondAttribute="trailing" id="8zh-wS-NnN"/>
+                            <constraint firstItem="UIr-dp-tcg" firstAttribute="centerX" secondItem="IKv-S7-Vaw" secondAttribute="centerX" id="DDd-wx-vkE"/>
                             <constraint firstItem="jfz-gB-adq" firstAttribute="trailing" secondItem="bkH-Nc-guQ" secondAttribute="trailing" id="Fsc-xV-R3O"/>
                             <constraint firstItem="8MH-EH-lqJ" firstAttribute="bottom" secondItem="IKv-S7-Vaw" secondAttribute="bottom" id="LvK-cW-YJI"/>
                             <constraint firstItem="xlB-1d-YpT" firstAttribute="top" secondItem="51q-RI-lmd" secondAttribute="bottom" constant="27" id="MqP-Y1-Wka"/>
@@ -989,10 +1003,11 @@
                             <constraint firstItem="8MH-EH-lqJ" firstAttribute="top" secondItem="bkH-Nc-guQ" secondAttribute="top" id="Utq-6a-zEY"/>
                             <constraint firstItem="xlB-1d-YpT" firstAttribute="centerX" secondItem="IKv-S7-Vaw" secondAttribute="centerX" id="bk6-h2-FRO"/>
                             <constraint firstItem="QJX-hD-RMY" firstAttribute="leading" secondItem="bkH-Nc-guQ" secondAttribute="leading" constant="16" id="inj-xQ-qvB"/>
+                            <constraint firstItem="UIr-dp-tcg" firstAttribute="top" secondItem="xlB-1d-YpT" secondAttribute="bottom" constant="8" id="jhB-zX-CdN"/>
                             <constraint firstItem="jfz-gB-adq" firstAttribute="top" secondItem="bkH-Nc-guQ" secondAttribute="top" id="jhO-jF-r99"/>
                             <constraint firstItem="8MH-EH-lqJ" firstAttribute="leading" secondItem="bkH-Nc-guQ" secondAttribute="leading" id="jxi-XH-vIt"/>
                             <constraint firstItem="jfz-gB-adq" firstAttribute="leading" secondItem="bkH-Nc-guQ" secondAttribute="leading" id="kS9-SH-jlM"/>
-                            <constraint firstItem="51q-RI-lmd" firstAttribute="top" secondItem="QJX-hD-RMY" secondAttribute="bottom" constant="20" id="uBg-tx-b1C"/>
+                            <constraint firstItem="51q-RI-lmd" firstAttribute="top" secondItem="QJX-hD-RMY" secondAttribute="bottom" constant="25" id="uBg-tx-b1C"/>
                             <constraint firstItem="QJX-hD-RMY" firstAttribute="top" secondItem="jfz-gB-adq" secondAttribute="bottom" constant="32" id="xmU-Mv-hkd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bkH-Nc-guQ"/>
@@ -1000,6 +1015,7 @@
                     <connections>
                         <outlet property="clearCoreDataButton" destination="xlB-1d-YpT" id="Pgi-VS-PqH"/>
                         <outlet property="clearLogButton" destination="51q-RI-lmd" id="GmP-p4-1xZ"/>
+                        <outlet property="clearUserScheduleButton" destination="UIr-dp-tcg" id="B4h-rj-EjB"/>
                         <outlet property="logTextView" destination="QJX-hD-RMY" id="ZxR-zz-V6Q"/>
                     </connections>
                 </viewController>
