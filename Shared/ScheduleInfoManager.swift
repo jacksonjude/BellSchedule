@@ -145,21 +145,24 @@ class ScheduleInfoManager: NSObject {
     
     func startInfoManager()
     {
-        if downloadData
+        var shouldDownloadData = downloadData
+        #if os(iOS)
+        shouldDownloadData = shouldDownloadData && Reachability.isConnectedToNetwork()
+        #endif
+        if shouldDownloadData
         {
-            NotificationCenter.default.addObserver(self, selector: #selector(finishedFetchingData), name: Notification.Name(rawValue: "finishedFetchingAllData"), object: nil)
-            
             downloadCloudData()
         }
         else
         {
-            //queryWeekSchedule()
             refreshScheduleInfo()
         }
     }
     
     func downloadCloudData()
     {
+        NotificationCenter.default.addObserver(self, selector: #selector(finishedFetchingData), name: Notification.Name(rawValue: "finishedFetchingAllData"), object: nil)
+        
         if !currentlyDownloadingCloudData
         {
             currentlyDownloadingCloudData = true
@@ -205,6 +208,8 @@ class ScheduleInfoManager: NSObject {
         loadedData += 1
         if loadedAllData
         {
+            NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "finishedFetchingAllData"), object: nil)
+
             currentlyDownloadingCloudData = false
             
             UserDefaults.standard.set(UserDefaults.standard.object(forKey: "fetchingCloudData"), forKey: "lastUpdatedData")

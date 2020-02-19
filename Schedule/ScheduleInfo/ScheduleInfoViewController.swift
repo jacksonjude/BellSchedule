@@ -202,7 +202,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
             self.tomorrowStartTimeLabel.text = "Loading..."
         }
         
-        if UserDefaults.standard.object(forKey: "syncData") as? Bool ?? true
+        if UserDefaults.standard.object(forKey: "syncData") as? Bool ?? true && Reachability.isConnectedToNetwork()
         {
             scheduleManager!.downloadCloudData()
         }

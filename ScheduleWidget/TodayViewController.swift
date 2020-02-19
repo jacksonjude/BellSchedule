@@ -231,7 +231,14 @@ class TodayViewController: UITableViewController, NCWidgetProviding, ScheduleInf
         schoolStartEndLabel.text = "Loading..."
         tomorrowStartTimeLabel.text = "Loading..."
         
-        scheduleInfoManager?.downloadCloudData()
+        if Reachability.isConnectedToNetwork()
+        {
+            scheduleInfoManager?.downloadCloudData()
+        }
+        else
+        {
+            scheduleInfoManager?.refreshScheduleInfo()
+        }
     }
     
     func printInFirstTextBox()

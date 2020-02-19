@@ -54,7 +54,6 @@ class CoreDataStack: NSObject
     
     static func saveContext () {
         let context = CoreDataStack.persistentContainer.viewContext
-        //if context.hasChanges {
         do {
             try context.save()
         } catch {
@@ -63,7 +62,6 @@ class CoreDataStack: NSObject
             let nserror = error as NSError
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
-        //}
     }
     
     static func fetchLocalObjects(type: String, predicate: NSPredicate) -> [AnyObject]?
