@@ -56,7 +56,7 @@ class ScheduleTimesViewController: UIViewController
             
             let scheduleCode = String(describing: scheduleRecord!.value(forKey: "scheduleCode")!)
             
-            dateTitle = scheduleMonth + "-" + scheduleDay + "-" + scheduleYear +  " -- " + scheduleCode
+            dateTitle = scheduleMonth + "-" + scheduleDay + "-" + scheduleYear +  " – " + scheduleCode
             
             let periodTimes = CoreDataStack.decodeArrayFromJSON(object: scheduleRecord!, field: "periodTimes") as! Array<String>
             

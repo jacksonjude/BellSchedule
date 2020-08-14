@@ -126,7 +126,7 @@ class ScheduleInfoController: WKInterfaceController
         else if isPassingPeriod
         {
             let passingPeriodMessage = "Passing period\n"
-            let nextBlockMessage = "Block " + String(periodNumbers[currentPeriodNumber]) + " starts " + periodTimes[currentPeriodNumber].split(separator: "-")[0]
+            let nextBlockMessage = "Block " + String(periodNumbers[currentPeriodNumber]) + " starts " + ScheduleDataManager.convertTimeTo12Hour(String(periodTimes[currentPeriodNumber].split(separator: "-")[0]))
             currentPeriodLabel.setText(passingPeriodMessage + nextBlockMessage)
 
             //schoolStarted = true

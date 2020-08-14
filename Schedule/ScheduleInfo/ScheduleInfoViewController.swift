@@ -456,7 +456,7 @@ class ScheduleInfoViewController: UIViewController, ScheduleInfoDelegate, SFSafa
     
     func openFAQPage(pageType: Int)
     {
-        let faqWebURL = URL(string: "http://jjcooley.ddns.net/lowellschedule")
+        let faqWebURL = URL(string: "http://lowell.jacksonjude.com")
         let faqLocalURL = Bundle.main.url(forResource: "faq", withExtension: "html")
         
         let svc: SFSafariViewController?

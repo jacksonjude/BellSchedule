@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Bree5erif.otf">
+            <string>Bree5erifRegular</string>
+        </array>
         <array key="Consola.ttf">
             <string>Consolas</string>
-        </array>
-        <array key="CooleyCasual.ttf">
-            <string>CooleyCasual</string>
         </array>
     </customFonts>
     <scenes>
@@ -545,7 +545,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="95" id="ldu-vf-j8d"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="32"/>
+                                <fontDescription key="fontDescription" name="Bree5erifRegular" family="Bree5erif" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -555,7 +555,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="72" id="080-xE-bzM"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="32"/>
+                                <fontDescription key="fontDescription" name="Bree5erifRegular" family="Bree5erif" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -565,7 +565,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="72" id="NUz-aN-JDP"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="32"/>
+                                <fontDescription key="fontDescription" name="Bree5erifRegular" family="Bree5erif" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -874,7 +874,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="wZu-TE-Y2M"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="32"/>
+                                <fontDescription key="fontDescription" name="Bree5erifRegular" family="Bree5erif" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -884,7 +884,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="176" id="h0h-8e-YeS"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="32"/>
+                                <fontDescription key="fontDescription" name="Bree5erifRegular" family="Bree5erif" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
@@ -1176,7 +1176,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="7yE-WN-oAp"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="32"/>
+                                <fontDescription key="fontDescription" name="Bree5erifRegular" family="Bree5erif" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1186,7 +1186,7 @@
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.84999999999999998" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Loading..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gbe-R1-L1A">
                                         <rect key="frame" x="0.0" y="0.0" width="297" height="100"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                        <fontDescription key="fontDescription" name="CooleyCasual" family="CooleyCasual" pointSize="25"/>
+                                        <fontDescription key="fontDescription" name="Bree5erifRegular" family="Bree5erif" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
@@ -1298,11 +1298,11 @@
             <point key="canvasLocation" x="2824.8000000000002" y="-780.8095952023989"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="IaJ-xN-Wcd"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="background1" width="200" height="300"/>
         <image name="infoIcon" width="32" height="32"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="afJ-AA-hCV"/>
-    </inferredMetricsTieBreakers>
 </document>

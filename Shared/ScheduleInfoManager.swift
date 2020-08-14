@@ -317,7 +317,7 @@ class ScheduleInfoManager: NSObject {
             {
                 let nextClassPeriodNumber = periodNumbers[nextClassPeriodIndex!]
                 
-                let messagePart1BecauseTheCompilerSucks = "Off Block\nBlock " + String(nextClassPeriodNumber) + " starts at " + String(periodTimes[nextClassPeriodIndex!].split(separator: "-")[0])
+                let messagePart1BecauseTheCompilerSucks = "Off Block\nBlock " + String(nextClassPeriodNumber) + " starts at " + ScheduleInfoManager.convertTimeTo12Hour(String(periodTimes[nextClassPeriodIndex!].split(separator: "-")[0]))
                 let messagePart2BecauseTheCompilerSucks = "\n" + ((periodNames?.count ?? 0 > nextClassPeriodIndex!) ? periodNames![nextClassPeriodNumber-1] : "")
                 infoDelegate.printCurrentMessage(message: messagePart1BecauseTheCompilerSucks + messagePart2BecauseTheCompilerSucks)
                 //infoDelegate.printCurrentPeriod(periodRangeString: periodTimes[nextClassPeriodIndex!], periodNumber: nextClassPeriodIndex!, todaySchedule: todaySchedule!)
@@ -845,23 +845,23 @@ class ScheduleInfoManager: NSObject {
                     }
                 }
                 
-                let periodStartFormattedString = String(convertTo12Hour(periodStartHour)) + ":" + zeroPadding(periodStartMinute)
-                let periodEndFormattedString = String(convertTo12Hour(periodEndHour)) + ":" + zeroPadding(periodEndMinute)
+                let periodStartFormattedString = String(ScheduleInfoManager.convertTo12Hour(periodStartHour)) + ":" + ScheduleInfoManager.zeroPadding(periodStartMinute)
+                let periodEndFormattedString = String(ScheduleInfoManager.convertTo12Hour(periodEndHour)) + ":" + ScheduleInfoManager.zeroPadding(periodEndMinute)
                 
-                let periodStartFormattedString24 = String(periodStartHour) + ":" + zeroPadding(periodStartMinute)
-                let periodEndFormattedString24 = String(periodEndHour) + ":" + zeroPadding(periodEndMinute)
+                let periodStartFormattedString24 = String(periodStartHour) + ":" + ScheduleInfoManager.zeroPadding(periodStartMinute)
+                let periodEndFormattedString24 = String(periodEndHour) + ":" + ScheduleInfoManager.zeroPadding(periodEndMinute)
                 
-                let periodStartDate = getDate(hourMinute: zeroPadding(periodStartHour) + ":" + zeroPadding(periodStartMinute), day: Date())
-                let periodEndDate = getDate(hourMinute: zeroPadding(periodEndHour) + ":" + zeroPadding(periodEndMinute), day: Date())
+                let periodStartDate = getDate(hourMinute: ScheduleInfoManager.zeroPadding(periodStartHour) + ":" + ScheduleInfoManager.zeroPadding(periodStartMinute), day: Date())
+                let periodEndDate = getDate(hourMinute: ScheduleInfoManager.zeroPadding(periodEndHour) + ":" + ScheduleInfoManager.zeroPadding(periodEndMinute), day: Date())
                 
-                let modStartFormattedString = String(convertTo12Hour(modStartHour)) + ":" + zeroPadding(modStartMinute)
-                let modEndFormattedString = String(convertTo12Hour(modEndHour)) + ":" + zeroPadding(modEndMinute)
+                let modStartFormattedString = String(ScheduleInfoManager.convertTo12Hour(modStartHour)) + ":" + ScheduleInfoManager.zeroPadding(modStartMinute)
+                let modEndFormattedString = String(ScheduleInfoManager.convertTo12Hour(modEndHour)) + ":" + ScheduleInfoManager.zeroPadding(modEndMinute)
                 
-                let modStartFormattedString24 = String(modStartHour) + ":" + zeroPadding(modStartMinute)
-                let modEndFormattedString24 = String(modEndHour) + ":" + zeroPadding(modEndMinute)
+                let modStartFormattedString24 = String(modStartHour) + ":" + ScheduleInfoManager.zeroPadding(modStartMinute)
+                let modEndFormattedString24 = String(modEndHour) + ":" + ScheduleInfoManager.zeroPadding(modEndMinute)
                 
-                let modStartDate = getDate(hourMinute: zeroPadding(modStartHour) + ":" + zeroPadding(modStartMinute), day: Date())
-                let modEndDate = getDate(hourMinute: zeroPadding(modEndHour) + ":" + zeroPadding(modEndMinute), day: Date())
+                let modStartDate = getDate(hourMinute: ScheduleInfoManager.zeroPadding(modStartHour) + ":" + ScheduleInfoManager.zeroPadding(modStartMinute), day: Date())
+                let modEndDate = getDate(hourMinute: ScheduleInfoManager.zeroPadding(modEndHour) + ":" + ScheduleInfoManager.zeroPadding(modEndMinute), day: Date())
                 
                 let currentDate = Date()
                 let periodDateRange = periodStartDate ... periodEndDate
@@ -934,32 +934,24 @@ class ScheduleInfoManager: NSObject {
         }
     }
     
-    func calculateStartTime(periodTimes: Array<String>, periodNumbers: Array<String>)
+    static func convertTimeTo12Hour(_ time: String) -> String
     {
-        
+        let hour = convertTo12Hour(Int(String(time.split(separator: ":")[0]))!)
+        let minute = time.split(separator: ":")[1]
+
+        return zeroPadding(hour) + ":" + String(minute)
+    }
+
+    static func convertTo12Hour(_ hour: Int) -> Int
+    {
+        if hour > 12 { return hour-12 }
+        if hour == 0 { return 12 }
+        return hour
     }
     
-    func zeroPadding(_ int: Int) -> String
+    static func zeroPadding(_ n: Int) -> String
     {
-        if int > 9
-        {
-            return String(int)
-        }
-        else
-        {
-            return "0" + String(int)
-        }
-    }
-    
-    func convertTo12Hour(_ int: Int) -> Int
-    {
-        if int > 12
-        {
-            return int-12
-        }
-        else
-        {
-            return int
-        }
+      if (n < 10) { return "0" + String(n) }
+      return String(n)
     }
 }

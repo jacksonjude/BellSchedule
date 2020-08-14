@@ -57,17 +57,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7A15FC881FDDC7CD0012A883"
-            BuildableName = "ScheduleWatch Extension.appex"
-            BlueprintName = "ScheduleWatch Extension"
-            ReferencedContainer = "container:Schedule.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -91,17 +80,6 @@
             ReferencedContainer = "container:Schedule.xcodeproj">
          </BuildableReference>
       </RemoteRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7A15FC881FDDC7CD0012A883"
-            BuildableName = "ScheduleWatch Extension.appex"
-            BlueprintName = "ScheduleWatch Extension"
-            ReferencedContainer = "container:Schedule.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
